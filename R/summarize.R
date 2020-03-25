@@ -8,15 +8,6 @@
 #' @export
 #' @examples
 summarize <- function(variants, multiAnalyze=FALSE, tissues ,directory=NULL, token=NULL, population="CEU") {
-  #Load all sniperData
-  #data("TranscriptionFactorsAll")
-  #data("Chromatin")
-  #data("ChromatinInteractions")
-  #data("meQTLs")
-  #data("miQTLexperiment")
-  #data("miQTLpredict")
-  #data("recombinationRate")
-  #data("pQTLs")
   # Skip if existent
   filenames <- sprintf("%s/%s.RData",directory,variants)
   SNPsRemain <- variants[!file.exists(filenames)]
