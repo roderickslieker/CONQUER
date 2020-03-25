@@ -2,6 +2,8 @@
 
 export(summarize)
 export(visualize)
+import(clusterProfiler)
 import(jsonlite)
 import(magrittr)
+import(org.Hs.eg.db)
 importFrom(grDevices,colorRampPalette)
