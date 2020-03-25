@@ -3,6 +3,9 @@
 \name{visualizeDashboard}
 \alias{visualizeDashboard}
 \title{visualizeDashboard}
+\usage{
+visualizeDashboard(SNPs, SNPSummary)
+}
 \value{
 [[NULL]]
 }
