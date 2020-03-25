@@ -12,9 +12,9 @@ Install the the development version from GitLab:
 `install.packages("devtools")`
 
 ``` r
-devtools::install_github("rcslieker/CONQUER.DB")
-devtools::install_github("rcslieker/CONQUER.d3")
-devtools::install_github("rcslieker/CONQUER")
+devtools::install_github("roderickslieker/CONQUER.DB")
+devtools::install_github("roderickslieker/CONQUER.d3")
+devtools::install_github("roderickslieker/CONQUER")
 ```
 
 ## Overview
