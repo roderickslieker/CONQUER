@@ -1,0 +1,70 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# COmprehend fuNctional conseQUencEs R <img src="inst/logo/CONQUER.png" align="right" width="120" />
+
+*Gerard Bouland, Joline Beulens, Joey Nap, Arno van der Slik, Arnaud Zaldumbide, Leen ’t Hart and Roderick Slieker*
+
+## Installation
+
+Install the the development version from GitLab:  
+`install.packages("devtools")`
+
+```{r, eval = FALSE}
+devtools::install_github("rcslieker/CONQUER.DB")
+devtools::install_github("rcslieker/CONQUER.d3")
+devtools::install_github("rcslieker/CONQUER")
+```
+
+
+## Overview 
+
+With the use of two functions, SNPs are summarised and visualised, namely: `summarise()` and `visualise()`.
+
+* The `summarise()` function is used to collect all data related to SNPs. 
+* The `visualise()` function initiates a RStudio Shiny-based dashboard that visualises all relevant plots. 
+
+Note: We use the LD data from the API of NIH. You will need to register on the site to obtain a token. Please see: 
+
+https://ldlink.nci.nih.gov/?tab=apiaccess
+
+The token is send by email and can be provided as character string. 
+
+```{r, message=F, eval=F}
+library(CONQUER)
+
+summarise(
+  variants = "rs184660829",
+  directory = "somedirectory",
+  token = "sometoken"
+)
+```
+
+```{r, eval=F}
+visualise(variant = "rs184660829", 
+          directory = "somedirectory")
+```
+
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
+## Data resources
+
+```{r, echo=F}
+library(CONQUER)
+data(resources)
+resources[is.na(resources)] <- " "
+knitr::kable(x = resources)
+```
