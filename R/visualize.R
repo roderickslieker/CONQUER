@@ -1,8 +1,9 @@
 #' Main function to visualize the investigated SNPs
 #' @param directory [[character]] Character string of the directory in which the SNP data and optional summary files are stored
 #' @param SNPs [[vector]] Vector of SNP names that correspond to the SNP names provided in summarize. Can also be a single SNP name, but should always be a rs* number.
-#' @export	
-#' @examples 
+#' @import magrittr
+#' @export
+#' @examples
 #' \dontrun{summarize("somedirectory","rs1558902")}
 visualize <- function(directory, SNPs){
   #List all files in directory

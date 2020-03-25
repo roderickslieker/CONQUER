@@ -4,6 +4,8 @@
 #' @keywords internal
 #' @importFrom grDevices colorRampPalette
 #' @import org.Hs.eg.db
+#' @import shiny
+#' @import magrittr
 #' @return [[NULL]]
 visualizeDashboard <- function(SNPs,SNPSummary){
 
@@ -23,7 +25,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
   miQTLex <- conquer.db::miQTLexperiment
   miQTLpred <- conquer.db::miQTLpredict
 
-  ui <- shiny::navbarPage(title = shiny::div(shiny::img(src = "logo/CONQUER.png", style="margin-top:-10px;")),tags$head(HTML("<title>test</title>")),
+  ui <- shiny::navbarPage(title = shiny::div(shiny::img(src = "logo/CONQUER.png", style="margin-top:-10px;")),shiny::tags$head(HTML("<title>test</title>")),
                           theme = shinythemes::shinytheme("flatly"),
                           shiny::tabPanel("Tissue Specific",
                                           shiny::fluidPage(
@@ -502,7 +504,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
       conquer.d3js::ConquerLocusZoom(SNPs[[input$snpSel]])
     })
     output$LocusHeader <- shiny::renderUI({
-      tags$h2(sprintf("Linkage Disequilibrium for: %s",input$snpSel))
+      shiny::tags$h2(sprintf("Linkage Disequilibrium for: %s",input$snpSel))
     })
 
     output$downloadLocus <- shiny::downloadHandler(
@@ -566,7 +568,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
       data <- SNPs[[input$snpSel]]$LD
       data <- data[order(data$r2,decreasing = T),c("variation","start")]
       sel <- data[input$LDTable_rows_selected,"variation"]
-      tags$h3(sprintf("Publications in which %s is mentioned: ", sel))
+      shiny::tags$h3(sprintf("Publications in which %s is mentioned: ", sel))
     })
 
 
