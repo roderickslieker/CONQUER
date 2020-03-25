@@ -2,8 +2,8 @@
 #' @param SNPs
 #' @param SNPSummary
 #' @keywords internal
-#' @usage NULL
 #' @importFrom grDevices colorRampPalette
+#' @import org.Hs.eg.db
 #' @return [[NULL]]
 visualizeDashboard <- function(SNPs,SNPSummary){
 
@@ -13,7 +13,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
   KEGG_DATA$ENSG <- lapply(X = KEGG_DATA$PATHID2EXTID,
                            FUN = entrezToENSEMBL)
 
-  ensg_symb <- merge(toTable(org.Hs.egENSEMBL),toTable(org.Hs.egSYMBOL),by="gene_id")
+  ensg_symb <- merge(BiocGenerics::toTable(org.Hs.egENSEMBL),toTable(org.Hs.egSYMBOL),by="gene_id")
 
 
   shiny::addResourcePath("logo", directoryPath = system.file("logo", package = "CONQUER"))
