@@ -6,6 +6,11 @@
 \usage{
 build_Anno(path2gene, path2name)
 }
+\arguments{
+\item{path2gene}{see the DOSE pacakge}
+
+\item{path2name}{see the DOSE pacakge}
+}
 \description{
 This function is from the DOSE package but has not been exported. We use it directly and has therefore been added to the package
 }
