@@ -2,11 +2,4 @@
 
 export(summarize)
 export(visualize)
-import(GenomicRanges)
-import(IRanges)
-import(clusterProfiler)
-import(jsonlite)
-import(magrittr)
-import(org.Hs.eg.db)
-import(shiny)
 importFrom(grDevices,colorRampPalette)
