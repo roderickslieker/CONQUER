@@ -1,8 +1,7 @@
 #' geteQTLdata
-#' @param lead
-#' @param Genes
-#' @param parallel
-#' @import jsonlite
+#' @param lead leadSNP
+#' @param Genes Gene names
+#' @param parallel Parallel disabled
 #' @return [[data.frame]]
 geteQTLdata <- function(lead, Genes, parallel) {
 
