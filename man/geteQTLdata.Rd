@@ -6,6 +6,13 @@
 \usage{
 geteQTLdata(lead, Genes, parallel)
 }
+\arguments{
+\item{lead}{leadSNP}
+
+\item{Genes}{Gene names}
+
+\item{parallel}{Parallel disabled}
+}
 \value{
 [[data.frame]]
 }
