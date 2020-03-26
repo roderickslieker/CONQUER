@@ -1,7 +1,7 @@
 Package: CONQUER
 Type: Package
 Title: CONQUER
-Version: 0.1.0
+Version: 1.0.0
 Author: G.A. Bouland[aut] and R.C. Slieker[aut,cre]
 Maintainer: Roderick Slieker <r.c.slieker@lumc.nl>
 Description: R-package to visualize the consequences of SNPs across tissues.
