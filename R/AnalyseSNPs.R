@@ -2,7 +2,6 @@
 #' @param eQTLData [[data.frame]] A data.frame containing the eQTL data.
 #' @param tissue [[character]] A character vector containing the tissues of interest.
 #' @param clustering [[character]] A character string indicating which clustring method should be used: `agnes` or `PAM`
-#' @import magrittr
 #' @keywords internal
 #' @return [[list]]
 AnalyseSNPs <- function(eQTLData, tissue, clustering){
