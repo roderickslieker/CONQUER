@@ -2,6 +2,8 @@
 
 export(summarize)
 export(visualize)
+import(GenomicRanges)
+import(IRanges)
 import(clusterProfiler)
 import(jsonlite)
 import(magrittr)

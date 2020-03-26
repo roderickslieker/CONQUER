@@ -10,7 +10,7 @@
 #' @usage NULL
 #'
 #' @return [[list]]
-getDataforSingleSNP <- function(variant, directory=NULL, token=NULL, population="CEU"){
+getDataforSingleSNP <- function(variant, directory=NULL, token=NULL, population="CEU",Chromatin){
   message(sprintf("Retrieving data for: %s",variant))
 
   tryCatch({
@@ -45,7 +45,8 @@ getDataforSingleSNP <- function(variant, directory=NULL, token=NULL, population=
     #Get ChromatinData
     ChromatinData <- getChromatinData(chr = mainSNP$chr,
                                       startPos = min(BiocGenerics::start(Genes)),
-                                      endPos = max(BiocGenerics::end(Genes)))
+                                      endPos = max(BiocGenerics::end(Genes)),
+                                      Chromatin=Chromatin)
 
     #Get exons for locusZoomPlot
     query <- GenomicRanges::GRanges(seqnames=paste0("chr", mainSNP$chr),

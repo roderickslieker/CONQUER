@@ -1,7 +1,7 @@
-#' Collect data for one or more SNPs and perform an optional integrative analysis on multiple tissues. 
+#' Collect data for one or more SNPs and perform an optional integrative analysis on multiple tissues.
 #' @param variants [[vector]] Vector with one or more SNP names (rs*)
-#' @param multiAnalyze [[boolean]] Default is FALSE. If TRUE, an integrated analysis will be performed across the SNPs. 
-#' @param tissues [[vector]] Tissues of interest. Should be a vector of names based on teh 
+#' @param multiAnalyze [[boolean]] Default is FALSE. If TRUE, an integrated analysis will be performed across the SNPs.
+#' @param tissues [[vector]] Tissues of interest. Should be a vector of names based on teh
 #' @param directory [[character]] String of the directory where the files should be stored for the SNPs investigated
 #' @param token [[character]] Token required for LDlink, which can be obtained from the LDlink website
 #' @param population [[character]] Letter code of population of interest for example " CEU"
@@ -15,11 +15,15 @@ summarize <- function(variants, multiAnalyze=FALSE, tissues ,directory=NULL, tok
   #if(parallel){
   #  BiocParallel::register(BiocParallel::bpstart(BiocParallel::SnowParam(cores)))
   #}
+
+  # Chromatin states
+  Chromatin <- c(conquer.db::Chromatin1,conquer.db::Chromatin2,conquer.db::Chromatin3)
   stats <- lapply(X = SNPsRemain,
          FUN = getDataforSingleSNP,
          directory = directory,
          token = token,
-         population = population)
+         population = population,
+         Chromatin=Chromatin)
 
   if(multiAnalyze){
     message("MultiAnalyze is true. The SNPs will be analyzed for the following tissues:")

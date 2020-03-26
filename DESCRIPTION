@@ -9,8 +9,6 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends: 
-    R (>= 3.5.0)
-Imports:
   clusterProfiler,
   stringr,
   dplyr,
@@ -32,6 +30,7 @@ Imports:
   reshape2,
   plotly,
   ggplot2,
+  IRanges,
   shiny,
   shinythemes,
   conquer.d3js,
