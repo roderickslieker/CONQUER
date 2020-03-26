@@ -3,11 +3,6 @@
 #' @param SNPSummary
 #' @keywords internal
 #' @importFrom grDevices colorRampPalette
-#' @import org.Hs.eg.db
-#' @import shiny
-#' @import magrittr
-#' @import IRanges
-#' @import GenomicRanges
 #' @return [[NULL]]
 visualizeDashboard <- function(SNPs,SNPSummary){
 
@@ -90,10 +85,16 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                 shiny::tabsetPanel(
                                                   shiny::tabPanel("Pathway Overview",
                                                            shiny::fluidRow(
-                                                             shiny::column(12,align = 'center',
-                                                                           conquer.d3js::ConquerEdgeOutput("EdgePlot",
-                                                                                                           width = 1100,
-                                                                                                           height = 1100)))),
+                                                             if(!is.null(SNPSummary))
+                                                             {
+                                                               shiny::column(12,align = 'center',
+                                                                             conquer.d3js::ConquerEdgeOutput("EdgePlot",
+                                                                                                             width = 1100,
+                                                                                                             height = 1100))
+                                                             }else{
+                                                               shiny::h3("No summary file provided")
+                                                             }
+                                                             )),
                                                   shiny::tabPanel("pQTL Overview",
                                                                   shiny::br(),
                                                                   DT::DTOutput("pQTLOverview"),
