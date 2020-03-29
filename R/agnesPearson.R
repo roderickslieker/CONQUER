@@ -5,7 +5,8 @@
 #'
 #' @keywords internal
 #' @usage NULL
-#'
+#' @import cluster
+#' @importFrom stats cutree
 #' @return [[list]]
 agnesPearson <- function(x,k){
   distance <- 1 -  cor(x = t(x) ,method = "spearman")
