@@ -3,6 +3,7 @@
 #' @param lead
 #' @param tissues
 #' @keywords internal
+#' @import purrr
 #' @return [[data.frame]]
 get_eQTL_bulk <- function(genesx, lead, tissues){
   tmp_list <- list("gencodeId" = genesx, "tissueSiteDetailId" = tissues, "variantId" = lead, "datasetId" = "gtex_v8")

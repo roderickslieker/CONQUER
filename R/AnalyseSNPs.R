@@ -3,6 +3,7 @@
 #' @param tissue [[character]] A character vector containing the tissues of interest.
 #' @param clustering [[character]] A character string indicating which clustring method should be used: `agnes` or `PAM`
 #' @keywords internal
+#' @import dplyr
 #' @return [[list]]
 AnalyseSNPs <- function(eQTLData, tissue, clustering){
   assign("expressionData",get(tissue, pos=2))

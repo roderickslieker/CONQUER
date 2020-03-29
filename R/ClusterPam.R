@@ -4,7 +4,7 @@
 #'
 #' @keywords internal
 #' @usage NULL
-#'
+#' @import cluster
 #' @return [[data.frame]]
 ClusterPam <- function(expressionData){
   set.seed(123)

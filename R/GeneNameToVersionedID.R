@@ -4,7 +4,7 @@
 #'
 #' @keywords internal
 #' @usage NULL
-#'
+#' @import rio
 #' @return [[data.frame]]
 GeneNameToVersionedID <- function(geneNames){
   query <- sprintf("https://gtexportal.org/rest/v1/reference/gene?geneId=%s&gencodeVersion=v26&genomeBuild=GRCh38%%2Fhg38&pageSize=250&format=tsv",

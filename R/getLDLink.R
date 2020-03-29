@@ -6,7 +6,7 @@
 #'
 #' @keywords internal
 #' @usage NULL
-#'
+#' @importFrom readr read_tsv
 #' @return [[data.frame]]
 getLDLink <- function(SNP, token, population="CEU") {
   rsID <- SNP$variation

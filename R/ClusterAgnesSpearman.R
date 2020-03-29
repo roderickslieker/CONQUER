@@ -1,10 +1,4 @@
-#' ClusterAgnesSpearman
-#'
-#' @param expressionData
-#'
-#' @keywords internal
-#' @usage NULL
-#'
+#' @import cluster
 #' @return [[data.frame]]
 ClusterAgnesSpearman <- function(expressionData){
   message("Perfroming hierarchical clustering with flexible UPGMA...")
