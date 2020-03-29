@@ -3,6 +3,10 @@
 #' @param SNPSummary
 #' @keywords internal
 #' @importFrom grDevices colorRampPalette
+#' @importFrom reshape2 dcast
+#' @importFrom shinythemes shinytheme
+#' @import rio
+#' @import DT 
 #' @return [[NULL]]
 visualizeDashboard <- function(SNPs,SNPSummary){
 
