@@ -34,22 +34,84 @@ on the site to obtain a token. Please see:
 
 The token is send by email and can be provided as character string.
 
+## Example without multianalyze
+
 ``` r
 library(CONQUER)
 
-summarise(
-  variants = "rs184660829",
-  directory = "somedirectory",
-  token = "sometoken"
-)
+summarize(variants = c("rs878521","rs10830963"),
+          directory=getwd(),
+          multiAnalyze=FALSE,
+          token="sometoken",
+          tissues=NULL)
+```
+
+## Example with multianalyze
+
+The available tissues can be viewed with the following command:
+
+``` r
+tissues <- conquer.db::gtexTissuesV8
 ```
 
 ``` r
-visualise(variant = "rs184660829", 
-          directory = "somedirectory")
+library(CONQUER)
+snps <- c("rs11642430","rs11820019","rs11842871","rs13426680","rs1377807","rs1783541",
+"rs1801212","rs1801645","rs2268078","rs2581787","rs34855406","rs3802177",
+"rs3810291","rs4148856","rs5213","rs6011155","rs601945","rs75423501",
+"rs8010382","rs8046545")
+
+CONQUER::summarize(variants = snps,
+          directory="D:/001_Projects/010_CONQUER_TEST/Test",
+          multiAnalyze=TRUE,
+          token=NULL,
+          tissues=c("Pancreas","Muscle_Skeletal","Liver"))
+
+
+visualize(directory = "D:/001_Projects/010_CONQUER_TEST/Test", SNPs = snps)
 ```
 
-       
+## Modules pancreas
+
+<img src="D:/001_Projects/010_CONQUER_TEST/Modules_pancreas.png" align="center" width="500" />
+
+ 
+
+## Enrichment
+
+<img src="D:/001_Projects/010_CONQUER_TEST/Enrichment_all.png" align="center" width="500" />
+
+ 
+
+## LD
+
+<img src="D:/001_Projects/010_CONQUER_TEST/LD_rs11642430.png" align="center" width="500" />
+
+ 
+
+## Chromosomal interactions
+
+<img src="D:/001_Projects/010_CONQUER_TEST/Chromosomal_interactions.png" align="center" width="500" />
+
+ 
+
+## Chromatin states
+
+<img src="D:/001_Projects/010_CONQUER_TEST/Chromatin_states.png" align="center" width="500" />
+
+ 
+
+## eQTLs
+
+<img src="D:/001_Projects/010_CONQUER_TEST/eQTLs.png" align="center" width="500" />
+ 
+
+## Gene expression
+
+<img src="D:/001_Projects/010_CONQUER_TEST/Expression.png" align="center" width="500" />
+ 
+
+     
 
 ## Data resources
 
