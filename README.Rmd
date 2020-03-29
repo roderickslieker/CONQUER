@@ -41,10 +41,12 @@ The token is send by email and can be provided as character string.
 ## Example without multianalyze
 
 ```{r, message=F, eval=F}
+DIR <- "somedirectory"
+
 library(CONQUER)
 
 summarize(variants = c("rs878521","rs10830963"),
-          directory=getwd(),
+          directory=DIR,
           multiAnalyze=FALSE,
           token="sometoken",
           tissues=NULL)
@@ -58,6 +60,8 @@ The available tissues can be viewed with the following command:
 tissues <- conquer.db::gtexTissuesV8
 ```
 
+The summary files from the example below can also be obtained from https://github.com/roderickslieker/CONQUER.test/Test. 
+
 ```{r, message=F, eval=F}
 library(CONQUER)
 snps <- c("rs11642430","rs11820019","rs11842871","rs13426680","rs1377807","rs1783541",
@@ -66,48 +70,48 @@ snps <- c("rs11642430","rs11820019","rs11842871","rs13426680","rs1377807","rs178
 "rs8010382","rs8046545")
 
 CONQUER::summarize(variants = snps,
-          directory="D:/001_Projects/010_CONQUER_TEST/Test",
+          directory=DIR,
           multiAnalyze=TRUE,
           token=NULL,
           tissues=c("Pancreas","Muscle_Skeletal","Liver"))
 
 
-visualize(directory = "D:/001_Projects/010_CONQUER_TEST/Test", SNPs = snps)
+visualize(directory = "somedirectory", SNPs = snps)
 ```
 
 ## Modules pancreas 
 
-<img src="D:/001_Projects/010_CONQUER_TEST/Modules_pancreas.png" align="center" width="500" />
+<img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Modules_pancreas.png" align="center" width="500" />
 
 &nbsp;
 
 ## Enrichment 
 
-<img src="D:/001_Projects/010_CONQUER_TEST/Enrichment_all.png" align="center" width="500" />
+<img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Enrichment_all.png" align="center" width="500" />
 
 &nbsp;
 
 ## LD
-<img src="D:/001_Projects/010_CONQUER_TEST/LD_rs11642430.png" align="center" width="500" />
+<img src="https://github.com/roderickslieker/CONQUER.test/blob/master/LD_rs11642430.png" align="center" width="500" />
 
 &nbsp;
 
 ## Chromosomal interactions 
-<img src="D:/001_Projects/010_CONQUER_TEST/Chromosomal_interactions.png" align="center" width="500" />
+<img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Chromosomal_interactions.png" align="center" width="500" />
 
 &nbsp;
 
 ## Chromatin states 
-<img src="D:/001_Projects/010_CONQUER_TEST/Chromatin_states.png" align="center" width="500" />
+<img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Chromatin_states.png" align="center" width="500" />
 
 &nbsp;
 
 ## eQTLs 
-<img src="D:/001_Projects/010_CONQUER_TEST/eQTLs.png" align="center" width="500" />
+<img src="https://github.com/roderickslieker/CONQUER.test/blob/master/eQTLs.png" align="center" width="500" />
 &nbsp;
 
 ## Gene expression 
-<img src="D:/001_Projects/010_CONQUER_TEST/Expression.png" align="center" width="500" />
+<img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Expression.png" align="center" width="500" />
 &nbsp;
 
 
