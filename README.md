@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# COmprehend fuNctional conseQUencEs R <img src="inst/logo/CONQUER.png" align="right" width="120" />
+# COmprehend fuNctional conseQUencEs R <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/CONQUER.png" align="right" width="120" />
 
 *Gerard Bouland, Joline Beulens, Joey Nap, Arno van der Slik, Arnaud
 Zaldumbide, Leen ’t Hart and Roderick Slieker*
