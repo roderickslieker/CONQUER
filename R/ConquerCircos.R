@@ -1,3 +1,4 @@
+#' @import viridis
 ConquerCircos <-  function(SNPData, tissue=NULL){
   chromatinInteractions <- conquer.db::ChromatinGroups$Interactions
   chromatinStates <- conquer.db::ChromatinGroups$States
