@@ -8,32 +8,33 @@ Description: R-package to visualize the consequences of SNPs across tissues.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+VignetteBuilder: knitr
 Depends: 
+  conquer.db,
+  GenomicRanges,
+  magrittr,
+  BioCircos,
+  org.Hs.eg.db,
+  BiocGenerics,
+  httr,
+  jsonlite,
+  IRanges,
+  plotly,
+  ggplot2,
+  shiny,
+  conquer.d3js,
+  htmlwidgets
+Imports:
   clusterProfiler,
   stringr,
   dplyr,
   cluster,
   stats,
-  conquer.db,
-  GenomicRanges,
-  magrittr,
-  BioCircos,
   viridis,
-  org.Hs.eg.db,
-  BiocGenerics,
   rio,
-  httr,
   purrr,
-  jsonlite,
-  IRanges,
   readr,
   reshape2,
-  plotly,
-  ggplot2,
-  IRanges,
-  shiny,
   shinythemes,
-  conquer.d3js,
-  DT,
-  htmlwidgets
+  DT
 RoxygenNote: 7.1.0
