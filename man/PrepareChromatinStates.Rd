@@ -3,6 +3,9 @@
 \name{PrepareChromatinStates}
 \alias{PrepareChromatinStates}
 \title{PrepareChromatinStates}
+\usage{
+PrepareChromatinStates(SNPData, sampleSel = NULL)
+}
 \arguments{
 \item{sampleSel}{}
 }

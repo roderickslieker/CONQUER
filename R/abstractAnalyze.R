@@ -1,14 +1,5 @@
-#' abstractAnalyze
-#'
-#' @param variants [[character]] A character vector containing the rs numbers of SNPs.
-#' @param directory [[character]] A character string containing a path to the directory where the SNP data is stored.
-#' @param tissues [[character]] A character vector containing the tissues of interest.
-#' @param clustering [[character]] A character string indicating which clustring method should be used: `agnes` or `PAM`.
-#'
-#' @keywords internal
-#' @usage NULL
-#'
-#' @return [[list]]
+#' @import stringr
+#' @import dplyr
 abstractAnalyze <- function(variants, directory, tissues, clustering = "PAM"){
   abstractData <- sapply(variants,function(x){
     load(paste0(directory,"/",x,".RData"))
@@ -40,7 +31,7 @@ abstractAnalyze <- function(variants, directory, tissues, clustering = "PAM"){
 
   eQTLs$gencodeId <- sapply(X = eQTLs$gencodeId,
                             FUN = function(ID){
-                              str_split(ID, "[.]", simplify = TRUE) %>% dplyr::first()
+                              stringr::str_split(ID, "[.]", simplify = TRUE) %>% dplyr::first()
                             }
   )
   #Rename tissues for eQTL data

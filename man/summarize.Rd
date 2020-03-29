@@ -14,18 +14,27 @@ summarize(
 )
 }
 \arguments{
-\item{variants}{[[vector]] Vector with one or more SNP names (rs*)}
+\item{variants}{vector Vector with one or more SNP names (rs*)}
 
-\item{multiAnalyze}{[[boolean]] Default is FALSE. If TRUE, an integrated analysis will be performed across the SNPs.}
+\item{multiAnalyze}{Default is FALSE. If TRUE, an integrated analysis will be performed across the SNPs.}
 
-\item{tissues}{[[vector]] Tissues of interest. Should be a vector of names based on teh}
+\item{tissues}{Tissues of interest. Should be a vector of names based on teh}
 
-\item{directory}{[[character]] String of the directory where the files should be stored for the SNPs investigated}
+\item{directory}{String of the directory where the files should be stored for the SNPs investigated}
 
-\item{token}{[[character]] Token required for LDlink, which can be obtained from the LDlink website}
+\item{token}{Token required for LDlink, which can be obtained from the LDlink website}
 
-\item{population}{[[character]] Letter code of population of interest for example " CEU"}
+\item{population}{Letter code of population of interest for example " CEU"}
 }
 \description{
 Collect data for one or more SNPs and perform an optional integrative analysis on multiple tissues.
+}
+\examples{
+\dontrun{
+library(CONQUER)
+summarize(variants = c("rs1558902","rs601945"),
+directory=getwd(),
+multiAnalyze=FALSE,
+token="sometoken",
+tissues=NULL)}
 }

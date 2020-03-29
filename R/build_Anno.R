@@ -1,6 +1,3 @@
-#' This function is from the DOSE package but has not been exported. We use it directly and has therefore been added to the package
-#' @param path2gene see the DOSE pacakge
-#' @param path2name see the DOSE pacakge
 build_Anno <- function(path2gene, path2name) {
     if (!exists(".Anno_clusterProfiler_Env", envir = .GlobalEnv)) {
         pos <- 1

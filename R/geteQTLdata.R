@@ -1,8 +1,3 @@
-#' geteQTLdata
-#' @param lead leadSNP
-#' @param Genes Gene names
-#' @param parallel Parallel disabled
-#' @return [[data.frame]]
 geteQTLdata <- function(lead, Genes, parallel) {
 
   if(length(Genes) == 0) {
