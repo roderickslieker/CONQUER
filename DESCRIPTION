@@ -18,6 +18,7 @@ Depends:
   BiocGenerics,
   httr,
   jsonlite,
+  knitr,
   IRanges,
   plotly,
   ggplot2,
