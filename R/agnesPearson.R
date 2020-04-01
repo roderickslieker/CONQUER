@@ -9,7 +9,7 @@
 #' @importFrom stats cutree
 #' @return [[list]]
 agnesPearson <- function(x,k){
-  distance <- 1 -  cor(x = t(x) ,method = "spearman")
+  distance <- 1 -  stats::cor(x = t(x) ,method = "spearman")
   agnesObj <- cluster::agnes(x = distance, diss = T, method="gaverage")
   assignments <- stats::cutree(agnesObj,k=k)
   names(assignments) <- rownames(distance)

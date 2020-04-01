@@ -1,4 +1,6 @@
 #' @import viridis
+#' @import BioCircos
+#' @import IRanges
 ConquerCircos <-  function(SNPData, tissue=NULL){
   chromatinInteractions <- conquer.db::ChromatinGroups$Interactions
   chromatinStates <- conquer.db::ChromatinGroups$States
@@ -18,8 +20,8 @@ ConquerCircos <-  function(SNPData, tissue=NULL){
 
 
 
-  chr.range$start <- min(start(SNPData$genes))
-  chr.range$end <- max(end(SNPData$genes))
+  chr.range$start <- min(GenomicRanges::start(SNPData$genes))
+  chr.range$end <- max(GenomicRanges::end(SNPData$genes))
   if(!is.null(tissue)){
     chr.start <- chr.start[chr.start$tissue %in% tissue, ]
     chr.end <- chr.end[match(chr.start$id, chr.end$id), ]
@@ -53,8 +55,8 @@ ConquerCircos <-  function(SNPData, tissue=NULL){
   genes <- SNPData$genes
   link.list.sum <- link.list.sum + BioCircos::BioCircosArcTrack(trackname = "genes",
                                                                 chromosomes = as.character(chr.range$chr),
-                                                                starts = start(genes),
-                                                                ends = end(genes),
+                                                                starts = GenomicRanges::start(genes),
+                                                                ends = GenomicRanges::end(genes),
                                                                 labels = sprintf("Name:%s<br>ID:%s",
                                                                                  genes$name, genes$gene_id),
                                                                 colors = "#A4A4A4",opacities = 0.5,
@@ -65,7 +67,7 @@ ConquerCircos <-  function(SNPData, tissue=NULL){
   #Generate histone mods
   if(!is.null(subtissue)){
     states <- SNPData$chromatin
-    range.grr <- GenomicRanges::GRanges(chr.range$chr, IRanges(chr.range$start, chr.range$end))
+    range.grr <- GenomicRanges::GRanges(chr.range$chr, IRanges::IRanges(chr.range$start, chr.range$end))
     ol.grr <- GenomicRanges::findOverlaps(query = range.grr, subject = states) %>% as.matrix()
     states <- states[ol.grr[,2],]
     states <- states[states$sample %in% subtissue,]
