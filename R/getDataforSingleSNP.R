@@ -1,15 +1,4 @@
-#' getDataforSingleSNP
-#'
-#' @param variant
-#' @param directory
-#' @param token
-#' @param population
-#' @param parallel
-#'
-#' @keywords internal
-#' @usage NULL
-#'
-#' @return [[list]]
+#' @importFrom BiocGenerics start end
 getDataforSingleSNP <- function(variant, directory=NULL, token=NULL, population="CEU",Chromatin){
   message(sprintf("Retrieving data for: %s",variant))
 
@@ -30,7 +19,7 @@ getDataforSingleSNP <- function(variant, directory=NULL, token=NULL, population=
 
     #Retrieve Chromatin interaction Data
     message("getChromatinInteractionData")
-    ChromatinInteractionData <- CONQUER:::getChromatinInteractionData(chr = mainSNP$chr,
+    ChromatinInteractionData <- getChromatinInteractionData(chr = mainSNP$chr,
                                                             topHits = topHits)
 
     #Get Start and End position of region of interest
