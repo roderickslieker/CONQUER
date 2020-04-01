@@ -9,33 +9,35 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
+Depends:
 Depends: 
+  R (>= 3.6.0)
   conquer.db,
   GenomicRanges,
   magrittr,
-  BioCircos,
+  knitr,
   org.Hs.eg.db,
-  BiocGenerics,
   httr,
   jsonlite,
-  knitr,
-  IRanges,
-  plotly,
-  ggplot2,
-  shiny,
-  conquer.d3js,
-  htmlwidgets
+  IRanges
 Imports:
   clusterProfiler,
   stringr,
   dplyr,
   cluster,
   stats,
+  BiocGenerics,
   viridis,
+  ggplot2,
   rio,
+  plotly,
   purrr,
+  shiny,
+  BioCircos,
   readr,
   reshape2,
   shinythemes,
-  DT
+  DT,
+  conquer.d3js,
+  htmlwidgets
 RoxygenNote: 7.1.0
