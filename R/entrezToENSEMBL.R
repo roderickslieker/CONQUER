@@ -1,11 +1,4 @@
-#' entrezToENSEMBL
-#'
-#' @param entrez
-#'
-#' @keywords internal
-#' @usage NULL
-#'
-#' @return [[data.frame]]
+#' @importFrom BiocGenerics toTable
 entrezToENSEMBL <- function(entrez){
   tbl <- BiocGenerics::toTable(org.Hs.egENSEMBL)
   ens.pathway <- tbl[match(entrez, tbl$gene_id),2]
