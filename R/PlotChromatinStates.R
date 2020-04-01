@@ -1,12 +1,5 @@
-#' PlotChromatinStates
-#'
-#' @param StatesPlotData
-#' @param fillScale
-#'
-#' @keywords internal
-#' @usage NULL
-#'
-#' @return [[ggplotly]]
+#' @importFrom plotly ggplotly
+#' @import ggplot2
 PlotChromatinStates <- function(StatesPlotData, fillScale, jit){
   ###Plot###
   Plot <- ggplot2::ggplot(data = StatesPlotData, ggplot2::aes(x=start,y=sample)) +
