@@ -9,9 +9,8 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
-Depends:
 Depends: 
-  R (>= 3.6.0)
+  R (>= 3.6.0),
   conquer.db,
   GenomicRanges,
   magrittr,
