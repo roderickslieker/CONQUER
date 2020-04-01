@@ -33,7 +33,7 @@ getExons <- function(Genes) {
       exstart <- c(exstart,
                    EXON$Transcript$Translation.start[canon],#5'UTR start
                    GenomicRanges::end(Genes[Genes$gene_id==gene,]))#3'UTR start
-    } else {parent <- head(parent, -2)}
+    } else {parent <- utils::head(parent, -2)}
   }
   #add column variables to data.frame
   expos <- data.frame(parent, exstart=exstart, exend=exend)
