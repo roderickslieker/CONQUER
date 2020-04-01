@@ -6,7 +6,13 @@
 #' @importFrom reshape2 dcast
 #' @importFrom shinythemes shinytheme
 #' @import rio
-#' @import DT 
+#' @importFrom plotly plotlyOutput renderPlotly plot_ly layout
+#' @import conquer.d3js
+#' @import htmlwidgets
+#' @import shiny
+#' @importFrom DT DTOutput renderDT
+#' @importFrom BioCircos BioCircosOutput renderBioCircos
+#' @importFrom BiocGenerics toTable
 #' @return [[NULL]]
 visualizeDashboard <- function(SNPs,SNPSummary){
 
@@ -297,7 +303,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
     })
 
 
-    output$moduleTable <-  DT::renderDataTable({
+    output$moduleTable <-  DT::renderDT({
       tissue <- shiny::req(input$tissueSel)
       module <- shiny::req(input$ModuleSel)
       data <- SNPSummary[["canOR",tissue]][[module]]
@@ -312,7 +318,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
       disp_data
     })
 
-    output$eQTL_SNP_Table <- DT::renderDataTable({
+    output$eQTL_SNP_Table <- DT::renderDT({
       tissue <- shiny::req(input$tissueSel)
       module <- shiny::req(input$ModuleSel)
       cbind(SNPSummary[["Module_SNPs_eQTLs",tissue]][[module]][,c("gene","SNP")],
@@ -336,7 +342,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
       bulk
     })
 
-    output$eQTL_check <- DT::renderDataTable({
+    output$eQTL_check <- DT::renderDT({
       bulk <- moduleQTLdata()
       bulk <- cbind(bulk[,c("snpId","geneSymbol")],signif(bulk[,c("pValue","pValueThreshold")],2))
       bulk
@@ -609,7 +615,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
     })
 
     #Table
-    output$eQTLsTable <- DT::renderDataTable({
+    output$eQTLsTable <- DT::renderDT({
       data <- eQTLsData()
       data <- cbind(data[,c("SNP","gene","tissue")],signif(data[,c("pValue","Pval.ratio")],2))
     },options=list(scrollX=T),selection = "single")
@@ -624,7 +630,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
       }
     )
     ########################END########################
-    output$pQTLsTable <- DT::renderDataTable({
+    output$pQTLsTable <- DT::renderDT({
       LDtable <- SNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
       ViewpQTLs <- pQTLs[pQTLs$rsID %in% LDSNPs,]
@@ -637,7 +643,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
 
 
 
-    output$meQTLsTable <- DT::renderDataTable({
+    output$meQTLsTable <- DT::renderDT({
       LDtable <- SNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
       ViewmeQTLs <- meQTLs[meQTLs$rsID %in% LDSNPs,]
@@ -650,7 +656,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
 
 
 
-    output$miQTLsPred_table <- DT::renderDataTable({
+    output$miQTLsPred_table <- DT::renderDT({
       LDtable <- SNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
       ViewmiQTLsPred <- miQTLpred[miQTLpred$SNP %in% LDSNPs, c("SNP","Gene","miRNA","Celltype","Change","Effect")]
@@ -661,7 +667,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
       }
     })
 
-    output$miQTLsExp_table <- DT::renderDataTable({
+    output$miQTLsExp_table <- DT::renderDT({
       LDtable <- SNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
       ViewmiQTLsExp <- miQTLex[miQTLex$SNP %in% LDSNPs,]
