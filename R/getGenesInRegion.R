@@ -1,13 +1,3 @@
-#' geteQTLdata
-#'
-#' @param chr
-#' @param startPos
-#' @param endPos
-#'
-#' @keywords internal
-#' @usage NULL
-#'
-#' @return [[GRanges]]
 getGenesInRegion <- function(chr, startPos, endPos) {
   #format region
   region <- paste(chr,
