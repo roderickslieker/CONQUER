@@ -1,13 +1,3 @@
-#' getOdds
-#'
-#' @param genSets
-#' @param pathways
-#' @param annotation
-#'
-#' @keywords internal
-#' @usage NULL
-#'
-#' @return [[list]]
 getOdds <- function(genSets,pathways,annotation){
   background <- pathways %>% unlist() %>% unique() %>% length()
   ModuleOdds <- lapply(X = genSets,
