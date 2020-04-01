@@ -1,5 +1,5 @@
 #' @import stringr
-#' @import dplyr
+#' @importFrom dplyr bind_rows first
 abstractAnalyze <- function(variants, directory, tissues, clustering = "PAM"){
   abstractData <- sapply(variants,function(x){
     load(paste0(directory,"/",x,".RData"))
