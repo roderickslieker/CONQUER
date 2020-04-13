@@ -60,7 +60,7 @@ The available tissues can be viewed with the following command:
 tissues <- conquer.db::gtexTissuesV8
 ```
 
-The summary files from the example below can also be obtained from https://github.com/roderickslieker/CONQUER.test/Test. 
+The summary files from the example below can also be obtained from https://github.com/roderickslieker/CONQUER.test/tree/master/Test
 
 ```{r, message=F, eval=F}
 library(CONQUER)

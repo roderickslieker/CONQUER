@@ -57,7 +57,7 @@ tissues <- conquer.db::gtexTissuesV8
 ```
 
 The summary files from the example below can also be obtained from
-<https://github.com/roderickslieker/CONQUER.test/Test>.
+<https://github.com/roderickslieker/CONQUER.test/tree/master/Test>
 
 ``` r
 library(CONQUER)
