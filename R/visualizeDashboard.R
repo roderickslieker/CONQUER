@@ -33,6 +33,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
   miQTLpred <- conquer.db::miQTLpredict
 
   ui <- shiny::navbarPage(title = shiny::div(shiny::img(src = "logo/CONQUER.png", style="margin-top:-10px;")),shiny::tags$head(HTML("<title>test</title>")),
+                          selected = "Tissue Specific",
                           theme = shinythemes::shinytheme("flatly"),
                           shiny::tabPanel("Tissue Specific",
                                           shiny::fluidPage(
