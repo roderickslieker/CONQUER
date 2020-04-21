@@ -8,7 +8,7 @@
 #' @import rio
 #' @importFrom plotly plotlyOutput renderPlotly plot_ly layout
 #' @import conquer.d3js
-#' @import htmlwidgets
+#' @import Htmlwidgets
 #' @import shiny
 #' @importFrom DT DTOutput renderDT
 #' @importFrom BioCircos BioCircosOutput renderBioCircos
@@ -46,7 +46,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
       font-size: 20px;
       vertical-align: middle;
       border-radius: 50%;
-      border: -px solid #A4A4A4"   
+      border: -px solid #A4A4A4"
 
   ui <- shiny::navbarPage(title = shiny::div(shiny::img(src = "logo/CONQUER.png", style="margin-top:-10px;")),
                         shiny::tags$head(HTML("<title>test</title>")),
@@ -159,13 +159,13 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                              )),
                                                   shiny::tabPanel("pQTL Overview",value = "pqtl",
                                                                   shiny::br(),
-                                                                  DT::DTOutput("pQTLOverview"), 
+                                                                  DT::DTOutput("pQTLOverview"),
                                                                   shiny::br(),
                                                                   shiny::br(),
                                                                   DT::DTOutput("pQTLOverview_LD")),
                                                   shiny::tabPanel("meQTL Overview", value = "meqtl",
                                                                   shiny::br(),
-                                                                  DT::DTOutput("meQTLOverview"), 
+                                                                  DT::DTOutput("meQTLOverview"),
                                                                   shiny::br(),
                                                                   shiny::br(),
                                                                   DT::DTOutput("meQTLOverview_LD")),
@@ -210,7 +210,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                   shiny::tabPanel(
                                                     title = "Linkage Disequilibrium", value="LD",
                                                     shiny::br(),
-                                                    customDownloadbutton("downloadLocus", "", icon="cloud-download", 
+                                                    customDownloadbutton("downloadLocus", "", icon="cloud-download",
                                                       style = buttonStyle,
                                                       class="btn btn-default shiny-download-link"),
                                                     #shiny::br(),
@@ -338,8 +338,8 @@ visualizeDashboard <- function(SNPs,SNPSummary){
       toggle('text_div')
       if(input$tis_spec == "mod")
       {
-        output$text <- renderUI({HTML("Select a tissue of interest and a module from the dropdown menu. <br><br> 
-          Top left: Heatmap of the correlation of the genes. <br><br> 
+        output$text <- renderUI({HTML("Select a tissue of interest and a module from the dropdown menu. <br><br>
+          Top left: Heatmap of the correlation of the genes. <br><br>
           Top right: Enriched pathways in this module <br><br>
           Bottom: Table of eQTLs in this module")})
       }else if(input$tis_spec == "overview"){
@@ -1006,21 +1006,21 @@ visualizeDashboard <- function(SNPs,SNPSummary){
 }
 
 
-customDownloadbutton <- function (outputId, label, icon = NULL, width = NULL, class = "btn btn-default shiny-download-link", ...) 
+customDownloadbutton <- function (outputId, label, icon = NULL, width = NULL, class = "btn btn-default shiny-download-link", ...)
 {
-  aTag <- tags$a(id = outputId, class = paste(class, 
-        class), href = "", target = "_blank", download = NA, 
+  aTag <- tags$a(id = outputId, class = paste(class,
+        class), href = "", target = "_blank", download = NA,
         icon(icon), label, ...)
 }
 
 
 
-validateIcon <- function (icon) 
+validateIcon <- function (icon)
 {
     if (is.null(icon) || identical(icon, character(0))) {
         return(icon)
     }
-    else if (inherits(icon, "shiny.tag") && icon$name == 
+    else if (inherits(icon, "shiny.tag") && icon$name ==
         "i") {
         return(icon)
     }
