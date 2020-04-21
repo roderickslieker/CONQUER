@@ -13,6 +13,7 @@
 #' @importFrom DT DTOutput renderDT
 #' @importFrom BioCircos BioCircosOutput renderBioCircos
 #' @importFrom BiocGenerics toTable
+#' @importFrom shinyjs useShinyjs toggle
 #' @return [[NULL]]
 visualizeDashboard <- function(SNPs,SNPSummary){
 
@@ -32,7 +33,24 @@ visualizeDashboard <- function(SNPs,SNPSummary){
   miQTLex <- conquer.db::miQTLexperiment
   miQTLpred <- conquer.db::miQTLpredict
 
-  ui <- shiny::navbarPage(title = shiny::div(shiny::img(src = "logo/CONQUER.png", style="margin-top:-10px;")),shiny::tags$head(HTML("<title>test</title>")),
+
+  buttonStyle <-  "display:block;
+      height: 32px;
+      width: 32px;
+      padding-top:0px;
+      padding-left:0px;
+      padding-bottom:0px;
+      background-color: #A4A4A4;
+      padding-right:0px;
+      color: white;
+      font-size: 20px;
+      vertical-align: middle;
+      border-radius: 50%;
+      border: -px solid #A4A4A4"   
+
+  ui <- shiny::navbarPage(title = shiny::div(shiny::img(src = "logo/CONQUER.png", style="margin-top:-10px;")),
+                        shiny::tags$head(HTML("<title>test</title>")),
+                        windowTitle = HTML("CONQUER"),
                           selected = "Tissue Specific",
                           theme = shinythemes::shinytheme("flatly"),
                           shiny::tabPanel("Tissue Specific",
@@ -43,11 +61,37 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                 shiny::selectInput(inputId = "tissueSel",
                                                                    label = "Select Tissue:",
                                                                    choices = colnames(SNPSummary) %>% sort()),
-                                                shiny::uiOutput("responsiveUI_C")
+                                                shiny::uiOutput("responsiveUI_C"),
+                                                useShinyjs(),
+                                                tags$style(HTML("
+                                                          .btn {
+                                                            display:block;
+                                                            height: 50px;
+                                                            width: 50px;
+                                                            fill:red;
+                                                            padding-top:0px;
+                                                            padding-left:0px;
+                                                            padding-bottom:0px;
+                                                            padding-right:0px;
+                                                            color:#A4A4A4;
+                                                            border-radius: 50%;
+                                                            border: 1px solid #ECF0F1;
+                                                            font-size: 30px;
+
+
+                                                            }
+
+                                                            ")),
+                                                shiny::actionButton("button", "", icon=icon("info-circle"), style = "background-color: #ECF0F1"),
+                                                 shinyjs::hidden(
+                                                   div(id='text_div',
+                                                       htmlOutput("text")
+                                                   )
+                                                 ),
                                               ),
                                               shiny::mainPanel(
                                                 shiny::tabsetPanel(id = "tis_spec",
-                                                  shiny::tabPanel("Overview",
+                                                  shiny::tabPanel("Overview", value = "overview",
                                                            shiny::br(),
                                                            shiny::br(),
                                                            shiny::fluidRow(
@@ -90,11 +134,18 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                           shiny::fluidPage(
                                             shiny::sidebarLayout(
                                               shiny::sidebarPanel(
-                                                width = 3
-                                                ),
+                                                width = 3,
+
+                                        shiny::actionButton("button2", "", icon=icon("info-circle"), style = "background-color: #ECF0F1"),
+                                         shinyjs::hidden(
+                                           div(id='text_div2',
+                                               htmlOutput("text2")
+                                           )
+                                         )
+                                        ),
                                               shiny::mainPanel(
-                                                shiny::tabsetPanel(
-                                                  shiny::tabPanel("Pathway Overview",
+                                                shiny::tabsetPanel(id = "pws",
+                                                  shiny::tabPanel("Pathway Overview", value = "pway",
                                                            shiny::fluidRow(
                                                              if(!is.null(SNPSummary))
                                                              {
@@ -106,19 +157,19 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                                shiny::h3("No summary file provided")
                                                              }
                                                              )),
-                                                  shiny::tabPanel("pQTL Overview",
+                                                  shiny::tabPanel("pQTL Overview",value = "pqtl",
                                                                   shiny::br(),
-                                                                  DT::DTOutput("pQTLOverview"),
+                                                                  DT::DTOutput("pQTLOverview"), 
                                                                   shiny::br(),
                                                                   shiny::br(),
                                                                   DT::DTOutput("pQTLOverview_LD")),
-                                                  shiny::tabPanel("meQTL Overview",
+                                                  shiny::tabPanel("meQTL Overview", value = "meqtl",
                                                                   shiny::br(),
-                                                                  DT::DTOutput("meQTLOverview"),
+                                                                  DT::DTOutput("meQTLOverview"), 
                                                                   shiny::br(),
                                                                   shiny::br(),
                                                                   DT::DTOutput("meQTLOverview_LD")),
-                                                  shiny::tabPanel("miQTL Overview",
+                                                  shiny::tabPanel("miQTL Overview", value = "miqtl",
                                                                   shiny::tabsetPanel(
                                                                     shiny::tabPanel("Experimental",
                                                                                     shiny::br(),
@@ -152,15 +203,19 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                                    label = "Select SNP:",
                                                                    choices = names(SNPs)),
                                                 shiny::uiOutput("responsiveUI_A"),
-                                                shiny::uiOutput("responsiveUI_B")
-                                              ),
+                                                shiny::uiOutput("responsiveUI_B"),
+                                                shiny::actionButton("button3", "", icon=icon("info-circle"), style = "background-color: #ECF0F1")),
                                               shiny::mainPanel(
                                                 shiny::tabsetPanel(id = "single",
                                                   shiny::tabPanel(
                                                     title = "Linkage Disequilibrium", value="LD",
                                                     shiny::br(),
-                                                    shiny::downloadButton("downloadLocus", "Download Locus Zoom"),
-                                                    shiny::br(),
+                                                    customDownloadbutton("downloadLocus", "", icon="cloud-download", 
+                                                      style = buttonStyle,
+                                                      class="btn btn-default shiny-download-link"),
+                                                    #shiny::br(),
+                                                    #shiny::downloadButton("downloadLocus", "Download Locus Zoom"),
+                                                    #shiny::br(),
                                                     shiny::fluidRow(
                                                       shiny::column(12, align = 'center',
                                                                     shiny::uiOutput("LocusHeader"),
@@ -169,9 +224,12 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                                                                          height = 600)
                                                                     )
                                                     ),
-                                                    shiny::downloadButton("downloadLD", "Download Linkage Disequilibrium"),
                                                     shiny::br(),
+                                                    customDownloadbutton("downloadLD", "", icon="cloud-download", style = buttonStyle,
+                                                    class="btn btn-default shiny-download-link"),
                                                     shiny::br(),
+                                                    #shiny::downloadButton("downloadLD", "Download Linkage Disequilibrium"),
+                                                    #shiny::br(),
                                                     shiny::fluidRow(
                                                       shiny::column(12, align = 'center',
                                                                     DT::DTOutput("LDTable")
@@ -200,7 +258,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                                   plotly::plotlyOutput("chromatinStates",height = 1100)),
                                                   shiny::tabPanel(title="QTLs", value = "QTLs",
                                                                   shiny::tabsetPanel(id="QTLs_tab",
-                                                                                     shiny::tabPanel(title="eQTLs",value = "eQTLs",
+                                                                                     shiny::tabPanel(title="eQTLs",value = "eqtls",
                                                                                                      shiny::fluidRow(shiny::tags$h1("Hive plot"),
                                                                                                                      shiny::downloadButton("downloadHive", "Download Hive plot"),
                                                                                                                      shiny::br(),
@@ -226,13 +284,13 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                                                                                      conquer.d3js::ConquerViolinOutput("cis_Violin")
                                                                                                        ))
                                                                                                      ),
-                                                                                     shiny::tabPanel(title="pQTLs",
+                                                                                     shiny::tabPanel(title="pQTLs", value = "pqtls",
                                                                                      shiny::column(12,
                                                                                                    shiny::br(),
                                                                                                    DT::DTOutput("pQTLsTable")
                                                                                                    )
                                                                                      ),
-                                                                                     shiny::tabPanel(title="miQTLs",
+                                                                                     shiny::tabPanel(title="miQTLs", value = "miqtl",
                                                                                                      shiny::fluidRow(
                                                                                                        shiny::column(6,
                                                                                                                      shiny::h4("Predicted miQTLs"),
@@ -243,7 +301,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                                                                                      shiny::br(),
                                                                                                                      DT::DTOutput("miQTLsExp_table"))
                                                                                                      )),
-                                                                                     shiny::tabPanel(title="meQTLs",
+                                                                                     shiny::tabPanel(title="meQTLs", value = 'meqtl',
                                                                                                      shiny::column(12,
                                                                                                                    shiny::br(),
                                                                                                                    DT::DTOutput("meQTLsTable"))))),
@@ -274,6 +332,48 @@ visualizeDashboard <- function(SNPs,SNPSummary){
 
   # Define server logic required to draw a histogram
   server <- function(input, output) {
+
+    #### Info labels ####
+     observeEvent(input$button, {
+      toggle('text_div')
+      if(input$tis_spec == "mod")
+      {
+        output$text <- renderUI({HTML("Select a tissue of interest and a module from the dropdown menu. <br><br> 
+          Top left: Heatmap of the correlation of the genes. <br><br> 
+          Top right: Enriched pathways in this module <br><br>
+          Bottom: Table of eQTLs in this module")})
+      }else if(input$tis_spec == "overview"){
+        output$text <- renderUI({HTML("Select a tissue of interest from the dropdown menu. Click on the dots to navigate across to see more information about the modules, enriched pathways, genes and SNPs")})
+      }
+    })
+
+    observeEvent(input$button2, {
+      toggle('text_div2')
+      if(input$pws == "pway")
+      {
+        output$text2 <- renderUI({HTML("This figure shows the pathways are tissue-specific and  tissue-shared. Click a tissue to see the enriched pathways. Click a pathway to see in which tissues the pathway is enriched.")})
+      }else if(input$pws == "meqtls"){
+        output$text2 <- renderUI({HTML("This table shows the DNA methylation QTLs in whole blood based on the BIOS Consortium data. For more information see the about tab.")})
+      }else if(input$pws == "miqtls"){
+        output$text2 <- renderUI({HTML("These tables contain the miRNA QTLs, both the experimentally determined and predicted QTLs. For more information see the about tab")})
+      }else if(input$pws == "pqtls"){
+        output$text2 <- renderUI({HTML("This table shows the pQTLs in plasma. For more information see the about tab.")})
+      }
+    })
+
+    observeEvent(input$button3, {
+      toggle('text_div3')
+      if(input$pws == "pway")
+      {
+        output$text2 <- renderUI({HTML("This figure shows the pathways are tissue-specific and  tissue-shared. Click a tissue to see the enriched pathways. Click a pathway to see in which tissues the pathway is enriched.")})
+      }else if(input$pws == "meqtl"){
+        output$text2 <- renderUI({HTML("This table shows the DNA methylation QTLs in whole blood based on the BIOS Consortium data. For more information see the about tab.")})
+      }else if(input$pws == "miqtl"){
+        output$text2 <- renderUI({HTML("These tables contain the miRNA QTLs, both the experimentally determined and predicted QTLs. For more information see the about tab")})
+      }else if(input$pws == "pqtls"){
+        output$text2 <- renderUI({HTML("This table shows the pQTLs in plasma. For more information see the about tab.")})
+      }
+    })
     ####Tissue Specific####
     output$RingPlot <- conquer.d3js::renderConquerRing({
       shiny::req(input$tissueSel)
@@ -906,4 +1006,26 @@ visualizeDashboard <- function(SNPs,SNPSummary){
 }
 
 
+customDownloadbutton <- function (outputId, label, icon = NULL, width = NULL, class = "btn btn-default shiny-download-link", ...) 
+{
+  aTag <- tags$a(id = outputId, class = paste(class, 
+        class), href = "", target = "_blank", download = NA, 
+        icon(icon), label, ...)
+}
+
+
+
+validateIcon <- function (icon) 
+{
+    if (is.null(icon) || identical(icon, character(0))) {
+        return(icon)
+    }
+    else if (inherits(icon, "shiny.tag") && icon$name == 
+        "i") {
+        return(icon)
+    }
+    else {
+        stop("Invalid icon. Use Shiny's 'icon()' function to generate a valid icon")
+    }
+}
 
