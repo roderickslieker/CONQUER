@@ -8,7 +8,7 @@
 #' @import rio
 #' @importFrom plotly plotlyOutput renderPlotly plot_ly layout
 #' @import conquer.d3js
-#' @import Htmlwidgets
+#' @import htmlwidgets
 #' @import shiny
 #' @importFrom DT DTOutput renderDT
 #' @importFrom BioCircos BioCircosOutput renderBioCircos
