@@ -49,8 +49,8 @@ visualizeDashboard <- function(SNPs,SNPSummary){
       border: -px solid #A4A4A4"
 
   ui <- shiny::navbarPage(title = shiny::div(shiny::img(src = "logo/CONQUER.png", style="margin-top:-10px;")),
-                        shiny::tags$head(HTML("<title>test</title>")),
-                        windowTitle = HTML("CONQUER"),
+                        shiny::tags$head(shiny::HTML("<title>test</title>")),
+                        windowTitle = shiny::HTML("CONQUER"),
                           selected = "Tissue Specific",
                           theme = shinythemes::shinytheme("flatly"),
                           shiny::tabPanel("Tissue Specific",
@@ -62,8 +62,8 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                                    label = "Select Tissue:",
                                                                    choices = colnames(SNPSummary) %>% sort()),
                                                 shiny::uiOutput("responsiveUI_C"),
-                                                useShinyjs(),
-                                                tags$style(HTML("
+                                                shinyjs::useShinyjs(),
+                                                shiny::tags$style(shiny::HTML("
                                                           .btn {
                                                             display:block;
                                                             height: 50px;
@@ -82,10 +82,10 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                             }
 
                                                             ")),
-                                                shiny::actionButton("button", "", icon=icon("info-circle"), style = "background-color: #ECF0F1"),
+                                                shiny::actionButton("button", "", icon=shiny::icon("info-circle"), style = "background-color: #ECF0F1"),
                                                  shinyjs::hidden(
-                                                   div(id='text_div',
-                                                       htmlOutput("text")
+                                                   shiny::div(id='text_div',
+                                                       shiny::htmlOutput("text")
                                                    )
                                                  ),
                                               ),
@@ -136,10 +136,10 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                               shiny::sidebarPanel(
                                                 width = 3,
 
-                                        shiny::actionButton("button2", "", icon=icon("info-circle"), style = "background-color: #ECF0F1"),
+                                        shiny::actionButton("button2", "", icon=shiny::icon("info-circle"), style = "background-color: #ECF0F1"),
                                          shinyjs::hidden(
-                                           div(id='text_div2',
-                                               htmlOutput("text2")
+                                           shiny::div(id='text_div2',
+                                               shiny::htmlOutput("text2")
                                            )
                                          )
                                         ),
@@ -204,7 +204,12 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                                    choices = names(SNPs)),
                                                 shiny::uiOutput("responsiveUI_A"),
                                                 shiny::uiOutput("responsiveUI_B"),
-                                                shiny::actionButton("button3", "", icon=icon("info-circle"), style = "background-color: #ECF0F1")),
+                                                shiny::actionButton("button3", "", icon=shiny::icon("info-circle"), style = "background-color: #ECF0F1",),
+                                                shinyjs::hidden(
+                                                  shiny::div(id='text_div3',
+                                                             shiny::htmlOutput("text3")
+                                                  )
+                                                )),
                                               shiny::mainPanel(
                                                 shiny::tabsetPanel(id = "single",
                                                   shiny::tabPanel(
@@ -335,45 +340,67 @@ visualizeDashboard <- function(SNPs,SNPSummary){
 
     #### Info labels ####
      observeEvent(input$button, {
-      toggle('text_div')
+       shinyjs::toggle('text_div')
       if(input$tis_spec == "mod")
       {
-        output$text <- renderUI({HTML("Select a tissue of interest and a module from the dropdown menu. <br><br>
+        output$text <- renderUI({shiny::HTML("Select a tissue of interest and a module from the dropdown menu. <br><br>
           Top left: Heatmap of the correlation of the genes. <br><br>
           Top right: Enriched pathways in this module <br><br>
           Bottom: Table of eQTLs in this module")})
       }else if(input$tis_spec == "overview"){
-        output$text <- renderUI({HTML("Select a tissue of interest from the dropdown menu. Click on the dots to navigate across to see more information about the modules, enriched pathways, genes and SNPs")})
+        output$text <- renderUI({shiny::HTML("Select a tissue of interest from the dropdown menu. Click on the dots to navigate across to see more information about the modules, enriched pathways, genes and SNPs")})
       }
     })
 
     observeEvent(input$button2, {
-      toggle('text_div2')
+      shinyjs::toggle('text_div2')
       if(input$pws == "pway")
       {
-        output$text2 <- renderUI({HTML("This figure shows the pathways are tissue-specific and  tissue-shared. Click a tissue to see the enriched pathways. Click a pathway to see in which tissues the pathway is enriched.")})
+        output$text2 <- shiny::renderUI({shiny::HTML("This figure shows the pathways are tissue-specific and  tissue-shared. Click a tissue to see the enriched pathways. Click a pathway to see in which tissues the pathway is enriched.")})
       }else if(input$pws == "meqtls"){
-        output$text2 <- renderUI({HTML("This table shows the DNA methylation QTLs in whole blood based on the BIOS Consortium data. For more information see the about tab.")})
+        output$text2 <- shiny::renderUI({shiny::HTML("This table shows the DNA methylation QTLs in whole blood based on the BIOS Consortium data. For more information see the about tab.")})
       }else if(input$pws == "miqtls"){
-        output$text2 <- renderUI({HTML("These tables contain the miRNA QTLs, both the experimentally determined and predicted QTLs. For more information see the about tab")})
+        output$text2 <- shiny::renderUI({shiny::HTML("These tables contain the miRNA QTLs, both the experimentally determined and predicted QTLs. For more information see the about tab")})
       }else if(input$pws == "pqtls"){
-        output$text2 <- renderUI({HTML("This table shows the pQTLs in plasma. For more information see the about tab.")})
+        output$text2 <- shiny::renderUI({shiny::HTML("This table shows the pQTLs in plasma. For more information see the about tab.")})
       }
     })
 
     observeEvent(input$button3, {
-      toggle('text_div3')
-      if(input$pws == "pway")
-      {
-        output$text2 <- renderUI({HTML("This figure shows the pathways are tissue-specific and  tissue-shared. Click a tissue to see the enriched pathways. Click a pathway to see in which tissues the pathway is enriched.")})
-      }else if(input$pws == "meqtl"){
-        output$text2 <- renderUI({HTML("This table shows the DNA methylation QTLs in whole blood based on the BIOS Consortium data. For more information see the about tab.")})
-      }else if(input$pws == "miqtl"){
-        output$text2 <- renderUI({HTML("These tables contain the miRNA QTLs, both the experimentally determined and predicted QTLs. For more information see the about tab")})
-      }else if(input$pws == "pqtls"){
-        output$text2 <- renderUI({HTML("This table shows the pQTLs in plasma. For more information see the about tab.")})
+      shinyjs::toggle('text_div3')
+      if(input$single == "LD"){
+        output$text3 <- shiny::renderUI({shiny::HTML("<h4>Linkage Disequilibrium</h4>
+        Plot shows correlation of nearby SNPs, recombination rate and genes witin the region. Hovering over SNP shows position, R<sup>2</sup> with leading SNP and consequence type.<br><br>
+        The table shows the linkage disequilibrium data of selected SNP. Contains IDs, position, consequence type, R<sup>2</sup> and clinincal significance of nearby SNPs.")})
+      }else if(input$single == "CI"){
+        output$text3 <- shiny::renderUI({shiny::HTML("<h4>Chromosomal interaction</h4>
+         Circos plot of chromosomal interaction near selected SNP and in selected tissue. Also shows chromatin state segmentations of selected tissue. Outer ring contains LD-Block (R<sup>2</sup> > 0.8).<br><br>
+         Hovering over link shows tissue and the linked locations. For linked genes the gene symbols and ensembl gene IDs are given. Hovering over chromatin state segmentations shows location and chromatin state.")})
+      }else if(input$single == "CS"){
+        output$text3 <- shiny::renderUI({shiny::HTML("<h4>Chromatin state segmentations</h4>
+        Plot of the chromatin state segmentations near selected SNP and in selected tissue. <br> By default all tissues are selected. <br><br> Data and plot can separately be downloaded")})
+      }else if(input$single == "QTLs"){
+        output$text3 <- shiny::renderUI({shiny::HTML("<h3>Quantitative trait loci (QTLs)</h3>
+                         <h4> Expression QTLs (eQTLs, GTEx v8) </h4>
+                         eQTLs tab shows a hive plot with three axis (SNP - top, tissues - left, genes - right), hovering over links shows connection between nodes. Table shows all calculated eQTLs. Clicking on a row
+                         in the table generates a violin plot of the normalized expression of the respective gene and genotypes of selected SNP.<br><br>
+                         <h4> protein QTLs (pQTLs) </h4>
+                         Table of plasma pQTLs for selected SNP. <br><br>
+                         <h4> microRNA QTLs (miQTLs) </h4>
+                         Table of predicted miQTLs for selected SNP (left). Table of experimental determined miQTLs for selected SNP (left<br><br>
+                         <h4> methylation QTLs (meQTLs). </h4>
+                         Table of plasma meQTLs.")})
+      }else if(input$single == "GeX"){
+        output$text3 <- shiny::renderUI({shiny::HTML("<h4>Gene expression</h4>
+        Plot shows normalized gene expression in all available tissues in GTEx v8 for genes near the selected SNP.")})
       }
     })
+
+
+
+
+
+
     ####Tissue Specific####
     output$RingPlot <- conquer.d3js::renderConquerRing({
       shiny::req(input$tissueSel)
@@ -821,7 +848,8 @@ visualizeDashboard <- function(SNPs,SNPSummary){
     output$placeHolder_downloadData <- shiny::renderUI({
       data <- chromatinStatesData()
       if(!is.null(data)){
-        shiny::downloadButton("chromatinStates_downloadData", "Data")
+        #shiny::downloadButton("chromatinStates_downloadData", "Data")
+        customDownloadbutton(outputId = "chromatinStates_downloadData", label = "Data")
       }
     })
     output$placeHolder_downloadPlot <- shiny::renderUI({
@@ -1008,9 +1036,9 @@ visualizeDashboard <- function(SNPs,SNPSummary){
 
 customDownloadbutton <- function (outputId, label, icon = NULL, width = NULL, class = "btn btn-default shiny-download-link", ...)
 {
-  aTag <- tags$a(id = outputId, class = paste(class,
+  aTag <- shiny::tags$a(id = outputId, class = paste(class,
         class), href = "", target = "_blank", download = NA,
-        icon(icon), label, ...)
+        shiny::icon(icon), label, ...)
 }
 
 
