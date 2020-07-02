@@ -32,7 +32,7 @@ visualize <- function(directory, SNPs){
     load(paste0(directory,"/",sumFiles[1]))
   }
   loadedSNPs <- sapply(SNPs,function(SNP){get(SNP)},simplify = F)
-  app <- visualizeDashboard(loadedSNPs,SNPSummary)
+  app <- visualizeDashboard(SNPs = loadedSNPs,SNPSummary = SNPSummary)
   shiny::runApp(app,launch.browser = T)
 }
 
