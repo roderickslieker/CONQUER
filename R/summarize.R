@@ -48,7 +48,10 @@ summarize <- function(variants, multiAnalyze=FALSE, tissues ,directory=NULL, tok
   }
   if(length(SNPsRemain) != 0)
   {
-  outputLog <- do.call(rbind,stats) %>% data.frame()
+    if(exists(stats))
+    {
+      outputLog <- do.call(rbind,stats) %>% data.frame()
+    }
 
   }else{
     message("Completed, you can now run visualize.")
