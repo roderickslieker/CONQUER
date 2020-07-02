@@ -19,12 +19,13 @@ abstractAnalyze <- function(variants, directory, tissues, clustering = "PAM"){
 
   #Extract QTLs from abstractData
   message("Loading eQTLs...")
-  CiseQTL <- lapply(1:length(abstractData),function(i){
-    if(nrow(abstractData[[i]]$eQTLs) != 0) return(abstractData[[i]]$eQTLs)
+  CiseQTL <- lapply(1:ncol(abstractData),function(i){
+    cat(i)
+   if(nrow(abstractData["eQTLs",i][[1]]) != 0) return(abstractData["eQTLs",i][[1]])
     }) %>% do.call(what=rbind)
 
-  TranseQTL <- lapply(1:length(abstractData),function(i){
-    if(nrow(abstractData[[i]]$eQTLs) != 0) return(abstractData[[i]]$eQTLsTrans)
+  TranseQTL <- lapply(1:ncol(abstractData),function(i){
+    if(nrow(abstractData["eQTLsTrans",i][[1]]) != 0) return(abstractData["eQTLsTrans",i][[1]])
   }) %>% do.call(what=rbind)
 
   eQTLs <- dplyr::bind_rows(CiseQTL,TranseQTL); rm(CiseQTL,TranseQTL)
