@@ -230,7 +230,7 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                                     )
                                                     ),
                                                     shiny::br(),
-                                                    customDownloadbutton("downloadLD", "", icon="cloud-download", style = buttonStyle,
+                                                    customDownloadbutton("downloadLD", "", icon="file-excel", style = buttonStyle,
                                                     class="btn btn-default shiny-download-link"),
                                                     shiny::br(),
                                                     #shiny::downloadButton("downloadLD", "Download Linkage Disequilibrium"),
@@ -265,7 +265,10 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                                   shiny::tabsetPanel(id="QTLs_tab",
                                                                                      shiny::tabPanel(title="eQTLs",value = "eqtls",
                                                                                                      shiny::fluidRow(shiny::tags$h1("Hive plot"),
-                                                                                                                     shiny::downloadButton("downloadHive", "Download Hive plot"),
+                                                                                                                    customDownloadbutton("downloadHive", "", icon="cloud-download",
+                                                                                                                      style = buttonStyle,
+                                                                                                                      class="btn btn-default shiny-download-link"),
+                                                                                                                     #shiny::downloadButton("downloadHive", "Download Hive plot"),
                                                                                                                      shiny::br(),
                                                                                                                      shiny::br(),
                                                                                                                      conquer.d3js::ConquerHiveOutput("hive_plot",
@@ -275,7 +278,11 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                                                                                      ,
                                                                                                      shiny::fluidRow(
                                                                                                        shiny::tags$h1("eQTLs"),
-                                                                                                       shiny::downloadButton("downloadeQTLs", "Download eQTLs"),
+                                                                                                       customDownloadbutton("downloadeQTLs", "", icon="cloud-download",
+                                                                                                          style = buttonStyle,
+                                                                                                          class="btn btn-default shiny-download-link"),
+
+                                                                                                       #shiny::downloadButton("downloadeQTLs", "Download eQTLs"),
                                                                                                        shiny::br(),
                                                                                                        shiny::br(),
                                                                                                        shiny::column(7,
@@ -357,11 +364,11 @@ visualizeDashboard <- function(SNPs,SNPSummary){
       if(input$pws == "pway")
       {
         output$text2 <- shiny::renderUI({shiny::HTML("This figure shows the pathways are tissue-specific and  tissue-shared. Click a tissue to see the enriched pathways. Click a pathway to see in which tissues the pathway is enriched.")})
-      }else if(input$pws == "meqtls"){
+      }else if(input$pws == "meqtl"){
         output$text2 <- shiny::renderUI({shiny::HTML("This table shows the DNA methylation QTLs in whole blood based on the BIOS Consortium data. For more information see the about tab.")})
-      }else if(input$pws == "miqtls"){
+      }else if(input$pws == "miqtl"){
         output$text2 <- shiny::renderUI({shiny::HTML("These tables contain the miRNA QTLs, both the experimentally determined and predicted QTLs. For more information see the about tab")})
-      }else if(input$pws == "pqtls"){
+      }else if(input$pws == "pqtl"){
         output$text2 <- shiny::renderUI({shiny::HTML("This table shows the pQTLs in plasma. For more information see the about tab.")})
       }
     })
@@ -849,13 +856,19 @@ visualizeDashboard <- function(SNPs,SNPSummary){
       data <- chromatinStatesData()
       if(!is.null(data)){
         #shiny::downloadButton("chromatinStates_downloadData", "Data")
-        customDownloadbutton(outputId = "chromatinStates_downloadData", label = "Data")
+        customDownloadbutton("chromatinStates_downloadData", "", icon="file-excel",
+          style = buttonStyle,
+          class="btn btn-default shiny-download-link")
+        #customDownloadbutton(outputId = "chromatinStates_downloadData", label = "Data")
       }
     })
     output$placeHolder_downloadPlot <- shiny::renderUI({
       data <- chromatinStatesData()
       if(!is.null(data)){
-        shiny::downloadButton("chromatinStates_downloadPlot", "Plot")
+        customDownloadbutton("chromatinStates_downloadPlot", "", icon="cloud-download",
+                             style = buttonStyle,
+                             class="btn btn-default shiny-download-link")
+        #shiny::downloadButton("chromatinStates_downloadPlot", "Plot")
       }
     })
 
@@ -996,11 +1009,22 @@ visualizeDashboard <- function(SNPs,SNPSummary){
     })
 
     output$geneExpr_downloadData <- shiny::renderUI({
-      shiny::downloadButton("geneExpr_Data", "Data")
+      #shiny::downloadButton("geneExpr_Data", "Data")
+      customDownloadbutton("geneExpr_Data", "", icon="file-excel",
+                           style = buttonStyle,
+                           class="btn btn-default shiny-download-link")
     })
+
     output$geneExpr_downloadPlot <- shiny::renderUI({
-      shiny::downloadButton("geneExpr_Plot", "Plot")
+      #shiny::downloadButton("geneExpr_Plot", "Plot")
+      customDownloadbutton("geneExpr_Plot", "", icon="cloud-download",
+                           style = buttonStyle,
+                           class="btn btn-default shiny-download-link")
     })
+
+
+
+
 
     output$geneExpr_Data <- shiny::downloadHandler(
       filename = function() {
