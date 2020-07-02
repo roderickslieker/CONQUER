@@ -28,14 +28,17 @@ PrepareChromatinStates <- function(SNPData, sampleSel = NULL){
   StatesinRange <- States[StatesinRange@from,]
   StatesPlotData <- GenomicRanges::as.data.frame(StatesinRange)
 
+
+  ###Define Y value for sample###
+  sampley <- data.frame(sample = sort(as.character(unique(StatesPlotData$sample)),decreasing = T))
+  sampley$Y <- 1:nrow(sampley)
+  StatesPlotData$Y <- sampley[match(StatesPlotData$sample,sampley$sample),"Y"]
+  StatesPlotData$sample <- factor(as.character(StatesPlotData$sample), levels=sampley$sample)
+
+
   if(!is.null(sampleSel)){
     StatesPlotData <- StatesPlotData[StatesPlotData$sample %in% sampleSel,]
   }
-  ###Define Y value for sample###
-  sampley <- data.frame("sample" = as.character(unique(StatesPlotData$sample)))
-  sampley$Y <- as.numeric(rownames(sampley))
-  StatesPlotData$Y <- sampley[match(StatesPlotData$sample,sampley$sample),"Y"]
-  StatesPlotData <- StatesPlotData[order(StatesPlotData$group),]
   ### SNP positions in plot###
   jit <- lapply(unique(StatesPlotData$Y),function(num){LD80$start})
   jit <- as.data.frame(do.call(rbind,jit))
