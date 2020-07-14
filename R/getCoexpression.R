@@ -14,9 +14,10 @@ getCoexpression <- function(geneSet,expressionData, method = "spearman", thresho
   originalSet <- expressionData[,geneSet]
   #Perform correlation analysis
   correlationMatrix <- cor(originalSet, expressionData, method = method)
+  #Melt
+  correlationMatrix_M <- reshape2::melt(correlationMatrix)
   #Extract columns in which there is a coefficient higher then the threshold
-  coExpressed <- correlationMatrix[,apply(correlationMatrix,2,max) >= threshold] %>% colnames()
-  #Combine coexpressed genes with original geneSet
-  coExpressed <- c(coExpressed,geneSet) %>% unique()
+  correlationMatrix_M <- correlationMatrix_M[abs(correlationMatrix_M$value) >= threshold,]
+  coExpressed <- c(as.character(coExpressed$Var1), as.character(coExpressed$Var2)) %>% unique()
   return(coExpressed)
 }
