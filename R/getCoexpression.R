@@ -18,6 +18,6 @@ getCoexpression <- function(geneSet,expressionData, method = "spearman", thresho
   correlationMatrix_M <- reshape2::melt(correlationMatrix)
   #Extract columns in which there is a coefficient higher then the threshold
   correlationMatrix_M <- correlationMatrix_M[abs(correlationMatrix_M$value) >= threshold,]
-  coExpressed <- c(as.character(coExpressed$Var1), as.character(coExpressed$Var2)) %>% unique()
+  coExpressed <- c(as.character(correlationMatrix_M$Var1), as.character(correlationMatrix_M$Var2)) %>% unique()
   return(coExpressed)
 }
