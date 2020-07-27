@@ -51,6 +51,8 @@ summarize <- function(variants, multiAnalyze=FALSE, tissues ,directory=NULL, tok
     if(exists(stats))
     {
       outputLog <- do.call(rbind,stats) %>% data.frame()
+    }else{
+    	outputLog <- "Complete!"
     }
 
   }else{
