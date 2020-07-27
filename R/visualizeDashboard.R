@@ -145,12 +145,24 @@ visualizeDashboard <- function(SNPs,SNPSummary){
                                         ),
                                               shiny::mainPanel(
                                                 shiny::tabsetPanel(id = "pws",
-                                                  shiny::tabPanel("Pathway Overview", value = "pway",
+                                                  shiny::tabPanel("KEGG Pathways", value = "pway",
                                                            shiny::fluidRow(
                                                              if(!is.null(SNPSummary))
                                                              {
                                                                shiny::column(12,align = 'center',
                                                                              conquer.d3js::ConquerEdgeOutput("EdgePlot",
+                                                                                                             width = 1100,
+                                                                                                             height = 1100))
+                                                             }else{
+                                                               shiny::h3("No summary file provided")
+                                                             }
+                                                             )),
+                                                  shiny::tabPanel("KEGG Disease", value = "pway",
+                                                           shiny::fluidRow(
+                                                             if(!is.null(SNPSummary))
+                                                             {
+                                                               shiny::column(12,align = 'center',
+                                                                             conquer.d3js::ConquerEdgeOutput("EdgePlotDisease",
                                                                                                              width = 1100,
                                                                                                              height = 1100))
                                                              }else{
@@ -496,7 +508,11 @@ visualizeDashboard <- function(SNPs,SNPSummary){
 
     ####ALL TISSUES####
     output$EdgePlot <- conquer.d3js::renderConquerEdge({
-      conquer.d3js::ConquerEdge(SNPSummary)
+      conquer.d3js::ConquerEdge(SNPSummary, disease="no")
+    })
+
+    output$EdgePlotDisease <- conquer.d3js::renderConquerEdge({
+      conquer.d3js::ConquerEdge(SNPSummary, disease="yes")
     })
 
     LDSNPs <- shiny::reactive({
