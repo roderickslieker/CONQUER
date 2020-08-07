@@ -12,27 +12,38 @@ visualize <- function(directory, SNPs){
     stop(sprintf("%s is not a valid path",directory))
   }
   sumFiles <- allFiles[grepl("CONQUER_SummaryX",allFiles)]
+  colocFiles <- allFiles[grepl("Colocalization_Summary",allFiles)]
 
-  res <- character(length(SNPs))
-  for(i in 1:length(SNPs)){
-    SNP <- SNPs[i]
-    notInDirectory <- tryCatch({
-      load(sprintf("%s/%s.RData",directory,SNP))
-    },
-    warning = function(cond){
-      message(sprintf("%s was not found in %s",SNP, directory))
-      return(i)
-    })
-    res[i] <- notInDirectory
-  }
-  SNPs <- res[grepl("rs",x = res)]
+  loadedSNPs <- lapply(SNPs, function(SNP){
+    filedir <- sprintf("%s/%s.RData", directory, SNP)
+    check <- !file.exists(filedir)
+    if(check)
+    {
+      stop(sprintf("%s was not found in %s. Run summarize again for this SNP.",SNP, directory))
+    }else{
+      tmp <- load(filedir)
+      out <- get(tmp)
+      rm(list=tmp, envir = .GlobalEnv)
+      return(out)
+    }
+  })
+
+  names(loadedSNPs) <- SNPs
+
 
   SNPSummary <- NULL
   if(!identical(character(0),sumFiles)){
     load(paste0(directory,"/",sumFiles[1]))
   }
-  loadedSNPs <- sapply(SNPs,function(SNP){get(SNP)},simplify = F)
-  app <- visualizeDashboard(SNPs = loadedSNPs,SNPSummary = SNPSummary)
+
+  if(!identical(character(0),colocFiles)){
+    load(paste0(directory,"/",colocFiles[1]))
+  }else{
+    stop("The colocalization file is missing in the directory provided. Please run summarize again to generate this object or add this file to your directory with SNP files")
+  }
+
+
+  app <- visualizeDashboard(loadedSNPs = loadedSNPs,SNPSummary = SNPSummary, ColocSummary = all.coloc)
   shiny::runApp(app,launch.browser = T)
 }
 
