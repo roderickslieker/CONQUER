@@ -54,6 +54,24 @@ summarize <- function(variants, multiAnalyze=FALSE, tissues ,directory=NULL, tok
     }else{
     	outputLog <- "Complete!"
     }
+  allFiles <- list.files(directory)
+  colocFiles <- allFiles[grepl("Colocalization_Summary",allFiles)]
+
+  if(identical(character(0),colocFiles)){
+    message("Colocalization has not yet been performed. Note that this may time some time depending on the number of SNPs. Running..")
+    all.coloc <- lapply(SNPs, getColocalization)
+    names(all.coloc) <- SNPs
+    save(all.coloc, file=paste0(directory, "/", "Colocalization_Summary.RData"))
+  }
+
+  if(multiAnalyze){
+    message("MultiAnalyze is true. The SNPs will be analyzed for the following tissues:")
+    lapply(tissues,message)
+    SNPSummary <- abstractAnalyze(variants = variants, directory = directory, tissues = tissues, clustering = "agnes")
+    filename <- sprintf("CONQUER_Summary%s.RData", gsub("[.]","", make.names(Sys.time())))
+    save(SNPSummary, file = paste0(directory, "/", filename))
+    message(sprintf("CONQUER SNP summary saved in %s, with the following name %s", directory, filename))
+  }
 
   }else{
     message("Completed, you can now run visualize.")
