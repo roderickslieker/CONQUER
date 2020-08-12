@@ -556,6 +556,41 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
       }
     })
 
+    output$responsiveUI_C2 <- shiny::renderUI({
+        AllGenes <- getGenes(shiny::req(input$snpSel), loadedSNPs)
+        shiny::selectInput(inputId = "genecoloc",
+                           label = "Select gene:",
+                           choices = AllGenes)
+    })
+
+
+    single_coloc <- eventReactive(input$run, {
+      snp.in <- shiny::req(input$snpc)
+      gencode.in <- shiny::req(input$gencodec)
+      tissue.in <- shiny::req(input$tissueSelc)
+      out <- list(gencode.in, snp.in, tissue.in)
+      out
+    })
+
+
+
+    output$single_coloc_plot <- plotly::renderPlotly({
+      out <- single_coloc()
+      out <- getColocalizationSingle(gencodeId = out[[1]], leadSNP=out[[2]],
+                              tissue=out[[3]], loadedSNPs=loadedSNPs)
+      return(out)
+    })
+
+
+
+
+
+
+
+
+
+
+
     output$moduleHeat <- plotly::renderPlotly({
       tissue <- shiny::req(input$tissueSel)
       module <- shiny::req(input$ModuleSel)
