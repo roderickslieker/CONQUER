@@ -29,13 +29,12 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
   shiny::addResourcePath("logo", directoryPath = system.file("logo", package = "CONQUER"))
 
   #LD
-  ld.snps <- getAllSNPLD(loadedSNPs)
+  ld.snps <- getAllSNPLD(SNPs = loadedSNPs)
 
   cat("Loading data.....","\n")
   qtls <- c("pQTLs","meQTLs","miQTLexperiment","miQTLpredict","mqtls_LC",
             "mqtls_NG","sqtls1","sqtls2","sqtls3","sqtls4","lqtls")
 
-  data(list = qtls, package = "conquer.db", envir = parent.frame())
 
 
   for(qtl in qtls)
@@ -44,18 +43,19 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     temp <- get(qtl)
     if(length(grep("sqtl", qtl)) != 0)
     {
-      temp <- temp[temp$variant_id %in% ld.snps$id,]
-      temp <- data.frame(temp, ld.snps[match(temp$variant_id, ld.snps$id),c("LDSNP","leadingSNP")])
+      ld.snpsx <- ld.snps[ld.snps$LDSNP == ld.snps$leadingSNP,]
+      temp <- temp[temp$variant_id %in% ld.snpsx$id,]
     }else{
       temp <- temp[temp$rsID %in% ld.snps$LDSNP,]
     }
-    assign(qtl, temp, envir = parent.frame())
+    qtl <- paste0(qtl, "_internal")
+    assign(qtl, temp, envir = baseenv())
     rm(temp)
   }
 
-  sqtls <- rbind(sqtls1,sqtls2,sqtls3,sqtls4)
+  sqtls_internal <- rbind(sqtls1_internal,sqtls2_internal,sqtls3_internal,sqtls4_internal)
 
-  rm(list = c("sqtls1","sqtls2","sqtls3","sqtls4"))
+  rm(list = c("sqtls1_internal","sqtls2_internal","sqtls3_internal","sqtls4_internal"))
 
 
   cat(sprintf("Starting dashboard.....",qtl))
@@ -314,7 +314,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                                   plotly::plotlyOutput("chromatinStates",height = 1100) %>% withSpinner(type=7)),
                                                   shiny::tabPanel(title="QTLs", value = "QTLs",
                                                                   shiny::tabsetPanel(id="QTLs_tab",
-                                                                                     shiny::tabPanel(title="eQTLs",value = "eqtls",
+                                                                                     shiny::tabPanel(title="eQTLs",value = "eqtls_sub",
                                                                                                      shiny::fluidRow(shiny::tags$h1("Hive plot"),
                                                                                                                      customDownloadbutton("downloadHive", "", icon="cloud-download",
                                                                                                                                           style = buttonStyle,
@@ -342,18 +342,18 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                                                                                      shiny::br(),
                                                                                                                      conquer.d3js::ConquerViolinOutput("cis_Violin") %>% withSpinner(type=7)
                                                                                                        ))),
-                                                                                     shiny::tabPanel(title="Colocalization", value = "coloc",
+                                                                                     shiny::tabPanel(title="Colocalization", value = "coloc_sub",
                                                                                                      shiny::tags$h3("Bayes Factor colocalization analysis"),
                                                                                                      shiny::br(),
                                                                                                      shiny::br(),
                                                                                                      shiny::fluidRow(shiny::column(width = 12,
                                                                                                                                    withSpinner(plotly::plotlyOutput("moduleColoc", width = 600, height=800), type=7))
                                                                                                      )),
-                                                                                     shiny::tabPanel(title="sQTLs", value = 'sQTLs',
+                                                                                     shiny::tabPanel(title="sQTLs", value = 'sQTLs_sub',
                                                                                                      shiny::column(12,
                                                                                                                    shiny::br(),
                                                                                                                    DT::DTOutput("sQTLsExp_table"))),
-                                                                                     shiny::tabPanel(title="miQTLs", value = "miqtl",
+                                                                                     shiny::tabPanel(title="miQTLs", value = "miqtl_sub",
                                                                                                      shiny::fluidRow(
                                                                                                        shiny::column(6,
                                                                                                                      shiny::h4("Predicted miQTLs"),
@@ -363,23 +363,23 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                                                                                      shiny::h4("Experimental determined miQTLs"),
                                                                                                                      shiny::br(),
                                                                                                                      DT::DTOutput("miQTLsExp_table")))),
-                                                                                     shiny::tabPanel(title="meQTLs", value = 'meqtl',
+                                                                                     shiny::tabPanel(title="meQTLs", value = 'meqtl_sub',
                                                                                                      shiny::column(12,
                                                                                                                    shiny::br(),
                                                                                                                    DT::DTOutput("meQTLsTable"))),
-                                                                                     shiny::tabPanel(title="pQTLs", value = "pqtls",
+                                                                                     shiny::tabPanel(title="pQTLs", value = "pqtls_sub",
                                                                                                      shiny::column(12,
                                                                                                                    shiny::br(),
                                                                                                                    DT::DTOutput("pQTLsTable"))),
-                                                                                     shiny::tabPanel(title="lQTLs", value = 'lqtl_table',
+                                                                                     shiny::tabPanel(title="lQTLs", value = 'lqtl_sub',
                                                                                                      shiny::column(12,
                                                                                                                    shiny::br(),
                                                                                                                    DT::DTOutput("lQTLsExp_table"))),
-                                                                                     shiny::tabPanel(title="mQTLs (NG)", value = 'mqtlng',
+                                                                                     shiny::tabPanel(title="mQTLs (NG)", value = 'mqtlng_sub',
                                                                                                      shiny::column(12,
                                                                                                                    shiny::br(),
                                                                                                                    DT::DTOutput("mQTLsNGExp_table"))),
-                                                                                     shiny::tabPanel(title="mQTLs (multi)", value = 'mqtllc',
+                                                                                     shiny::tabPanel(title="mQTLs (multi)", value = 'mqtllc_sub',
                                                                                                      shiny::column(12,
                                                                                                                    shiny::br(),
                                                                                                                    DT::DTOutput("mQTLsLCExp_table")))
@@ -456,7 +456,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
 
                                                 ),
                                             shiny::mainPanel(
-                                              shiny::tabsetPanel(id = "about",
+                                              shiny::tabsetPanel(id = "about_tab",
                                                                  shiny::tabPanel("About", value = "about_overview",
                                                                                  shiny::br(),
                                                                                  shiny::br(),
@@ -689,7 +689,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
 
 
     AllTissuespQTLsData <- shiny::reactive({
-      output <- pQTLs
+      output <- pQTLs_internal
       return(output)
     })
 
@@ -699,7 +699,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     },options=list(scrollX=T),selection = "single")
 
     AllTissuessQTLsData <- shiny::reactive({
-      output <- sqtls
+      output <- sqtls_internal
       return(output)
     })
 
@@ -709,7 +709,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     },options=list(scrollX=T),selection = "single")
 
     AllTissuesmQTLNGsData <- shiny::reactive({
-      output <- mqtls_NG
+      output <- mqtls_NG_internal
       return(output)
     })
 
@@ -719,7 +719,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     },options=list(scrollX=T),selection = "single")
 
     AllTissuesmQTLLCsData <- shiny::reactive({
-      output <- mqtls_LC
+      output <- mqtls_LC_internal
       return(output)
     })
 
@@ -729,15 +729,15 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     },options=list(scrollX=T),selection = "single")
 
     AllTissueslQTLsData <- shiny::reactive({
-      output <- lqtls
+      output <- lqtls_internal
       return(output)
     })
 
     output$pQTLOverview_LD <- DT::renderDT({
       row_selected <- shiny::req(input$pQTLOverview_rows_selected)
       LDSNPs <- LDSNPs()
-      pQTLs <- AllTissuespQTLsData()
-      selectedSNP <- pQTLs[row_selected,"rsID"]
+      pQTLs.sub <- AllTissuespQTLsData()
+      selectedSNP <- pQTLs.sub[row_selected,"rsID"]
       leadingSNP <- LDSNPs[LDSNPs$LDSNP == selectedSNP,"leadingSNP"]
       fullLD <- loadedSNPs[[leadingSNP]]$LD
       fullLD <- fullLD[fullLD$variation == selectedSNP, ]
@@ -747,7 +747,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
 
     ###meQTLs
     AllTissuesMeQTLsData <- shiny::reactive({
-      output <- meQTLs
+      output <- meQTLs_internal
       return(output)
     })
 
@@ -758,8 +758,8 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     output$meQTLOverview_LD <- DT::renderDT({
       row_selected <- shiny::req(input$meQTLOverview_rows_selected)
       LDSNPs <- LDSNPs()
-      meQTLs <- AllTissuesMeQTLsData()
-      selectedSNP <- meQTLs[row_selected,"rsID"]
+      meQTLs.sub <- AllTissuesMeQTLsData()
+      selectedSNP <- meQTLs.sub[row_selected,"rsID"]
       leadingSNP <- LDSNPs[LDSNPs$LDSNP == selectedSNP,"leadingSNP"]
       fullLD <- loadedSNPs[[leadingSNP]]$LD
       fullLD <- fullLD[fullLD$variation == selectedSNP, ]
@@ -974,7 +974,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     output$pQTLsTable <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewpQTLs <- pQTLs[pQTLs$rsID %in% LDSNPs,]
+      ViewpQTLs <- pQTLs_internal[pQTLs_internal$rsID %in% LDSNPs,]
       return(ViewpQTLs)
     },options=list(scrollX=T),selection = "single")
     ########################END########################
@@ -984,7 +984,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     output$meQTLsTable <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewmeQTLs <- meQTLs[meQTLs$rsID %in% LDSNPs,]
+      ViewmeQTLs <- meQTLs_internal[meQTLs_internal$rsID %in% LDSNPs,]
       return(ViewmeQTLs)
     },options=list(scrollX=T),selection = "single")
 
@@ -995,7 +995,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     output$miQTLsPred_table <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewmiQTLsPred <- miQTLpredict[, c("SNP","Gene","miRNA","Celltype","Change","Effect")]
+      ViewmiQTLsPred <- miQTLpredict_internal[, c("SNP","Gene","miRNA","Celltype","Change","Effect")]
       return(ViewmiQTLsPred)
     })
     ########################END########################
@@ -1005,7 +1005,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     output$miQTLsExp_table <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewmiQTLsExp <- miQTLexperiment[miQTLexperiment$SNP %in% LDSNPs,]
+      ViewmiQTLsExp <- miQTLexperiment_internal[miQTLexperiment_internal$SNP %in% LDSNPs,]
       return(ViewmiQTLsExp)
     },options=list(scrollX=T),selection = "single")
     ########################END########################
@@ -1015,7 +1015,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,]
       IDs <- paste0("chr",LDSNPs$chr, "_", LDSNPs$start)
-      ViewsQTLsExp <- sqtls[sqtls$variant_id %in% IDs,]
+      ViewsQTLsExp <- sqtls_internal[sqtls_internal$variant_id %in% IDs,]
       return(ViewsQTLsExp)
     },options=list(scrollX=T),selection = "single")
     ########################END########################
@@ -1024,7 +1024,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     output$lQTLsExp_table <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewlQTLsExp <- lqtls[lqtls$SNP %in% LDSNPs,]
+      ViewlQTLsExp <- lqtls_internal[lqtls_internal$SNP %in% LDSNPs,]
       return(ViewlQTLsExp)
     },options=list(scrollX=T),selection = "single")
 
@@ -1034,7 +1034,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     output$mQTLsNGExp_table <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewmngQTLsExp <- mqtls_NG[mqtls_NG$SNP %in% LDSNPs,]
+      ViewmngQTLsExp <- mqtls_NG_internal[mqtls_NG_internal$SNP %in% LDSNPs,]
       return(ViewmngQTLsExp)
     },options=list(scrollX=T),selection = "single")
     ########################END########################
@@ -1043,7 +1043,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     output$mQTLsLCExp_table <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewmlcQTLsExp <- mqtls_LC[mqtls_LC$SNP %in% LDSNPs,]
+      ViewmlcQTLsExp <- mqtls_LC_internal[mqtls_LC_internal$SNP %in% LDSNPs,]
       return(ViewmlcQTLsExp)
     },options=list(scrollX=T),selection = "single")
     ########################END########################

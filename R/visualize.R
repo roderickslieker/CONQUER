@@ -11,6 +11,7 @@ visualize <- function(directory, SNPs){
   if(identical(allFiles, character(0))){
     stop(sprintf("%s is not a valid path",directory))
   }
+
   sumFiles <- allFiles[grepl("CONQUER_SummaryX",allFiles)]
   colocFiles <- allFiles[grepl("Colocalization_Summary",allFiles)]
 
