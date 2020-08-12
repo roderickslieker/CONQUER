@@ -311,29 +311,25 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                                     shiny::column(1,shiny::uiOutput("placeHolder_downloadPlot"))
                                                                     ),
                                                                   shiny::br(),
-                                                                  plotly::plotlyOutput("chromatinStates",height = 1100)),
+                                                                  plotly::plotlyOutput("chromatinStates",height = 1100) %>% withSpinner(type=7)),
                                                   shiny::tabPanel(title="QTLs", value = "QTLs",
                                                                   shiny::tabsetPanel(id="QTLs_tab",
                                                                                      shiny::tabPanel(title="eQTLs",value = "eqtls",
                                                                                                      shiny::fluidRow(shiny::tags$h1("Hive plot"),
-                                                                                                                    customDownloadbutton("downloadHive", "", icon="cloud-download",
-                                                                                                                      style = buttonStyle,
-                                                                                                                      class="btn btn-default shiny-download-link"),
-                                                                                                                     #shiny::downloadButton("downloadHive", "Download Hive plot"),
+                                                                                                                     customDownloadbutton("downloadHive", "", icon="cloud-download",
+                                                                                                                                          style = buttonStyle,
+                                                                                                                                          class="btn btn-default shiny-download-link"),
                                                                                                                      shiny::br(),
                                                                                                                      shiny::br(),
                                                                                                                      conquer.d3js::ConquerHiveOutput("hive_plot",
                                                                                                                                                      width = 900,
-                                                                                                                                                     height = 700)
-                                                                                                     )
-                                                                                                     ,
+                                                                                                                                                     height = 700) %>% withSpinner(type=7)
+                                                                                                                     ),
                                                                                                      shiny::fluidRow(
                                                                                                        shiny::tags$h1("eQTLs"),
                                                                                                        customDownloadbutton("downloadeQTLs", "", icon="cloud-download",
-                                                                                                          style = buttonStyle,
-                                                                                                          class="btn btn-default shiny-download-link"),
-
-                                                                                                       #shiny::downloadButton("downloadeQTLs", "Download eQTLs"),
+                                                                                                                            style = buttonStyle,
+                                                                                                                            class="btn btn-default shiny-download-link"),
                                                                                                        shiny::br(),
                                                                                                        shiny::br(),
                                                                                                        shiny::column(7,
