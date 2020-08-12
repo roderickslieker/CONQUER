@@ -125,7 +125,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                              shiny::column(12,align='center',
                                                                            conquer.d3js::ConquerRingOutput("RingPlot",
                                                                                                            width = 900,
-                                                                                                           height = 900)
+                                                                                                           height = 900) %>% withSpinner(type=7)
                                                                            )
                                                            )
 
@@ -134,7 +134,8 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                                   shiny::br(),
                                                                   shiny::br(),
                                                                   shiny::fluidRow(shiny::column(6,
-                                                                                                plotly::plotlyOutput("moduleHeat")),
+                                                                                                plotly::plotlyOutput("moduleHeat")%>% withSpinner(type=7)
+                                                                                                ),
                                                                                   shiny::column(6,
                                                                                                 DT::DTOutput("moduleTable"))
                                                                   ),
@@ -179,7 +180,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                                shiny::column(12,align = 'center',
                                                                              conquer.d3js::ConquerEdgeOutput("EdgePlot",
                                                                                                              width = 1100,
-                                                                                                             height = 1100))
+                                                                                                             height = 1100)%>% withSpinner(type=7))
                                                              }else{
                                                                shiny::h3("No summary file provided")
                                                              }
@@ -273,9 +274,6 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                     customDownloadbutton("downloadLocus", "", icon="cloud-download",
                                                       style = buttonStyle,
                                                       class="btn btn-default shiny-download-link"),
-                                                    #shiny::br(),
-                                                    #shiny::downloadButton("downloadLocus", "Download Locus Zoom"),
-                                                    #shiny::br(),
                                                     shiny::fluidRow(
                                                       shiny::column(12, align = 'center',
                                                                     shiny::uiOutput("LocusHeader"),
@@ -288,8 +286,6 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                     customDownloadbutton("downloadLD", "", icon="file-excel", style = buttonStyle,
                                                     class="btn btn-default shiny-download-link"),
                                                     shiny::br(),
-                                                    #shiny::downloadButton("downloadLD", "Download Linkage Disequilibrium"),
-                                                    #shiny::br(),
                                                     shiny::fluidRow(
                                                       shiny::column(12, align = 'center',
                                                                     DT::DTOutput("LDTable")
