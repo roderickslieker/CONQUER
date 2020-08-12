@@ -35,7 +35,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
   qtls <- c("pQTLs","meQTLs","miQTLexperiment","miQTLpredict","mqtls_LC",
             "mqtls_NG","sqtls1","sqtls2","sqtls3","sqtls4","lqtls")
 
-  data(list = qtls, package = "conquer.db")
+  data(list = qtls, package = "conquer.db", envir = parent.frame())
 
 
   for(qtl in qtls)
@@ -49,7 +49,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     }else{
       temp <- temp[temp$rsID %in% ld.snps$LDSNP,]
     }
-    assign(qtl, temp)#, envir = parent.frame())
+    assign(qtl, temp, envir = parent.frame())
     rm(temp)
   }
 
@@ -462,7 +462,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                                                  shiny::br(),
                                                                                  shiny::fluidRow(
                                                                                    shiny::column(12,
-                                                                                                 shiny::includeMarkdown(paste0(path.package("CONQUER"), "/About.md"))
+                                                                                                # shiny::includeHTML(paste0(path.package("CONQUER"), "/About.html"))
                                                                                    )
                                                                                  )
                                                                  )
