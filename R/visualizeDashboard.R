@@ -403,11 +403,75 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                               )
                                             )
 
-                                          ))
-                          )
+                                          )
+                          ),
+                        shiny::tabPanel("Colocalization",
+                                        shiny::fluidPage(
+                                          shiny::sidebarLayout(
+                                            shiny::sidebarPanel(
+                                              width = 3,
+                                              shiny::selectInput(inputId = "snpc",
+                                                                 label = "Select SNP:",
+                                                                 choices = names(loadedSNPs) %>% sort()),
+                                              shiny::textInput(inputId = "gencodec",
+                                                               label = "Provide versioned gencodeId (gene.1)"),
+                                              shiny::selectInput(inputId = "tissueSelc",
+                                                                 label = "Select Tissue:",
+                                                                 choices = colnames(SNPSummary) %>% sort()),
+                                              actionButton("run", "Go"),
+                                              shiny::actionButton("button", "", icon=shiny::icon("info-circle"), style = "background-color: #ECF0F1"),
+                                              shinyjs::hidden(
+                                                shiny::div(id='text_div',
+                                                           shiny::htmlOutput("text6")
+                                                )
+                                              ),
+                                            ),
+                                            shiny::mainPanel(
+                                              shiny::tabsetPanel(id = "coloc_main",
+                                                                 shiny::tabPanel("Overview", value = "coloc_overview",
+                                                                                 shiny::br(),
+                                                                                 shiny::br(),
+                                                                                 shiny::fluidRow(
+                                                                                   shiny::column(12,align='center',
+                                                                                                 withSpinner(
+                                                                                                   plotly::plotlyOutput("single_coloc_plot",
+                                                                                                                                  width = 500,
+                                                                                                                                  height = 500), type=7)
 
+                                                                                   )
+                                                                                 )
 
+                                                                 )
+                                              )
+                                            )
+                                          )
 
+                                        )
+                                      ),
+                        shiny::tabPanel("About",
+                                        shiny::fluidPage(
+                                          shiny::sidebarLayout(
+                                            shiny::sidebarPanel(
+                                              width = 3,
+
+                                                ),
+                                            shiny::mainPanel(
+                                              shiny::tabsetPanel(id = "about",
+                                                                 shiny::tabPanel("About", value = "about_overview",
+                                                                                 shiny::br(),
+                                                                                 shiny::br(),
+                                                                                 shiny::fluidRow(
+                                                                                   shiny::column(12,
+                                                                                                 shiny::includeMarkdown(paste0(path.package("CONQUER"), "/About.md"))
+                                                                                   )
+                                                                                 )
+                                                                 )
+                                              )
+                                            )
+                                          )
+                                        )
+                        )
+  )
 
   # Define server logic required to draw a histogram
   server <- function(input, output) {
