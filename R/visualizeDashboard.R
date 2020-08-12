@@ -689,9 +689,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
 
 
     AllTissuespQTLsData <- shiny::reactive({
-      #LDSNPs <- LDSNPs()
-      #all <- unique(c(LDSNPs$LDSNP, LDSNPs$leadingSNP))
-      output <- pQTLs#[pQTLs$rsID %in% all,]
+      output <- pQTLs
       return(output)
     })
 
@@ -731,9 +729,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     },options=list(scrollX=T),selection = "single")
 
     AllTissueslQTLsData <- shiny::reactive({
-      #LDSNPs <- LDSNPs()
-      #all <- unique(c(LDSNPs$LDSNP, LDSNPs$leadingSNP))
-      output <- lqtls#[lqtls$rsID %in% all,]
+      output <- lqtls
       return(output)
     })
 
@@ -751,10 +747,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
 
     ###meQTLs
     AllTissuesMeQTLsData <- shiny::reactive({
-      #LDSNPs <- LDSNPs()
-      #meQTLs <- conquer.db::meQTLs
-      #all <- unique(c(LDSNPs$LDSNP, LDSNPs$leadingSNP))
-      output <- meQTLs#[meQTLs$rsID %in% all, ]
+      output <- meQTLs
       return(output)
     })
 
@@ -777,9 +770,6 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     ###miQTLS
     #Experimental
     AllTissuesMiQTLexperiment <-  shiny::reactive({
-      #LDSNPs <- LDSNPs()
-      #all <- unique(c(LDSNPs$LDSNP, LDSNPs$leadingSNP))
-      #miQTLs <- miQTLexperiment[miQTLexperiment$SNP %in% all,]
       output <- miQTLexperiment
       return(output)
     })
@@ -979,82 +969,84 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
       }
     )
     ########################END########################
+
+    ########################pQTL Table########################
     output$pQTLsTable <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
       ViewpQTLs <- pQTLs[pQTLs$rsID %in% LDSNPs,]
-      if(nrow(ViewpQTLs) == 0){
-
-      }else{
-        ViewpQTLs
-      }
+      return(ViewpQTLs)
     },options=list(scrollX=T),selection = "single")
+    ########################END########################
 
 
-
+    ########################meQTL Table########################
     output$meQTLsTable <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
       ViewmeQTLs <- meQTLs[meQTLs$rsID %in% LDSNPs,]
-      if(nrow(ViewmeQTLs) == 0){
-
-      }else{
-        ViewmeQTLs
-      }
+      return(ViewmeQTLs)
     },options=list(scrollX=T),selection = "single")
 
+    ########################END########################
 
+    ########################miQTL Table########################
 
     output$miQTLsPred_table <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
       ViewmiQTLsPred <- miQTLpredict[, c("SNP","Gene","miRNA","Celltype","Change","Effect")]
-      if(is.null(ViewmiQTLsPred)){
-
-      }else{
-        ViewmiQTLsPred
-      }
+      return(ViewmiQTLsPred)
     })
+    ########################END########################
+
+    ########################miQTL Table########################
 
     output$miQTLsExp_table <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewmiQTLsExp <- miQTLexperiment#[miQTLexperiment$SNP %in% LDSNPs,]
-
-      if(nrow(ViewmiQTLsExp) == 0){
-
-      }else{
-        ViewmiQTLsExp
-      }
+      ViewmiQTLsExp <- miQTLexperiment[miQTLexperiment$SNP %in% LDSNPs,]
+      return(ViewmiQTLsExp)
     },options=list(scrollX=T),selection = "single")
+    ########################END########################
 
-    #sQTLs
+    ########################sQTL Table########################
     output$sQTLsExp_table <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
-      LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewsQTLsExp <- sQTls[sQTls$SNP %in% LDSNPs,]
-
-      if(nrow(ViewmiQTLsExp) != 0){ViewsQTLsExp}
+      LDSNPs <- LDtable[LDtable$r2 >= 0.8,]
+      IDs <- paste0("chr",LDSNPs$chr, "_", LDSNPs$start)
+      ViewsQTLsExp <- sqtls[sqtls$variant_id %in% IDs,]
+      return(ViewsQTLsExp)
     },options=list(scrollX=T),selection = "single")
+    ########################END########################
 
-    #lQTLs
+    ########################lQTL Table########################
     output$lQTLsExp_table <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewlQTLsExp <- lQTls[lQTls$SNP %in% LDSNPs,]
-
-      if(nrow(ViewmiQTLsExp) != 0){ViewlQTLsExp}
+      ViewlQTLsExp <- lqtls[lqtls$SNP %in% LDSNPs,]
+      return(ViewlQTLsExp)
     },options=list(scrollX=T),selection = "single")
 
+    ########################END########################
 
-    #mQTLs NG
+    ########################mQTL NG########################
     output$mQTLsNGExp_table <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewsQTLsExp <- mqtls_NG[mqtls_NG$SNP %in% LDSNPs,]
-
-      if(nrow(ViewmiQTLsExp) != 0){ViewsQTLsExp}
+      ViewmngQTLsExp <- mqtls_NG[mqtls_NG$SNP %in% LDSNPs,]
+      return(ViewmngQTLsExp)
     },options=list(scrollX=T),selection = "single")
+    ########################END########################
+
+    ########################mQTL LC########################
+    output$mQTLsLCExp_table <- DT::renderDT({
+      LDtable <- loadedSNPs[[input$snpSel]]$LD
+      LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
+      ViewmlcQTLsExp <- mqtls_LC[mqtls_LC$SNP %in% LDSNPs,]
+      return(ViewmlcQTLsExp)
+    },options=list(scrollX=T),selection = "single")
+    ########################END########################
 
     output$CIMessage <- shiny::renderUI({
       SNP <- shiny::req(input$snpSel)
@@ -1096,11 +1088,9 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     output$placeHolder_downloadData <- shiny::renderUI({
       data <- chromatinStatesData()
       if(!is.null(data)){
-        #shiny::downloadButton("chromatinStates_downloadData", "Data")
         customDownloadbutton("chromatinStates_downloadData", "", icon="file-excel",
           style = buttonStyle,
           class="btn btn-default shiny-download-link")
-        #customDownloadbutton(outputId = "chromatinStates_downloadData", label = "Data")
       }
     })
     output$placeHolder_downloadPlot <- shiny::renderUI({
@@ -1109,7 +1099,6 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
         customDownloadbutton("chromatinStates_downloadPlot", "", icon="cloud-download",
                              style = buttonStyle,
                              class="btn btn-default shiny-download-link")
-        #shiny::downloadButton("chromatinStates_downloadPlot", "Plot")
       }
     })
 
@@ -1135,6 +1124,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
       }
     )
     ########################END########################
+
     ########################VIOLIN########################
     #Data
     violinPlotData <- reactive({
@@ -1216,9 +1206,6 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
       })
     ########################END########################
 
-    #"geneExpr_downloadData"
-    #"geneExpr_downloadPlot"
-
     geneExpressionData <- shiny::reactive({
       check_eQTL <- shiny::req(input$check_eQTL)
       SNP <- shiny::req(input$snpSel)
@@ -1234,7 +1221,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
         genes <- transGenes
       }
       geneExpr<- loadedSNPs[[SNP]]$geneExpr
-      geneExpr <- geneExpr[geneExpr$gencodeId %in% genes,]
+      geneExpr <- geneExpr[geneExpr$gencodeId %in% genes,drop=F,]
       geneExpr<- reshape2::dcast(geneExpr, formula = geneSymbol ~ tissueSiteDetailId,value.var = "median")
       rownames(geneExpr) <- geneExpr$geneSymbol
       geneExpr$geneSymbol <- NULL
