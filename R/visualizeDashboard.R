@@ -340,28 +340,19 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                                                                                      shiny::br(),
                                                                                                                      shiny::uiOutput("DownloadViolinButton"),
                                                                                                                      shiny::br(),
-                                                                                                                     conquer.d3js::ConquerViolinOutput("cis_Violin")
-                                                                                                       ))
-                                                                                                     ),
-                                                                                     #New
+                                                                                                                     conquer.d3js::ConquerViolinOutput("cis_Violin") %>% withSpinner(type=7)
+                                                                                                       ))),
                                                                                      shiny::tabPanel(title="Colocalization", value = "coloc",
-                                                                                                     shiny::tags$h3("Bayes Factor colocalisation analyses"),
+                                                                                                     shiny::tags$h3("Bayes Factor colocalization analysis"),
                                                                                                      shiny::br(),
                                                                                                      shiny::br(),
                                                                                                      shiny::fluidRow(shiny::column(width = 12,
-                                                                                                                                   plotly::plotlyOutput("moduleColoc", width = 600, height=800))
-                                                                                                                     ),
-                                                                                                     shiny::tags$text("For help click the i symbol")
-
-                                                                                     ),
-                                                                                     #End new
-
-                                                                                     shiny::tabPanel(title="pQTLs", value = "pqtls",
-                                                                                     shiny::column(12,
-                                                                                                   shiny::br(),
-                                                                                                   DT::DTOutput("pQTLsTable")
-                                                                                                   )
-                                                                                     ),
+                                                                                                                                   withSpinner(plotly::plotlyOutput("moduleColoc", width = 600, height=800), type=7))
+                                                                                                     )),
+                                                                                     shiny::tabPanel(title="sQTLs", value = 'sQTLs',
+                                                                                                     shiny::column(12,
+                                                                                                                   shiny::br(),
+                                                                                                                   DT::DTOutput("sQTLsExp_table"))),
                                                                                      shiny::tabPanel(title="miQTLs", value = "miqtl",
                                                                                                      shiny::fluidRow(
                                                                                                        shiny::column(6,
