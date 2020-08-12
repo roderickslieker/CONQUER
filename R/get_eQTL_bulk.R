@@ -21,7 +21,7 @@ get_eQTL_bulk <- function(genesx, lead, tissues){
     {}else{
       temp <- httr::content(raw,"text", encoding = "UTF-8")
       temp <- gsub("NaN",'\\"NA\\"',temp)
-      parsed <- fromJSON(temp)
+      parsed <- jsonlite::fromJSON(temp)
       parsed <- parsed$result
       #res <- do.call(cbind, parsed)
       if(ncol(parsed) == 10)
