@@ -14,46 +14,51 @@
 #' @importFrom BioCircos BioCircosOutput renderBioCircos
 #' @importFrom BiocGenerics toTable
 #' @importFrom shinyjs useShinyjs toggle
+#' @importFrom shinycssloaders
 #' @return [[NULL]]
 visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
 
-  KEGG_DATA <- prepare_KEGG(species = "hsa",
-                                  KEGG_Type = "KEGG",
-                                  keyType = "kegg")
-  KEGG_DATA$ENSG <- lapply(X = KEGG_DATA$PATHID2EXTID,
-                           FUN = entrezToENSEMBL)
-
+  #KEGG_DATA <- CONQUER:::prepare_KEGG(species = "hsa",
+  #                                KEGG_Type = "KEGG",
+  #                                keyType = "kegg")
+  #KEGG_DATA$ENSG <- lapply(X = KEGG_DATA$PATHID2EXTID,
+  #                         FUN = entrezToENSEMBL)
   ensg_symb <- merge(BiocGenerics::toTable(org.Hs.egENSEMBL),BiocGenerics::toTable(org.Hs.egSYMBOL),by="gene_id")
+
   #Logo
   shiny::addResourcePath("logo", directoryPath = system.file("logo", package = "CONQUER"))
 
   #LD
-  ld.snps <- CONQUER:::getAllSNPLD(loadedSNPs)
+  ld.snps <- getAllSNPLD(loadedSNPs)
 
+  cat("Loading data.....","\n")
   qtls <- c("pQTLs","meQTLs","miQTLexperiment","miQTLpredict","mqtls_LC",
             "mqtls_NG","sqtls1","sqtls2","sqtls3","sqtls4","lqtls")
 
-  tmp <- lapply(qtls, function(qtl){
-    lazyeval::lazy_eval(sprintf("conquer.db::%s",qtl))
-  })
-  names(tmp) <- qtls
+  data(list = qtls, package = "conquer.db")
 
-  for(nn in names(tmp))
+
+  for(qtl in qtls)
   {
-    temp <- tmp[[nn]]
-    if(length(grep("sqtl", nn)) != 0)
+    cat(sprintf("..Loading %s.....",qtl),"\n")
+    temp <- get(qtl)
+    if(length(grep("sqtl", qtl)) != 0)
     {
       temp <- temp[temp$variant_id %in% ld.snps$id,]
       temp <- data.frame(temp, ld.snps[match(temp$variant_id, ld.snps$id),c("LDSNP","leadingSNP")])
     }else{
       temp <- temp[temp$rsID %in% ld.snps$LDSNP,]
     }
-    assign(nn, temp)#, envir = parent.frame())
+    assign(qtl, temp)#, envir = parent.frame())
     rm(temp)
   }
+
   sqtls <- rbind(sqtls1,sqtls2,sqtls3,sqtls4)
 
-  rm(list = c("tmp", "sqtls1","sqtls2","sqtls3","sqtls4"))
+  rm(list = c("sqtls1","sqtls2","sqtls3","sqtls4"))
+
+
+  cat(sprintf("Starting dashboard.....",qtl))
 
 
   buttonStyle <-  "display:block;
