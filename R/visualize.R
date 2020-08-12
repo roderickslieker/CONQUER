@@ -14,6 +14,8 @@ visualize <- function(directory, SNPs){
   sumFiles <- allFiles[grepl("CONQUER_SummaryX",allFiles)]
   colocFiles <- allFiles[grepl("Colocalization_Summary",allFiles)]
 
+  cat("..Loading SNP data.....","\n")
+
   loadedSNPs <- lapply(SNPs, function(SNP){
     filedir <- sprintf("%s/%s.RData", directory, SNP)
     check <- !file.exists(filedir)
