@@ -76,8 +76,8 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
       border: -px solid #A4A4A4"
 
   ui <- shiny::navbarPage(title = shiny::div(shiny::img(src = "logo/CONQUER.png", style="margin-top:-10px;")),
-                        shiny::tags$head(shiny::HTML("<title>test</title>")),
-                        windowTitle = shiny::HTML("CONQUER"),
+                          shiny::tags$head(shiny::HTML("<title>test</title>")),
+                          windowTitle = shiny::HTML("CONQUER"),
                           selected = "Modules",
                           theme = shinythemes::shinytheme("flatly"),
                           shiny::tabPanel("Modules",
@@ -110,49 +110,49 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
 
                                                             ")),
                                                 shiny::actionButton("button", "", icon=shiny::icon("info-circle"), style = "background-color: #ECF0F1"),
-                                                 shinyjs::hidden(
-                                                   shiny::div(id='text_div',
-                                                       shiny::htmlOutput("text")
-                                                   )
-                                                 ),
+                                                shinyjs::hidden(
+                                                  shiny::div(id='text_div',
+                                                             shiny::htmlOutput("text")
+                                                  )
+                                                ),
                                               ),
                                               shiny::mainPanel(
                                                 shiny::tabsetPanel(id = "tis_spec",
-                                                  shiny::tabPanel("Overview", value = "overview",
-                                                           shiny::br(),
-                                                           shiny::br(),
-                                                           shiny::fluidRow(
-                                                             shiny::column(12,align='center',
-                                                                           conquer.d3js::ConquerRingOutput("RingPlot",
-                                                                                                           width = 900,
-                                                                                                           height = 900) %>% withSpinner(type=7)
-                                                                           )
-                                                           )
+                                                                   shiny::tabPanel("Overview", value = "overview",
+                                                                                   shiny::br(),
+                                                                                   shiny::br(),
+                                                                                   shiny::fluidRow(
+                                                                                     shiny::column(12,align='center',
+                                                                                                   conquer.d3js::ConquerRingOutput("RingPlot",
+                                                                                                                                   width = 900,
+                                                                                                                                   height = 900) %>% withSpinner(type=7)
+                                                                                     )
+                                                                                   )
 
-                                                           ),
-                                                  shiny::tabPanel("Modules",value = "mod",
-                                                                  shiny::br(),
-                                                                  shiny::br(),
-                                                                  shiny::fluidRow(shiny::column(6,
-                                                                                                plotly::plotlyOutput("moduleHeat")%>% withSpinner(type=7)
-                                                                                                ),
-                                                                                  shiny::column(6,
-                                                                                                DT::DTOutput("moduleTable"))
-                                                                  ),
-                                                                  shiny::br(),
-                                                                  shiny::br(),
-                                                                  shiny::fluidRow(shiny::column(12,
-                                                                                         DT::DTOutput("eQTL_SNP_Table")
+                                                                   ),
+                                                                   shiny::tabPanel("Modules",value = "mod",
+                                                                                   shiny::br(),
+                                                                                   shiny::br(),
+                                                                                   shiny::fluidRow(shiny::column(6,
+                                                                                                                 plotly::plotlyOutput("moduleHeat")%>% withSpinner(type=7)
+                                                                                   ),
+                                                                                   shiny::column(6,
+                                                                                                 DT::DTOutput("moduleTable"))
+                                                                                   ),
+                                                                                   shiny::br(),
+                                                                                   shiny::br(),
+                                                                                   shiny::fluidRow(shiny::column(12,
+                                                                                                                 DT::DTOutput("eQTL_SNP_Table")
 
-                                                                    )
-                                                                  ),
-                                                                  shiny::fluidRow(shiny::tags$h3("Module-SNP association:")),
-                                                                  shiny::br(),
-                                                                  shiny::fluidRow(
-                                                                    shiny::column(7,DT::DTOutput("eQTL_check")),
-                                                                    shiny::column(5,conquer.d3js::ConquerViolinOutput("module_Violin"))
-                                                                    )
-                                                                    )
+                                                                                   )
+                                                                                   ),
+                                                                                   shiny::fluidRow(shiny::tags$h3("Module-SNP association:")),
+                                                                                   shiny::br(),
+                                                                                   shiny::fluidRow(
+                                                                                     shiny::column(7,DT::DTOutput("eQTL_check")),
+                                                                                     shiny::column(5,conquer.d3js::ConquerViolinOutput("module_Violin"))
+                                                                                   )
+                                                                   )
                                                 )
                                               )
                                             )
@@ -164,85 +164,85 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                               shiny::sidebarPanel(
                                                 width = 3,
 
-                                        shiny::actionButton("button2", "", icon=shiny::icon("info-circle"), style = "background-color: #ECF0F1"),
-                                         shinyjs::hidden(
-                                           shiny::div(id='text_div2',
-                                               shiny::htmlOutput("text2")
-                                           )
-                                         )
-                                        ),
+                                                shiny::actionButton("button2", "", icon=shiny::icon("info-circle"), style = "background-color: #ECF0F1"),
+                                                shinyjs::hidden(
+                                                  shiny::div(id='text_div2',
+                                                             shiny::htmlOutput("text2")
+                                                  )
+                                                )
+                                              ),
                                               shiny::mainPanel(
                                                 shiny::tabsetPanel(id = "pws",
-                                                  shiny::tabPanel("KEGG Pathways", value = "pway",
-                                                           shiny::fluidRow(
-                                                             if(!is.null(SNPSummary))
-                                                             {
-                                                               shiny::column(12,align = 'center',
-                                                                             conquer.d3js::ConquerEdgeOutput("EdgePlot",
-                                                                                                             width = 1100,
-                                                                                                             height = 1100)%>% withSpinner(type=7))
-                                                             }else{
-                                                               shiny::h3("No summary file provided")
-                                                             }
-                                                             )),
-                                                  shiny::tabPanel("KEGG Disease", value = "pway",
-                                                           shiny::fluidRow(
-                                                             if(!is.null(SNPSummary))
-                                                             {
-                                                               shiny::column(12,align = 'center',
-                                                                             conquer.d3js::ConquerEdgeOutput("EdgePlotDisease",
-                                                                                                             width = 1100,
-                                                                                                             height = 1100))
-                                                             }else{
-                                                               shiny::h3("No summary file provided")
-                                                             }
-                                                             )),
-                                                  shiny::tabPanel("DNAm QTL", value = "meqtl",
-                                                                  shiny::br(),
-                                                                  DT::DTOutput("meQTLOverview"),
-                                                                  shiny::br(),
-                                                                  shiny::br(),
-                                                                  DT::DTOutput("meQTLOverview_LD")),
-                                                  shiny::tabPanel("miRNA QTL", value = "miqtl",
-                                                                  shiny::tabsetPanel(
-                                                                    shiny::tabPanel("Experimental",
-                                                                                    shiny::br(),
-                                                                                    shiny::br(),
-                                                                                    DT::DTOutput("mi_overview_exp"),
-                                                                                    shiny::br(),
-                                                                                    shiny::br(),
-                                                                                    DT::DTOutput("mi_overview_exp_LD")),
-                                                                    shiny::tabPanel("Predicted",
-                                                                                    shiny::br(),
-                                                                                    shiny::br(),
-                                                                                    DT::DTOutput("mi_overview_pred"),
-                                                                                    shiny::br(),
-                                                                                    shiny::br(),
-                                                                                    DT::DTOutput("mi_overview_pred_LD"))
-                                                                  )
-                                                                  ),
-                                                   shiny::tabPanel("Protein QTL",value = "pqtl",
-                                                                  shiny::br(),
-                                                                  DT::DTOutput("pQTLOverview"),
-                                                                  shiny::br(),
-                                                                  shiny::br(),
-                                                                  DT::DTOutput("pQTLOverview_LD")),
-                                                    shiny::tabPanel("Splicing QTL",value = "sqtl",
-                                                                  shiny::br(),
-                                                                  DT::DTOutput("sQTLOverview")),
-											                        		shiny::tabPanel("Lipid QTL",value = "lqtl",
-                                                                  shiny::br(),
-                                                                  DT::DTOutput("lQTLOverview")),
-											                        		shiny::tabPanel("Metabolite QTL",value = "mqtl",
-											                        		                shiny::tabsetPanel(
-    											                        		                shiny::tabPanel("Nightingale",
-    											                        		                                shiny::br(),
-    											                        		                                DT::DTOutput("mqtls_overview_ng")),
-    											                        		                shiny::tabPanel("Multiplatform",
-    											                        		                                shiny::br(),
-    											                        		                                DT::DTOutput("mqtls_overview_lc"))
-    											                        		                )
-											                        		                )
+                                                                   shiny::tabPanel("KEGG Pathways", value = "pway",
+                                                                                   shiny::fluidRow(
+                                                                                     if(!is.null(SNPSummary))
+                                                                                     {
+                                                                                       shiny::column(12,align = 'center',
+                                                                                                     conquer.d3js::ConquerEdgeOutput("EdgePlot",
+                                                                                                                                     width = 1100,
+                                                                                                                                     height = 1100)%>% withSpinner(type=7))
+                                                                                     }else{
+                                                                                       shiny::h3("No summary file provided")
+                                                                                     }
+                                                                                   )),
+                                                                   shiny::tabPanel("KEGG Disease", value = "pway",
+                                                                                   shiny::fluidRow(
+                                                                                     if(!is.null(SNPSummary))
+                                                                                     {
+                                                                                       shiny::column(12,align = 'center',
+                                                                                                     conquer.d3js::ConquerEdgeOutput("EdgePlotDisease",
+                                                                                                                                     width = 1100,
+                                                                                                                                     height = 1100))
+                                                                                     }else{
+                                                                                       shiny::h3("No summary file provided")
+                                                                                     }
+                                                                                   )),
+                                                                   shiny::tabPanel("DNAm QTL", value = "meqtl",
+                                                                                   shiny::br(),
+                                                                                   DT::DTOutput("meQTLOverview"),
+                                                                                   shiny::br(),
+                                                                                   shiny::br(),
+                                                                                   DT::DTOutput("meQTLOverview_LD")),
+                                                                   shiny::tabPanel("miRNA QTL", value = "miqtl",
+                                                                                   shiny::tabsetPanel(
+                                                                                     shiny::tabPanel("Experimental",
+                                                                                                     shiny::br(),
+                                                                                                     shiny::br(),
+                                                                                                     DT::DTOutput("mi_overview_exp"),
+                                                                                                     shiny::br(),
+                                                                                                     shiny::br(),
+                                                                                                     DT::DTOutput("mi_overview_exp_LD")),
+                                                                                     shiny::tabPanel("Predicted",
+                                                                                                     shiny::br(),
+                                                                                                     shiny::br(),
+                                                                                                     DT::DTOutput("mi_overview_pred"),
+                                                                                                     shiny::br(),
+                                                                                                     shiny::br(),
+                                                                                                     DT::DTOutput("mi_overview_pred_LD"))
+                                                                                   )
+                                                                   ),
+                                                                   shiny::tabPanel("Protein QTL",value = "pqtl",
+                                                                                   shiny::br(),
+                                                                                   DT::DTOutput("pQTLOverview"),
+                                                                                   shiny::br(),
+                                                                                   shiny::br(),
+                                                                                   DT::DTOutput("pQTLOverview_LD")),
+                                                                   shiny::tabPanel("Splicing QTL",value = "sqtl",
+                                                                                   shiny::br(),
+                                                                                   DT::DTOutput("sQTLOverview")),
+                                                                   shiny::tabPanel("Lipid QTL",value = "lqtl",
+                                                                                   shiny::br(),
+                                                                                   DT::DTOutput("lQTLOverview")),
+                                                                   shiny::tabPanel("Metabolite QTL",value = "mqtl",
+                                                                                   shiny::tabsetPanel(
+                                                                                     shiny::tabPanel("Nightingale",
+                                                                                                     shiny::br(),
+                                                                                                     DT::DTOutput("mqtls_overview_ng")),
+                                                                                     shiny::tabPanel("Multiplatform",
+                                                                                                     shiny::br(),
+                                                                                                     DT::DTOutput("mqtls_overview_lc"))
+                                                                                   )
+                                                                   )
 
                                                 )
                                               )
@@ -268,136 +268,136 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                 )),
                                               shiny::mainPanel(
                                                 shiny::tabsetPanel(id = "single",
-                                                  shiny::tabPanel(
-                                                    title = "Linkage Disequilibrium", value="LD",
-                                                    shiny::br(),
-                                                    customDownloadbutton("downloadLocus", "", icon="cloud-download",
-                                                      style = buttonStyle,
-                                                      class="btn btn-default shiny-download-link"),
-                                                    shiny::fluidRow(
-                                                      shiny::column(12, align = 'center',
-                                                                    shiny::uiOutput("LocusHeader"),
-                                                                    conquer.d3js::ConquerLocusZoomOutput("LocusZoom",
-                                                                                                         width = 500,
-                                                                                                         height = 600)
-                                                                    )
-                                                    ),
-                                                    shiny::br(),
-                                                    customDownloadbutton("downloadLD", "", icon="file-excel", style = buttonStyle,
-                                                    class="btn btn-default shiny-download-link"),
-                                                    shiny::br(),
-                                                    shiny::fluidRow(
-                                                      shiny::column(12, align = 'center',
-                                                                    DT::DTOutput("LDTable")
-                                                                    )
-                                                    ),
-                                                    shiny::fluidRow(
-                                                      shiny::column(5, align = 'left',
-                                                                    shiny::uiOutput("PMIDHeader"),
-                                                                    shiny::br(),
-                                                                    shiny::br(),
-                                                                    DT::DTOutput("PMIDTable")
-                                                      )
-                                                    )
-                                                  ),
-                                                  shiny::tabPanel(title="Chromosomal interactions",value = "CI",
-                                                                  shiny::br(),
-                                                                  shiny::uiOutput("CIMessage"),
-                                                                  BioCircos::BioCircosOutput(outputId = "Circos",width = 1000,height = 1000)),
-                                                  shiny::tabPanel(title = "Chromatin States", value = "CS",
-                                                                  shiny::br(),
-                                                                  shiny::fluidRow(
-                                                                    shiny::column(1,shiny::uiOutput("placeHolder_downloadData")),
-                                                                    shiny::column(1,shiny::uiOutput("placeHolder_downloadPlot"))
-                                                                    ),
-                                                                  shiny::br(),
-                                                                  plotly::plotlyOutput("chromatinStates",height = 1100) %>% withSpinner(type=7)),
-                                                  shiny::tabPanel(title="QTLs", value = "QTLs",
-                                                                  shiny::tabsetPanel(id="QTLs_tab",
-                                                                                     shiny::tabPanel(title="eQTLs",value = "eqtls_sub",
-                                                                                                     shiny::fluidRow(shiny::tags$h1("Hive plot"),
-                                                                                                                     customDownloadbutton("downloadHive", "", icon="cloud-download",
-                                                                                                                                          style = buttonStyle,
-                                                                                                                                          class="btn btn-default shiny-download-link"),
-                                                                                                                     shiny::br(),
-                                                                                                                     shiny::br(),
-                                                                                                                     conquer.d3js::ConquerHiveOutput("hive_plot",
-                                                                                                                                                     width = 900,
-                                                                                                                                                     height = 700) %>% withSpinner(type=7)
-                                                                                                                     ),
-                                                                                                     shiny::fluidRow(
-                                                                                                       shiny::tags$h1("eQTLs"),
-                                                                                                       customDownloadbutton("downloadeQTLs", "", icon="cloud-download",
-                                                                                                                            style = buttonStyle,
-                                                                                                                            class="btn btn-default shiny-download-link"),
-                                                                                                       shiny::br(),
-                                                                                                       shiny::br(),
-                                                                                                       shiny::column(7,
-                                                                                                                     shiny::br(),
-                                                                                                                     DT::DTOutput("eQTLsTable")
-                                                                                                       ),
-                                                                                                       shiny::column(5,
-                                                                                                                     shiny::br(),
-                                                                                                                     shiny::uiOutput("DownloadViolinButton"),
-                                                                                                                     shiny::br(),
-                                                                                                                     conquer.d3js::ConquerViolinOutput("cis_Violin") %>% withSpinner(type=7)
-                                                                                                       ))),
-                                                                                     shiny::tabPanel(title="Colocalization", value = "coloc_sub",
-                                                                                                     shiny::tags$h3("Bayes Factor colocalization analysis"),
-                                                                                                     shiny::br(),
-                                                                                                     shiny::br(),
-                                                                                                     shiny::fluidRow(shiny::column(width = 12,
-                                                                                                                                   withSpinner(plotly::plotlyOutput("moduleColoc", width = 600, height=800), type=7))
-                                                                                                     )),
-                                                                                     shiny::tabPanel(title="sQTLs", value = 'sQTLs_sub',
-                                                                                                     shiny::column(12,
-                                                                                                                   shiny::br(),
-                                                                                                                   DT::DTOutput("sQTLsExp_table"))),
-                                                                                     shiny::tabPanel(title="miQTLs", value = "miqtl_sub",
-                                                                                                     shiny::fluidRow(
-                                                                                                       shiny::column(6,
-                                                                                                                     shiny::h4("Predicted miQTLs"),
-                                                                                                                     shiny::br(),
-                                                                                                                     DT::DTOutput("miQTLsPred_table")),
-                                                                                                       shiny::column(6,
-                                                                                                                     shiny::h4("Experimental determined miQTLs"),
-                                                                                                                     shiny::br(),
-                                                                                                                     DT::DTOutput("miQTLsExp_table")))),
-                                                                                     shiny::tabPanel(title="meQTLs", value = 'meqtl_sub',
-                                                                                                     shiny::column(12,
-                                                                                                                   shiny::br(),
-                                                                                                                   DT::DTOutput("meQTLsTable"))),
-                                                                                     shiny::tabPanel(title="pQTLs", value = "pqtls_sub",
-                                                                                                     shiny::column(12,
-                                                                                                                   shiny::br(),
-                                                                                                                   DT::DTOutput("pQTLsTable"))),
-                                                                                     shiny::tabPanel(title="lQTLs", value = 'lqtl_sub',
-                                                                                                     shiny::column(12,
-                                                                                                                   shiny::br(),
-                                                                                                                   DT::DTOutput("lQTLsExp_table"))),
-                                                                                     shiny::tabPanel(title="mQTLs (NG)", value = 'mqtlng_sub',
-                                                                                                     shiny::column(12,
-                                                                                                                   shiny::br(),
-                                                                                                                   DT::DTOutput("mQTLsNGExp_table"))),
-                                                                                     shiny::tabPanel(title="mQTLs (multi)", value = 'mqtllc_sub',
-                                                                                                     shiny::column(12,
-                                                                                                                   shiny::br(),
-                                                                                                                   DT::DTOutput("mQTLsLCExp_table")))
-                                                                  )),
-                                                  shiny::tabPanel(title="Gene expression",value = "GeX",
-                                                                  shiny::fluidRow(
-                                                                    shiny::tags$h1("Gene expression"),
-                                                                    shiny::br(),
-                                                                    shiny::fluidRow(
-                                                                      shiny::column(1,shiny::uiOutput("geneExpr_downloadData")),
-                                                                      shiny::column(1,shiny::uiOutput("geneExpr_downloadPlot"))
-                                                                    ),
-                                                                    shiny::br(),
-                                                                    plotly::plotlyOutput("expressionHeatmap",
-                                                                                         width = 1350,
-                                                                                         height = 1000)
-                                                                  )
-                                                                  )
+                                                                   shiny::tabPanel(
+                                                                     title = "Linkage Disequilibrium", value="LD",
+                                                                     shiny::br(),
+                                                                     customDownloadbutton("downloadLocus", "", icon="cloud-download",
+                                                                                          style = buttonStyle,
+                                                                                          class="btn btn-default shiny-download-link"),
+                                                                     shiny::fluidRow(
+                                                                       shiny::column(12, align = 'center',
+                                                                                     shiny::uiOutput("LocusHeader"),
+                                                                                     conquer.d3js::ConquerLocusZoomOutput("LocusZoom",
+                                                                                                                          width = 500,
+                                                                                                                          height = 600)
+                                                                       )
+                                                                     ),
+                                                                     shiny::br(),
+                                                                     customDownloadbutton("downloadLD", "", icon="file-excel", style = buttonStyle,
+                                                                                          class="btn btn-default shiny-download-link"),
+                                                                     shiny::br(),
+                                                                     shiny::fluidRow(
+                                                                       shiny::column(12, align = 'center',
+                                                                                     DT::DTOutput("LDTable")
+                                                                       )
+                                                                     ),
+                                                                     shiny::fluidRow(
+                                                                       shiny::column(5, align = 'left',
+                                                                                     shiny::uiOutput("PMIDHeader"),
+                                                                                     shiny::br(),
+                                                                                     shiny::br(),
+                                                                                     DT::DTOutput("PMIDTable")
+                                                                       )
+                                                                     )
+                                                                   ),
+                                                                   shiny::tabPanel(title="Chromosomal interactions",value = "CI",
+                                                                                   shiny::br(),
+                                                                                   shiny::uiOutput("CIMessage"),
+                                                                                   BioCircos::BioCircosOutput(outputId = "Circos",width = 1000,height = 1000)),
+                                                                   shiny::tabPanel(title = "Chromatin States", value = "CS",
+                                                                                   shiny::br(),
+                                                                                   shiny::fluidRow(
+                                                                                     shiny::column(1,shiny::uiOutput("placeHolder_downloadData")),
+                                                                                     shiny::column(1,shiny::uiOutput("placeHolder_downloadPlot"))
+                                                                                   ),
+                                                                                   shiny::br(),
+                                                                                   plotly::plotlyOutput("chromatinStates",height = 1100) %>% withSpinner(type=7)),
+                                                                   shiny::tabPanel(title="QTLs", value = "QTLs",
+                                                                                   shiny::tabsetPanel(id="QTLs_tab",
+                                                                                                      shiny::tabPanel(title="eQTLs",value = "eqtls_sub",
+                                                                                                                      shiny::fluidRow(shiny::tags$h1("Hive plot"),
+                                                                                                                                      customDownloadbutton("downloadHive", "", icon="cloud-download",
+                                                                                                                                                           style = buttonStyle,
+                                                                                                                                                           class="btn btn-default shiny-download-link"),
+                                                                                                                                      shiny::br(),
+                                                                                                                                      shiny::br(),
+                                                                                                                                      conquer.d3js::ConquerHiveOutput("hive_plot",
+                                                                                                                                                                      width = 900,
+                                                                                                                                                                      height = 700) %>% withSpinner(type=7)
+                                                                                                                      ),
+                                                                                                                      shiny::fluidRow(
+                                                                                                                        shiny::tags$h1("eQTLs"),
+                                                                                                                        customDownloadbutton("downloadeQTLs", "", icon="cloud-download",
+                                                                                                                                             style = buttonStyle,
+                                                                                                                                             class="btn btn-default shiny-download-link"),
+                                                                                                                        shiny::br(),
+                                                                                                                        shiny::br(),
+                                                                                                                        shiny::column(7,
+                                                                                                                                      shiny::br(),
+                                                                                                                                      DT::DTOutput("eQTLsTable")
+                                                                                                                        ),
+                                                                                                                        shiny::column(5,
+                                                                                                                                      shiny::br(),
+                                                                                                                                      shiny::uiOutput("DownloadViolinButton"),
+                                                                                                                                      shiny::br(),
+                                                                                                                                      conquer.d3js::ConquerViolinOutput("cis_Violin") %>% withSpinner(type=7)
+                                                                                                                        ))),
+                                                                                                      shiny::tabPanel(title="Colocalization", value = "coloc_sub",
+                                                                                                                      shiny::tags$h3("Bayes Factor colocalization analysis"),
+                                                                                                                      shiny::br(),
+                                                                                                                      shiny::br(),
+                                                                                                                      shiny::fluidRow(shiny::column(width = 12,
+                                                                                                                                                    withSpinner(plotly::plotlyOutput("moduleColoc", width = 600, height=800), type=7))
+                                                                                                                      )),
+                                                                                                      shiny::tabPanel(title="sQTLs", value = 'sQTLs_sub',
+                                                                                                                      shiny::column(12,
+                                                                                                                                    shiny::br(),
+                                                                                                                                    DT::DTOutput("sQTLsExp_table"))),
+                                                                                                      shiny::tabPanel(title="miQTLs", value = "miqtl_sub",
+                                                                                                                      shiny::fluidRow(
+                                                                                                                        shiny::column(6,
+                                                                                                                                      shiny::h4("Predicted miQTLs"),
+                                                                                                                                      shiny::br(),
+                                                                                                                                      DT::DTOutput("miQTLsPred_table")),
+                                                                                                                        shiny::column(6,
+                                                                                                                                      shiny::h4("Experimental determined miQTLs"),
+                                                                                                                                      shiny::br(),
+                                                                                                                                      DT::DTOutput("miQTLsExp_table")))),
+                                                                                                      shiny::tabPanel(title="meQTLs", value = 'meqtl_sub',
+                                                                                                                      shiny::column(12,
+                                                                                                                                    shiny::br(),
+                                                                                                                                    DT::DTOutput("meQTLsTable"))),
+                                                                                                      shiny::tabPanel(title="pQTLs", value = "pqtls_sub",
+                                                                                                                      shiny::column(12,
+                                                                                                                                    shiny::br(),
+                                                                                                                                    DT::DTOutput("pQTLsTable"))),
+                                                                                                      shiny::tabPanel(title="lQTLs", value = 'lqtl_sub',
+                                                                                                                      shiny::column(12,
+                                                                                                                                    shiny::br(),
+                                                                                                                                    DT::DTOutput("lQTLsExp_table"))),
+                                                                                                      shiny::tabPanel(title="mQTLs (NG)", value = 'mqtlng_sub',
+                                                                                                                      shiny::column(12,
+                                                                                                                                    shiny::br(),
+                                                                                                                                    DT::DTOutput("mQTLsNGExp_table"))),
+                                                                                                      shiny::tabPanel(title="mQTLs (multi)", value = 'mqtllc_sub',
+                                                                                                                      shiny::column(12,
+                                                                                                                                    shiny::br(),
+                                                                                                                                    DT::DTOutput("mQTLsLCExp_table")))
+                                                                                   )),
+                                                                   shiny::tabPanel(title="Gene expression",value = "GeX",
+                                                                                   shiny::fluidRow(
+                                                                                     shiny::tags$h1("Gene expression"),
+                                                                                     shiny::br(),
+                                                                                     shiny::fluidRow(
+                                                                                       shiny::column(1,shiny::uiOutput("geneExpr_downloadData")),
+                                                                                       shiny::column(1,shiny::uiOutput("geneExpr_downloadPlot"))
+                                                                                     ),
+                                                                                     shiny::br(),
+                                                                                     plotly::plotlyOutput("expressionHeatmap",
+                                                                                                          width = 1350,
+                                                                                                          height = 1000)
+                                                                                   )
+                                                                   )
                                                 )
 
                                               )
@@ -405,80 +405,80 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
 
                                           )
                           ),
-                        shiny::tabPanel("Colocalization",
-                                        shiny::fluidPage(
-                                          shiny::sidebarLayout(
-                                            shiny::sidebarPanel(
-                                              width = 3,
-                                              shiny::selectInput(inputId = "snpc",
-                                                                 label = "Select SNP:",
-                                                                 choices = names(loadedSNPs) %>% sort()),
-                                              shiny::textInput(inputId = "gencodec",
-                                                               label = "Provide versioned gencodeId (gene.1)"),
-                                              shiny::selectInput(inputId = "tissueSelc",
-                                                                 label = "Select Tissue:",
-                                                                 choices = colnames(SNPSummary) %>% sort()),
-                                              actionButton("run", "Go"),
-                                              shiny::actionButton("button", "", icon=shiny::icon("info-circle"), style = "background-color: #ECF0F1"),
-                                              shinyjs::hidden(
-                                                shiny::div(id='text_div',
-                                                           shiny::htmlOutput("text6")
-                                                )
-                                              ),
-                                            ),
-                                            shiny::mainPanel(
-                                              shiny::tabsetPanel(id = "coloc_main",
-                                                                 shiny::tabPanel("Overview", value = "coloc_overview",
-                                                                                 shiny::br(),
-                                                                                 shiny::br(),
-                                                                                 shiny::fluidRow(
-                                                                                   shiny::column(12,align='center',
-                                                                                                 withSpinner(
-                                                                                                   plotly::plotlyOutput("single_coloc_plot",
-                                                                                                                                  width = 500,
-                                                                                                                                  height = 500), type=7)
-
-                                                                                   )
-                                                                                 )
-
-                                                                 )
-                                              )
-                                            )
-                                          )
-
-                                        )
-                                      ),
-                        shiny::tabPanel("About",
-                                        shiny::fluidPage(
-                                          shiny::sidebarLayout(
-                                            shiny::sidebarPanel(
-                                              width = 3,
-
+                          shiny::tabPanel("Colocalization",
+                                          shiny::fluidPage(
+                                            shiny::sidebarLayout(
+                                              shiny::sidebarPanel(
+                                                width = 3,
+                                                shiny::selectInput(inputId = "snpc",
+                                                                   label = "Select SNP:",
+                                                                   choices = names(loadedSNPs) %>% sort()),
+                                                shiny::textInput(inputId = "gencodec",
+                                                                 label = "Provide versioned gencodeId (gene.1)"),
+                                                shiny::selectInput(inputId = "tissueSelc",
+                                                                   label = "Select Tissue:",
+                                                                   choices = colnames(SNPSummary) %>% sort()),
+                                                actionButton("run", "Go"),
+                                                shiny::actionButton("button", "", icon=shiny::icon("info-circle"), style = "background-color: #ECF0F1"),
+                                                shinyjs::hidden(
+                                                  shiny::div(id='text_div',
+                                                             shiny::htmlOutput("text6")
+                                                  )
                                                 ),
-                                            shiny::mainPanel(
-                                              shiny::tabsetPanel(id = "about_tab",
-                                                                 shiny::tabPanel("About", value = "about_overview",
-                                                                                 shiny::br(),
-                                                                                 shiny::br(),
-                                                                                 shiny::fluidRow(
-                                                                                   shiny::column(12,
-                                                                                                # shiny::includeHTML(paste0(path.package("CONQUER"), "/About.html"))
+                                              ),
+                                              shiny::mainPanel(
+                                                shiny::tabsetPanel(id = "coloc_main",
+                                                                   shiny::tabPanel("Overview", value = "coloc_overview",
+                                                                                   shiny::br(),
+                                                                                   shiny::br(),
+                                                                                   shiny::fluidRow(
+                                                                                     shiny::column(12,align='center',
+                                                                                                   withSpinner(
+                                                                                                     plotly::plotlyOutput("single_coloc_plot",
+                                                                                                                          width = 500,
+                                                                                                                          height = 500), type=7)
+
+                                                                                     )
                                                                                    )
-                                                                                 )
-                                                                 )
+
+                                                                   )
+                                                )
+                                              )
+                                            )
+
+                                          )
+                          ),
+                          shiny::tabPanel("About",
+                                          shiny::fluidPage(
+                                            shiny::sidebarLayout(
+                                              shiny::sidebarPanel(
+                                                width = 3,
+
+                                              ),
+                                              shiny::mainPanel(
+                                                shiny::tabsetPanel(id = "about_tab",
+                                                                   shiny::tabPanel("About", value = "about_overview",
+                                                                                   shiny::br(),
+                                                                                   shiny::br(),
+                                                                                   shiny::fluidRow(
+                                                                                     shiny::column(12,
+                                                                                                   shiny::includeMarkdown(paste0(path.package("CONQUER"), "/About.md"))
+                                                                                     )
+                                                                                   )
+                                                                   )
+                                                )
                                               )
                                             )
                                           )
-                                        )
-                        )
+                          )
   )
 
   # Define server logic required to draw a histogram
   server <- function(input, output) {
 
     #### Info labels ####
-     observeEvent(input$button, {
-       shinyjs::toggle('text_div')
+    observeEvent(input$button, {
+      shinyjs::toggle('text_div')
       if(input$tis_spec == "mod")
       {
         output$text <- renderUI({shiny::HTML("Select a tissue of interest and a module from the dropdown menu. <br><br>
@@ -557,10 +557,10 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     })
 
     output$responsiveUI_C2 <- shiny::renderUI({
-        AllGenes <- getGenes(shiny::req(input$snpSel), loadedSNPs)
-        shiny::selectInput(inputId = "genecoloc",
-                           label = "Select gene:",
-                           choices = AllGenes)
+      AllGenes <- getGenes(shiny::req(input$snpSel), loadedSNPs)
+      shiny::selectInput(inputId = "genecoloc",
+                         label = "Select gene:",
+                         choices = AllGenes)
     })
 
 
@@ -577,7 +577,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     output$single_coloc_plot <- plotly::renderPlotly({
       out <- single_coloc()
       out <- getColocalizationSingle(gencodeId = out[[1]], leadSNP=out[[2]],
-                              tissue=out[[3]], loadedSNPs=loadedSNPs)
+                                     tissue=out[[3]], loadedSNPs=loadedSNPs)
       return(out)
     })
 
@@ -724,7 +724,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     })
 
     ## lQTLs
-	output$lQTLOverview <- DT::renderDT({
+    output$lQTLOverview <- DT::renderDT({
       AllTissueslQTLsData()
     },options=list(scrollX=T),selection = "single")
 
@@ -906,10 +906,10 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
       sel <- data[input$LDTable_rows_selected,"variation"]
       json <- jsonlite::fromJSON(sprintf("https://api.ncbi.nlm.nih.gov/variation/v0/beta/refsnp/%s",gsub("rs","",sel)))
       pmidData <- data.frame("PMID"= paste0("<a target='_blank' href='",
-                                     sprintf("https://www.ncbi.nlm.nih.gov/pubmed/%s",
-                                             json$citations),
-                                     "'>",
-                                     json$citations,"</a>"))
+                                            sprintf("https://www.ncbi.nlm.nih.gov/pubmed/%s",
+                                                    json$citations),
+                                            "'>",
+                                            json$citations,"</a>"))
 
       pmidData
     },escape = FALSE,selection = "single")
@@ -1089,8 +1089,8 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
       data <- chromatinStatesData()
       if(!is.null(data)){
         customDownloadbutton("chromatinStates_downloadData", "", icon="file-excel",
-          style = buttonStyle,
-          class="btn btn-default shiny-download-link")
+                             style = buttonStyle,
+                             class="btn btn-default shiny-download-link")
       }
     })
     output$placeHolder_downloadPlot <- shiny::renderUI({
@@ -1289,23 +1289,23 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
 customDownloadbutton <- function (outputId, label, icon = NULL, width = NULL, class = "btn btn-default shiny-download-link", ...)
 {
   aTag <- shiny::tags$a(id = outputId, class = paste(class,
-        class), href = "", target = "_blank", download = NA,
-        shiny::icon(icon), label, ...)
+                                                     class), href = "", target = "_blank", download = NA,
+                        shiny::icon(icon), label, ...)
 }
 
 
 
 validateIcon <- function (icon)
 {
-    if (is.null(icon) || identical(icon, character(0))) {
-        return(icon)
-    }
-    else if (inherits(icon, "shiny.tag") && icon$name ==
-        "i") {
-        return(icon)
-    }
-    else {
-        stop("Invalid icon. Use Shiny's 'icon()' function to generate a valid icon")
-    }
+  if (is.null(icon) || identical(icon, character(0))) {
+    return(icon)
+  }
+  else if (inherits(icon, "shiny.tag") && icon$name ==
+           "i") {
+    return(icon)
+  }
+  else {
+    stop("Invalid icon. Use Shiny's 'icon()' function to generate a valid icon")
+  }
 }
 
