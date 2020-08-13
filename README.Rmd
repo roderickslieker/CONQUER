@@ -79,15 +79,21 @@ CONQUER::summarize(variants = snps,
 visualize(directory = "somedirectory", SNPs = snps)
 ```
 
-## Modules pancreas 
+## Modules
 
-<img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Modules_pancreas.png" align="center" width="500" />
+<img src="https://github.com/roderickslieker/CONQUER.test/blob/master/SunBurst_pathways.png" align="center" width="500" />
 
 &nbsp;
 
 ## Enrichment 
 
-<img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Enrichment_all.png" align="center" width="500" />
+<img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Modules_pathways.png" align="center" width="500" />
+
+&nbsp;
+
+## Pathways shared by tissues
+
+<img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Pathways_acrossTissue.png" align="center" width="500" />
 
 &nbsp;
 
