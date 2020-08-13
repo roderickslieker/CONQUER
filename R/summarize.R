@@ -16,6 +16,8 @@
 
 summarize <- function(variants, multiAnalyze=FALSE, tissues ,directory=NULL, token=NULL, population="CEU") {
   # Skip if existent
+  if(is.null(token)) stop("Please provide a LDlink token!")
+
   filenames <- sprintf("%s/%s.RData",directory,variants)
   SNPsRemain <- variants[!file.exists(filenames)]
   cat(sprintf("%s variants are already present, %s to be done \n",sum(file.exists(filenames)),length(SNPsRemain)))
