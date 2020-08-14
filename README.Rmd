@@ -124,11 +124,3 @@ visualize(directory = "somedirectory", SNPs = snps)
 &nbsp;
 &nbsp;
 &nbsp;
-
-## Data resources
-
-```{r, echo=F, message=F, warning=F}
-resources <- CONQUER::resources
-resources[is.na(resources)] <- " "
-knitr::kable(x = resources)
-```
