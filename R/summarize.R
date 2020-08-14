@@ -14,69 +14,60 @@
 #' token="sometoken",
 #' tissues=NULL)}
 
-summarize <- function(variants, multiAnalyze=FALSE, tissues ,directory=NULL, token=NULL, population="CEU") {
+summarize <- function(variants, multiAnalyze=FALSE, tissues = NULL ,directory=NULL, token=NULL, population="CEU") {
   # Skip if existent
   if(is.null(token)) stop("Please provide a LDlink token!")
 
   filenames <- sprintf("%s/%s.RData",directory,variants)
   SNPsRemain <- variants[!file.exists(filenames)]
   cat(sprintf("%s variants are already present, %s to be done \n",sum(file.exists(filenames)),length(SNPsRemain)))
-  #if(parallel){
-  #  BiocParallel::register(BiocParallel::bpstart(BiocParallel::SnowParam(cores)))
-  #}
-
-  # Chromatin states
 
   if(length(SNPsRemain) != 0)
   {
-    Chromatin <- c(conquer.db::Chromatin1,conquer.db::Chromatin2,conquer.db::Chromatin3)
+    Chromatin <- c(Chromatin1,Chromatin2,Chromatin3)
 
     stats <- lapply(X = SNPsRemain,
                     FUN = getDataforSingleSNP,
                     directory = directory,
                     token = token,
                     population = population,
-                    Chromatin=Chromatin)
+                    Chromatin=Chromatin,
+                    allTissues = tissues)
   }
 
 
-  if(multiAnalyze){
-    message("MultiAnalyze is true. The SNPs will be analyzed for the following tissues:")
-    lapply(tissues,message)
-    SNPSummary <- abstractAnalyze(variants = variants, directory = directory, tissues = tissues, clustering = "agnes")
-    filename <- sprintf("CONQUER_Summary%s.RData", gsub("[.]","", make.names(Sys.time())))
-    save(SNPSummary, file = paste0(directory, "/", filename))
-    message(sprintf("CONQUER SNP summary saved in %s, with the following name %s", directory, filename))
-  }
-  if(length(SNPsRemain) != 0)
+
+
+  if(length(SNPsRemain) == 0)
   {
-    if(exists(stats))
-    {
-      outputLog <- do.call(rbind,stats) %>% data.frame()
-    }else{
-    	outputLog <- "Complete!"
-    }
+  #  if(exists(stats))
+  #  {
+  #    outputLog <- do.call(rbind,stats) %>% data.frame()
+  #  }else{
+  #  	outputLog <- "Complete!"
+  #  }
   allFiles <- list.files(directory)
   colocFiles <- allFiles[grepl("Colocalization_Summary",allFiles)]
 
-  if(identical(character(0),colocFiles)){
+  if(length(colocFiles) == 0){
     message("Colocalization has not yet been performed. Note that this may time some time depending on the number of SNPs. Running..")
     all.coloc <- lapply(SNPs, getColocalization)
     names(all.coloc) <- SNPs
     save(all.coloc, file=paste0(directory, "/", "Colocalization_Summary.RData"))
   }
 
-  if(multiAnalyze){
+  summFiles <- allFiles[grepl("CONQUER_Summary",allFiles)]
+
+  if(length(summFiles) == 0 & multiAnalyze){
     message("MultiAnalyze is true. The SNPs will be analyzed for the following tissues:")
     lapply(tissues,message)
     SNPSummary <- abstractAnalyze(variants = variants, directory = directory, tissues = tissues, clustering = "agnes")
     filename <- sprintf("CONQUER_Summary%s.RData", gsub("[.]","", make.names(Sys.time())))
     save(SNPSummary, file = paste0(directory, "/", filename))
     message(sprintf("CONQUER SNP summary saved in %s, with the following name %s", directory, filename))
-  }
-
   }else{
     message("Completed, you can now run visualize.")
   }
-  return(outputLog)
+  }
+  #return(outputLog)
 }
