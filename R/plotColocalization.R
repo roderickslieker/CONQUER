@@ -1,10 +1,18 @@
 #' @import ggplot2
 #' @importFrom plotly ggplotly
 #' @importFrom viridis viridis_pal
-plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filter=TRUE)
+plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filter=TRUE, interactive=TRUE,tissues=NULL)
 {
   snp.data <- loadedSNPs[[rsID]]
   all.coloc.sel <- all.coloc[[rsID]]
+
+
+
+  if(!is.null(tissues))
+  {
+    all.coloc.sel <- all.coloc.sel[all.coloc.sel$Tissue %in% tissues,]
+  }
+
   if(!is.null(all.coloc.sel))
   {
     all.coloc.sel$Id <- paste0(all.coloc.sel$Tissue,"_", all.coloc.sel$genecodeId)
@@ -59,23 +67,41 @@ plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filte
         xlab("")
 
       if(sum(genes$strand == "forward")>=1){p2 <- p2+geom_text(data=genes[genes$strand == "forward",],
-                                                               aes(y=end, x=gene,size = 3, label = '>', family = "Arial", col=gene),position = position_dodge(.5))}
+                                                               aes(y=end, x=gene,size = 3, label = '>', col=gene),position = position_dodge(.5))}
       if(sum(genes$strand == "reverse")>=1){p2 <- p2 + geom_text(data=genes[genes$strand == "reverse",],
-                                                                 aes(y=start, x=gene,size = 3, label = '<', family = "Arial", col=gene),position = position_dodge(.5))}
-
-      out <- plotly::subplot(p1,p2, nrows = 2, shareX = T, heights = c(0.8,0.2))
+                                                                 aes(y=start, x=gene,size = 3, label = '<', col=gene),position = position_dodge(.5))}
+      out <- list(p1,p2)
     }else{
 
-      out <- plotly::ggplotly(ggplot2::ggplot(data.frame(x=1,y=1, label="Cannot test colocalization for this gene/SNP/tissue set"),
+      out <- ggplot2::ggplot(data.frame(x=1,y=1, label="Cannot test colocalization for this gene/SNP/tissue set"),
                                               aes(x=x,y=y, label=label))+
                                 ggplot2::geom_text()+
-                                ggplot2::theme_void())
+                                ggplot2::theme_void()
     }
   }else{
-    out <- plotly::ggplotly(ggplot2::ggplot(data.frame(x=1,y=1, label="Cannot test colocalization for this gene/SNP/tissue set"),
+    out <- ggplot2::ggplot(data.frame(x=1,y=1, label="Cannot test colocalization for this gene/SNP/tissue set"),
                                             aes(x=x,y=y, label=label))+
                               ggplot2::geom_text()+
-                              ggplot2::theme_void())
+                              ggplot2::theme_void()
+  }
+
+  if(interactive)
+  {
+    if(class(out) == "list")
+    {
+      out <- plotly::subplot(p1, p2, nrows = 2, shareX = T, heights = c(0.8,0.2))
+    }else{
+      out <- plotly::ggplotly(out)
+    }
+  }else{
+    if(class(out) == "list")
+    {
+      p1 <- out[[1]]
+      p2 <- out[[2]]
+      p1 <- p1 + theme(legend.position = "bottom")
+      out <- patchwork::wrap_plots(p1,p2, nrow=2, heights = c(0.8, 0.2))# guides = "collect")
+    }else{
+    }
   }
   return(out)
 }
