@@ -14,7 +14,7 @@
 #' @importFrom BioCircos BioCircosOutput renderBioCircos
 #' @importFrom BiocGenerics toTable
 #' @importFrom shinyjs useShinyjs toggle
-#' @importFrom shinycssloaders
+#' @import shinycssloaders
 #' @return [[NULL]]
 visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
 
@@ -34,7 +34,6 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
   cat("Loading data.....","\n")
   qtls <- c("pQTLs","meQTLs","miQTLexperiment","miQTLpredict","mqtls_LC",
             "mqtls_NG","sqtls1","sqtls2","sqtls3","sqtls4","lqtls")
-
 
 
   for(qtl in qtls)
@@ -344,6 +343,9 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                                                                                         ))),
                                                                                                       shiny::tabPanel(title="Colocalization", value = "coloc_sub",
                                                                                                                       shiny::tags$h3("Bayes Factor colocalization analysis"),
+                                                                                                                      shiny::br(),
+                                                                                                                      shiny::br(),
+                                                                                                                      shiny::column(1,shiny::uiOutput("placeHolder_downloadPlot_coloc")),
                                                                                                                       shiny::br(),
                                                                                                                       shiny::br(),
                                                                                                                       shiny::fluidRow(shiny::column(width = 12,
@@ -1102,6 +1104,15 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
       }
     })
 
+    output$placeHolder_downloadPlot_coloc <- shiny::renderUI({
+      data <- chromatinStatesData()
+      if(!is.null(ColocSummary[[input$snpSel]])){
+        customDownloadbutton("chromatinStates_downloadPlot", "", icon="cloud-download",
+                             style = buttonStyle,
+                             class="btn btn-default shiny-download-link")
+      }
+    })
+
     #Download
     output$chromatinStates_downloadData <- shiny::downloadHandler(
       filename = function() {
@@ -1116,14 +1127,26 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
 
     output$chromatinStates_downloadPlot <- shiny::downloadHandler(
       filename = function() {
-        paste(input$snpSel,"_chromatinStates", ".html", sep = "")
+        paste(input$snpSel,"_chromatinStates", ".pdf", sep = "")
       },
       content = function(file) {
         data <- chromatinStatesData()
-        htmlwidgets::saveWidget(PlotChromatinStates(StatesPlotData = data[[1]], fillScale = data[[2]],jit = data[[3]]), file = file)
+        plotly::orca(PlotChromatinStates(StatesPlotData = data[[1]], fillScale = data[[2]],jit = data[[3]]), file = file)
       }
     )
     ########################END########################
+
+    ########################VIOLIN########################
+    output$Colocalization_downloadPlot <- shiny::downloadHandler(
+      filename = function() {
+        paste(input$snpSel,"_colocalization", ".pdf", sep = "")
+      },
+      content = function(file) {
+        data <- chromatinStatesData()
+        plotly::orca(plotColoc(shiny::req(input$snpSel), all.coloc=ColocSummary, loadedSNPs=loadedSNPs), file = file)
+      }
+    )
+    ######################################################
 
     ########################VIOLIN########################
     #Data
