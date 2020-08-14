@@ -1,10 +1,14 @@
-geteQTLdata <- function(lead, Genes, parallel) {
+geteQTLdata <- function(lead, Genes, parallel, allTissues) {
 
   if(length(Genes) == 0) {
     return(data.frame())
   }
 
-  allTissues <- conquer.db::gtexTissuesV8
+  if(!is.null(allTissues)){
+  }else{
+    allTissues <- conquer.db::gtexTissuesV8
+  }
+
   #if(parallel){
   #  res <- BiocParallel::bplapply(X = Genes$gene_id,
   #                    FUN = function(x, get_eQTL_bulk, lead, allTissues){
