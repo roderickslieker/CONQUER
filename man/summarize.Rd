@@ -7,7 +7,7 @@
 summarize(
   variants,
   multiAnalyze = FALSE,
-  tissues,
+  tissues = NULL,
   directory = NULL,
   token = NULL,
   population = "CEU"
