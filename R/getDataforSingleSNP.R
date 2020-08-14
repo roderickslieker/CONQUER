@@ -1,5 +1,5 @@
 #' @importFrom BiocGenerics start end
-getDataforSingleSNP <- function(variant, directory=NULL, token=NULL, population="CEU",Chromatin){
+getDataforSingleSNP <- function(variant, directory=NULL, token=NULL, population="CEU",Chromatin, allTissues){
   message(sprintf("Retrieving data for: %s",variant))
 
   tryCatch({
@@ -42,6 +42,7 @@ getDataforSingleSNP <- function(variant, directory=NULL, token=NULL, population=
                                     ranges=IRanges::IRanges(start = min(LinkDis$start), end = max(LinkDis$start)))
     locusGenes <- IRanges::subsetByOverlaps(Genes,query)
     locusExons <- getExons(locusGenes)
+
     #Transcription factors
     TFquery <- GenomicRanges::GRanges(seqnames=paste0("chr", mainSNP$chr),
                                       ranges=IRanges::IRanges(start = min(topHits$start) - 10000,
@@ -56,15 +57,17 @@ getDataforSingleSNP <- function(variant, directory=NULL, token=NULL, population=
 
     cisGenes <- IRanges::subsetByOverlaps(Genes,cisQuery)
     message("geteQTLdata")
-    eQTLdata <- geteQTLdata(lead = mainSNP$variation,
-                            Genes = cisGenes)
+    eQTLdata <- CONQUER:::geteQTLdata(lead = mainSNP$variation,
+                            Genes = cisGenes,
+                            allTissues=allTissues)
 
     #trans eQTLs
     transGenes <- Genes[!Genes$name %in% cisGenes$name,]
     if(length(transGenes) != 0) {
       transeQTLdata <- geteQTLdata(lead = mainSNP$variation,
                                    Genes = transGenes,
-                                   parallel = parallel)
+                                   parallel = parallel,
+                                   allTissues=allTissues)
     }else {
       transeQTLdata <- data.frame()
     }
