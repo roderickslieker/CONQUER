@@ -4,7 +4,7 @@
 \alias{visualize}
 \title{Main function to visualize the investigated SNPs}
 \usage{
-visualize(directory, SNPs)
+visualize(directory, SNPs, tissues = NULL)
 }
 \arguments{
 \item{directory}{[[character]] Character string of the directory in which the SNP data and optional summary files are stored}

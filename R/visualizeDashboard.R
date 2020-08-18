@@ -42,8 +42,8 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     temp <- get(qtl)
     if(length(grep("sqtl", qtl)) != 0)
     {
-      ld.snpsx <- ld.snps[ld.snps$LDSNP == ld.snps$leadingSNP,]
-      temp <- temp[temp$variant_id %in% ld.snpsx$id,]
+      #ld.snpsx <- ld.snps[ld.snps$LDSNP == ld.snps$leadingSNP,]
+      temp <- temp[temp$variant_id %in% ld.snps$id,]
     }else{
       temp <- temp[temp$rsID %in% ld.snps$LDSNP,]
     }

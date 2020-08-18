@@ -5,7 +5,7 @@
 #' @importFrom shiny runApp
 #' @examples
 #' \dontrun{summarize("somedirectory","rs1558902")}
-visualize <- function(directory, SNPs){
+visualize <- function(directory, SNPs, tissues=NULL){
   #List all files in directory
   allFiles <- list.files(directory)
   if(identical(allFiles, character(0))){
@@ -43,6 +43,11 @@ visualize <- function(directory, SNPs){
     load(paste0(directory,"/",colocFiles[1]))
   }else{
     stop("The colocalization file is missing in the directory provided. Please run summarize again to generate this object or add this file to your directory with SNP files")
+  }
+
+  if(!is.null(tissues))
+  {
+    SNPSummary <- SNPSummary[,tissues]
   }
 
 

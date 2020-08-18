@@ -74,13 +74,22 @@ ConquerCircos <-  function(SNPData, tissue=NULL){
     targets <- as.character(states$target) %>% unique()
     celllines <- as.character(states$sample) %>% unique()
     nocel <- length(celllines)
+
+    if(nocel <= 10)
+    {
+      size = 0.05
+    }else{
+      size <- (0.30) / nocel
+    }
+
     state.rings <- lapply(1:nocel, function(i,nocel)
     {
-      st <- 0.93 - (i-1)*0.05 + (-0.01*(i-1))
-      en <- 0.88 - (i-1)*0.05 + (-0.01*(i-1))
+      st <- 0.93 - (i-1)*size + (-0.01*(i-1))
+      en <- (0.93-size) - (i-1)*size + (-0.01*(i-1))
       out <- data.frame(cellline = celllines[i],st, en)
       return(out)
     }, nocel=nocel) %>% do.call(what = rbind)
+
     res.chromstates <- lapply(1:nrow(state.rings), function(i, state.rings, states){
 
       state.rings.sel <- state.rings[i,]
@@ -90,7 +99,7 @@ ConquerCircos <-  function(SNPData, tissue=NULL){
       states.sub <- states.sub[start(states.sub) >= chr.range$start,]
       states.sub <- states.sub[end(states.sub) <= chr.range$end,]
 
-      link.list.sum <- BioCircos::BioCircosArcTrack(trackname = "ChromatinStates", maxRadius = state.rings.sel$st, minRadius = state.rings.sel$en, label=as.character(states.sub$target),
+      link.list.sum <- BioCircos::BioCircosArcTrack(trackname = "ChromatinStates", maxRadius = state.rings.sel$st, minRadius = state.rings.sel$en, label=paste0(as.character(states.sub$target),"<br>Celltype:",as.character(states.sub$sample)),
                                          chromosomes = as.character(chr.range$chr), starts = start(states.sub), ends = end(states.sub), colors = as.character(states.sub$colr))
       return(link.list.sum)
     }, state.rings = state.rings, states=states)
