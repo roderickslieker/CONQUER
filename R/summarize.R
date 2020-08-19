@@ -36,7 +36,8 @@ summarize <- function(variants, multiAnalyze=FALSE, tissues = NULL ,directory=NU
   }
 
 
-
+  filenames <- sprintf("%s/%s.RData", directory, variants)
+  SNPsRemain <- variants[!file.exists(filenames)]
 
   if(length(SNPsRemain) == 0)
   {
@@ -51,7 +52,7 @@ summarize <- function(variants, multiAnalyze=FALSE, tissues = NULL ,directory=NU
 
   if(length(colocFiles) == 0){
     message("Colocalization has not yet been performed. Note that this may time some time depending on the number of SNPs. Running..")
-    all.coloc <- lapply(SNPs, getColocalization)
+    all.coloc <- lapply(variants, getColocalization)
     names(all.coloc) <- SNPs
     save(all.coloc, file=paste0(directory, "/", "Colocalization_Summary.RData"))
   }
