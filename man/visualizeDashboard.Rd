@@ -4,7 +4,7 @@
 \alias{visualizeDashboard}
 \title{visualizeDashboard}
 \usage{
-visualizeDashboard(loadedSNPs, SNPSummary, ColocSummary)
+visualizeDashboard(loadedSNPs, SNPSummary, ColocSummary, tissues = NULL)
 }
 \value{
 [[NULL]]
