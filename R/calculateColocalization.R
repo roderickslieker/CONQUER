@@ -2,7 +2,7 @@
 #' @importFrom coloc finemap.abf
 calculateColocalization <- function(genecode.id, data.qtls=data.qtls, LD=LD)
 {
-  # cat(genecode.id)
+  #cat(genecode.id)
   data.in <- data.qtls[[genecode.id]]
   if(nrow(data.in) != 0){
     vid <- data.in[,"variantId"]

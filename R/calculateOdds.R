@@ -12,7 +12,7 @@ calculateOdds <- function(pathway,geneSet,background){
   tp <- length(intersect(geneSet,pathway))
   fp <- length(pathway) - tp
   fn <- length(geneSet) - tp
-  tn <- background - length(pathway) - length(geneSet)
+  tn <- background - length(pathway) - length(geneSet) + tp
   table <- matrix(c(tp,fp,fn,tn),nrow=2)
   res <- stats::fisher.test(table)
   odds <- res$estimate
