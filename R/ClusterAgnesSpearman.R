@@ -1,7 +1,7 @@
 #' @import cluster
 #' @return [[data.frame]]
 ClusterAgnesSpearman <- function(expressionData){
-  message("Perfroming hierarchical clustering with flexible UPGMA...")
+  message("Performing hierarchical clustering with flexible UPGMA...")
   message("Calculating Gap statistic to determine optimal K...")
   Data <- log10(expressionData+1) %>% t() %>% scale()
   gap_stat <- cluster::clusGap(Data, FUN = agnesPearson,
