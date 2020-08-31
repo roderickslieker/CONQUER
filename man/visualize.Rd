@@ -10,6 +10,8 @@ visualize(directory, SNPs, tissues = NULL)
 \item{directory}{[[character]] Character string of the directory in which the SNP data and optional summary files are stored}
 
 \item{SNPs}{[[vector]] Vector of SNP names that correspond to the SNP names provided in summarize. Can also be a single SNP name, but should always be a rs* number.}
+
+\item{tissues}{[[vector]] A vector of tissues in the GTEx format. For examples see conquer.db::gtexTissuesV8. Can also be left out.}
 }
 \description{
 Main function to visualize the investigated SNPs
