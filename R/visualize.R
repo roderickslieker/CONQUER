@@ -1,6 +1,7 @@
 #' Main function to visualize the investigated SNPs
 #' @param directory [[character]] Character string of the directory in which the SNP data and optional summary files are stored
 #' @param SNPs [[vector]] Vector of SNP names that correspond to the SNP names provided in summarize. Can also be a single SNP name, but should always be a rs* number.
+#' @param tissues [[vector]] A vector of tissues in the GTEx format. For examples see conquer.db::gtexTissuesV8. Can also be left out.
 #' @export
 #' @importFrom shiny runApp
 #' @examples
@@ -51,7 +52,7 @@ visualize <- function(directory, SNPs, tissues=NULL){
   }
 
 
-  app <- visualizeDashboard(loadedSNPs = loadedSNPs,SNPSummary = SNPSummary, ColocSummary = all.coloc)
+  app <- visualizeDashboard(loadedSNPs = loadedSNPs,SNPSummary = SNPSummary, ColocSummary = all.coloc, tissues=tissues)
   shiny::runApp(app,launch.browser = T)
 }
 
