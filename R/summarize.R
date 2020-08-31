@@ -41,19 +41,13 @@ summarize <- function(variants, multiAnalyze=FALSE, tissues = NULL ,directory=NU
 
   if(length(SNPsRemain) == 0)
   {
-  #  if(exists(stats))
-  #  {
-  #    outputLog <- do.call(rbind,stats) %>% data.frame()
-  #  }else{
-  #  	outputLog <- "Complete!"
-  #  }
   allFiles <- list.files(directory)
   colocFiles <- allFiles[grepl("Colocalization_Summary",allFiles)]
 
   if(length(colocFiles) == 0){
-    message("Colocalization has not yet been performed. Note that this may time some time depending on the number of SNPs. Running..")
+    message("Colocalization has not yet been performed. Note that this may take time some time depending on the number of SNPs. Running..")
     all.coloc <- lapply(variants, getColocalization)
-    names(all.coloc) <- SNPs
+    names(all.coloc) <- variants
     save(all.coloc, file=paste0(directory, "/", "Colocalization_Summary.RData"))
   }
 

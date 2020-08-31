@@ -46,15 +46,22 @@ abstractAnalyze <- function(variants, directory, tissues, clustering = "PAM"){
   SNP_summary <- mapply(AnalyseSNPs, eQTLs_list, tissues, clustering)
 
   message("Calculating OR for modules with canonical kegg pathways")
-  #Calcuate OR for modules with  canonical kegg pathways
+
+  #Calculate OR for modules with  canonical kegg pathways
   canOR <- lapply(X = SNP_summary["Module_Genes",],
-                  FUN = getOdds,
-                  KEGG_DATA$ENSG,
-                  KEGG_DATA$PATHID2NAME)
+                  FUN = CONQUER:::getOdds,
+                  pathways = KEGG_DATA$ENSG,
+                  annotation = KEGG_DATA$PATHID2NAME)
+
+  #allOR <- lapply(colnames(SNP_summary), getEnrichREnrichment, SNPSummary=SNP_summary)
+  #names(allOR) <- colnames(SNP_summary)
+
   #Remove modules that are not enriched
   canOR <- lapply(canOR, function(x){Filter(Negate(function(x)nrow(x) == 0), x)})
+  #allOR <- lapply(allOR, function(x){Filter(Negate(function(x)nrow(x) == 0), x)})
+  #allOR <- updateallOR(allOR.in = allOR, eQTLs.in = eQTLs)
 
-  SNP_summary <- rbind(SNP_summary,canOR)
+  SNP_summary <- rbind(SNP_summary, canOR)#, allOR)
 
   return(SNP_summary)
 }

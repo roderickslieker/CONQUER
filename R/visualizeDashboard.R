@@ -16,7 +16,7 @@
 #' @importFrom shinyjs useShinyjs toggle
 #' @import shinycssloaders
 #' @return [[NULL]]
-visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
+visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NULL){
 
   #KEGG_DATA <- CONQUER:::prepare_KEGG(species = "hsa",
   #                                KEGG_Type = "KEGG",
@@ -44,8 +44,11 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     {
       #ld.snpsx <- ld.snps[ld.snps$LDSNP == ld.snps$leadingSNP,]
       temp <- temp[temp$variant_id %in% ld.snps$id,]
+      temp$LeadSNP <- ld.snps[match(temp$variant_id, ld.snps$id),"leadingSNP"]
     }else{
       temp <- temp[temp$rsID %in% ld.snps$LDSNP,]
+      temp$LeadSNP <- ld.snps[match(temp$rsID, ld.snps$LDSNP),"leadingSNP"]
+
     }
     qtl <- paste0(qtl, "_internal")
     assign(qtl, temp, envir = baseenv())
@@ -151,6 +154,14 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                                                      shiny::column(7,DT::DTOutput("eQTL_check")),
                                                                                      shiny::column(5,conquer.d3js::ConquerViolinOutput("module_Violin"))
                                                                                    )
+                                                                   ),
+                                                                   shiny::tabPanel("Advanced Enrichment",value = "advenr",
+                                                                                   shiny::br(),
+                                                                                   shiny::br(),
+                                                                                   shiny::fluidRow(shiny::column(12,
+                                                                                                                 plotly::plotlyOutput("moduleEnrichment")%>% withSpinner(type=7)
+                                                                                   )
+                                                                                   )
                                                                    )
                                                 )
                                               )
@@ -230,6 +241,9 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                                                    shiny::br(),
                                                                                    DT::DTOutput("sQTLOverview")),
                                                                    shiny::tabPanel("Lipid QTL",value = "lqtl",
+                                                                                   shiny::br(),
+                                                                                   customDownloadbutton("downloadlqtlsdownloadalllqtls", "", icon="file-excel", style = buttonStyle,
+                                                                                                        class="btn btn-default shiny-download-link"),
                                                                                    shiny::br(),
                                                                                    DT::DTOutput("lQTLOverview")),
                                                                    shiny::tabPanel("Metabolite QTL",value = "mqtl",
@@ -349,7 +363,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                                                                                       shiny::br(),
                                                                                                                       shiny::br(),
                                                                                                                       shiny::fluidRow(shiny::column(width = 12,
-                                                                                                                                                    withSpinner(plotly::plotlyOutput("moduleColoc", width = 600, height=800), type=7))
+                                                                                                                                                    withSpinner(plotly::plotlyOutput("moduleColoc", width = "800", height="900"), type=7))
                                                                                                                       )),
                                                                                                       shiny::tabPanel(title="sQTLs", value = 'sQTLs_sub',
                                                                                                                       shiny::column(12,
@@ -419,7 +433,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
                                                                  label = "Provide versioned gencodeId (gene.1)"),
                                                 shiny::selectInput(inputId = "tissueSelc",
                                                                    label = "Select Tissue:",
-                                                                   choices = colnames(SNPSummary) %>% sort()),
+                                                                   choices = gtexTissuesV8 %>% sort()),
                                                 actionButton("run", "Go"),
                                                 shiny::actionButton("button", "", icon=shiny::icon("info-circle"), style = "background-color: #ECF0F1"),
                                                 shinyjs::hidden(
@@ -583,16 +597,6 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
       return(out)
     })
 
-
-
-
-
-
-
-
-
-
-
     output$moduleHeat <- plotly::renderPlotly({
       tissue <- shiny::req(input$tissueSel)
       module <- shiny::req(input$ModuleSel)
@@ -607,10 +611,21 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
         z = t(as.matrix(corMatrix)), type = "heatmap") %>% plotly::layout(title =sprintf("Correlation matrix of module %s (%s)",module,tissue))
     })
 
+    output$moduleEnrichment <- plotly::renderPlotly({
+      tissue <- shiny::req(input$tissueSel)
+      plotAdvancedEnrichment(tissue = tissue, interactive=TRUE,SNPSummary=SNPSummary)
+    })
+
+
     output$moduleColoc <- plotly::renderPlotly({
       if(!is.null(ColocSummary[[input$snpSel]]))
       {
-        plotColoc(shiny::req(input$snpSel), all.coloc=ColocSummary, loadedSNPs=loadedSNPs)
+        if(is.null(tissues))
+        {
+          plotColoc(shiny::req(input$snpSel), all.coloc=ColocSummary, loadedSNPs=loadedSNPs)
+        }else{
+          plotColoc(shiny::req(input$snpSel), all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filter=FALSE, tissues=tissues)
+        }
       }
     })
 
@@ -734,6 +749,16 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
       output <- lqtls_internal
       return(output)
     })
+
+    #Download
+    output$downloadalllqtls <- shiny::downloadHandler(
+      filename = function() {
+        paste("Lipid_QTLs", ".xlsx", sep = "")
+      },
+      content = function(file) {
+        rio::export(lqtls_internal, file)
+      }
+    )
 
     output$pQTLOverview_LD <- DT::renderDT({
       row_selected <- shiny::req(input$pQTLOverview_rows_selected)
@@ -1026,7 +1051,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     output$lQTLsExp_table <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewlQTLsExp <- lqtls_internal[lqtls_internal$SNP %in% LDSNPs,]
+      ViewlQTLsExp <- lqtls_internal[lqtls_internal$rsID %in% LDSNPs,]
       return(ViewlQTLsExp)
     },options=list(scrollX=T),selection = "single")
 
@@ -1105,9 +1130,9 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
     })
 
     output$placeHolder_downloadPlot_coloc <- shiny::renderUI({
-      data <- chromatinStatesData()
+      #data <- chromatinStatesData()
       if(!is.null(ColocSummary[[input$snpSel]])){
-        customDownloadbutton("chromatinStates_downloadPlot", "", icon="cloud-download",
+        customDownloadbutton("Colocalization_downloadPlot", "", icon="cloud-download",
                              style = buttonStyle,
                              class="btn btn-default shiny-download-link")
       }
@@ -1131,7 +1156,9 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
       },
       content = function(file) {
         data <- chromatinStatesData()
-        plotly::orca(PlotChromatinStates(StatesPlotData = data[[1]], fillScale = data[[2]],jit = data[[3]]), file = file)
+        pdf(file, width=8, height=12)
+        PlotChromatinStates(StatesPlotData = data[[1]], fillScale = data[[2]],jit = data[[3]], interactive=FALSE) %>% print()
+        dev.off()
       }
     )
     ########################END########################
@@ -1142,8 +1169,9 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary){
         paste(input$snpSel,"_colocalization", ".pdf", sep = "")
       },
       content = function(file) {
-        data <- chromatinStatesData()
-        plotly::orca(plotColoc(shiny::req(input$snpSel), all.coloc=ColocSummary, loadedSNPs=loadedSNPs), file = file)
+        pdf(file, width=6,height=8)
+        plotColoc(shiny::req(input$snpSel), all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filter=FALSE, tissues=tissues, interactive=F) %>% print()
+        dev.off()
       }
     )
     ######################################################
