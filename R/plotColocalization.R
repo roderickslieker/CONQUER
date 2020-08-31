@@ -34,13 +34,29 @@ plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filte
       # Extract genes
       genes <- snp.data$genes
       genes <- genes[as.matrix(findOverlaps(coloc.range, genes))[,2],]
-      genes <- data.frame(start = start(genes), end = end(genes),
-                          strand = ifelse(strand(genes) == "+", "forward", "reverse"),
-                          direction = ifelse(strand(genes) == "+", 1, -1),
-                          molecule = "Gene",
-                          gene = elementMetadata(genes)$name,
-                          ENSEMBL = elementMetadata(genes)$gene_id)
-      genes$gene <- factor(genes$gene)
+
+      check.genes <- length(genes) == 0
+
+      if(check.genes)
+      {
+        genes <- data.frame(start = NA,
+                            end = NA,
+                            strand = NA,
+                            direction = NA,
+                            molecule = "Gene",
+                            gene = "No genes",
+                            ENSEMBL = NA)
+      }else{
+        genes <- data.frame(start = start(genes), end = end(genes),
+                            strand = ifelse(strand(genes) == "+", "forward", "reverse"),
+                            direction = ifelse(strand(genes) == "+", 1, -1),
+                            molecule = "Gene",
+                            gene = elementMetadata(genes)$name,
+                            ENSEMBL = elementMetadata(genes)$gene_id)
+        genes$gene <- factor(genes$gene)
+
+      }
+
 
       cols <- sample(c(viridis::viridis_pal(option = "A")(50), viridis::viridis_pal(option = "D")(50)), 50)
 
@@ -66,10 +82,14 @@ plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filte
         ylab("Position")+
         xlab("")
 
-      if(sum(genes$strand == "forward")>=1){p2 <- p2+geom_text(data=genes[genes$strand == "forward",],
-                                                               aes(y=end, x=gene,size = 3, label = '>', col=gene),position = position_dodge(.5))}
-      if(sum(genes$strand == "reverse")>=1){p2 <- p2 + geom_text(data=genes[genes$strand == "reverse",],
-                                                                 aes(y=start, x=gene,size = 3, label = '<', col=gene),position = position_dodge(.5))}
+      if(!check.genes)
+      {
+        if(sum(genes$strand == "forward")>=1){p2 <- p2+geom_text(data=genes[genes$strand == "forward",],
+                                                                 aes(y=end, x=gene,size = 3, label = '>', col=gene),position = position_dodge(.5))}
+        if(sum(genes$strand == "reverse")>=1){p2 <- p2 + geom_text(data=genes[genes$strand == "reverse",],
+                                                                   aes(y=start, x=gene,size = 3, label = '<', col=gene),position = position_dodge(.5))}
+      }
+
       out <- list(p1,p2)
     }else{
 
