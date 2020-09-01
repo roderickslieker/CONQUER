@@ -1,4 +1,5 @@
 #' @import stringr
+#' @import enrichR
 #' @importFrom dplyr bind_rows first
 abstractAnalyze <- function(variants, directory, tissues, clustering = "PAM"){
   abstractData <- lapply(variants,function(x){
@@ -49,19 +50,19 @@ abstractAnalyze <- function(variants, directory, tissues, clustering = "PAM"){
 
   #Calculate OR for modules with  canonical kegg pathways
   canOR <- lapply(X = SNP_summary["Module_Genes",],
-                  FUN = CONQUER:::getOdds,
+                  FUN = getOdds,
                   pathways = KEGG_DATA$ENSG,
                   annotation = KEGG_DATA$PATHID2NAME)
 
-  #allOR <- lapply(colnames(SNP_summary), getEnrichREnrichment, SNPSummary=SNP_summary)
-  #names(allOR) <- colnames(SNP_summary)
+  allOR <- lapply(colnames(SNP_summary), getEnrichREnrichment, SNPSummary=SNP_summary)
+  names(allOR) <- colnames(SNP_summary)
 
   #Remove modules that are not enriched
   canOR <- lapply(canOR, function(x){Filter(Negate(function(x)nrow(x) == 0), x)})
-  #allOR <- lapply(allOR, function(x){Filter(Negate(function(x)nrow(x) == 0), x)})
-  #allOR <- updateallOR(allOR.in = allOR, eQTLs.in = eQTLs)
+  allOR <- lapply(allOR, function(x){Filter(Negate(function(x)nrow(x) == 0), x)})
+  allOR <- updateallOR(allOR.in = allOR, eQTLs.in = eQTLs)
 
-  SNP_summary <- rbind(SNP_summary, canOR)#, allOR)
-
+  SNP_summary <- rbind(SNP_summary, canOR, allOR)
+  SNPSummary["allOR",] <- allOR
   return(SNP_summary)
 }
