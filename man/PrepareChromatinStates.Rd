@@ -7,7 +7,9 @@
 PrepareChromatinStates(SNPData, sampleSel = NULL)
 }
 \arguments{
-\item{sampleSel}{}
+\item{SNPData}{SNPData}
+
+\item{sampleSel}{sampleSel}
 }
 \value{
 [[list]]
@@ -15,4 +17,3 @@ PrepareChromatinStates(SNPData, sampleSel = NULL)
 \description{
 PrepareChromatinStates
 }
-\keyword{internal}
