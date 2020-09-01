@@ -41,28 +41,28 @@ summarize <- function(variants, multiAnalyze=FALSE, tissues = NULL ,directory=NU
 
   if(length(SNPsRemain) == 0)
   {
-  allFiles <- list.files(directory)
-  colocFiles <- allFiles[grepl("Colocalization_Summary",allFiles)]
+    allFiles <- list.files(directory)
+    colocFiles <- allFiles[grepl("Colocalization_Summary",allFiles)]
 
-  if(length(colocFiles) == 0){
-    message("Colocalization has not yet been performed. Note that this may take time some time depending on the number of SNPs. Running..")
-    all.coloc <- lapply(variants, getColocalization)
-    names(all.coloc) <- variants
-    save(all.coloc, file=paste0(directory, "/", "Colocalization_Summary.RData"))
-  }
+    if(length(colocFiles) == 0){
+      message("Colocalization has not yet been performed. Note that this may take time some time depending on the number of SNPs. Running..")
+      all.coloc <- lapply(variants, getColocalization)
+      names(all.coloc) <- variants
+      save(all.coloc, file=paste0(directory, "/", "Colocalization_Summary.RData"))
+    }
 
-  summFiles <- allFiles[grepl("CONQUER_Summary",allFiles)]
+    summFiles <- allFiles[grepl("CONQUER_Summary",allFiles)]
 
-  if(length(summFiles) == 0 & multiAnalyze){
-    message("MultiAnalyze is true. The SNPs will be analyzed for the following tissues:")
-    lapply(tissues,message)
-    SNPSummary <- abstractAnalyze(variants = variants, directory = directory, tissues = tissues, clustering = "agnes")
-    filename <- sprintf("CONQUER_Summary%s.RData", gsub("[.]","", make.names(Sys.time())))
-    save(SNPSummary, file = paste0(directory, "/", filename))
-    message(sprintf("CONQUER SNP summary saved in %s, with the following name %s", directory, filename))
-  }else{
-    message("Completed, you can now run visualize.")
-  }
+    if(length(summFiles) == 0 & multiAnalyze){
+      message("MultiAnalyze is true. The SNPs will be analyzed for the following tissues:")
+      lapply(tissues,message)
+      SNPSummary <- abstractAnalyze(variants = variants, directory = directory, tissues = tissues, clustering = "agnes")
+      filename <- sprintf("CONQUER_Summary%s.RData", gsub("[.]","", make.names(Sys.time())))
+      save(SNPSummary, file = paste0(directory, "/", filename))
+      message(sprintf("CONQUER SNP summary saved in %s, with the following name %s", directory, filename))
+    }else{
+      message("Completed, you can now run visualize.")
+    }
   }
   #return(outputLog)
 }
