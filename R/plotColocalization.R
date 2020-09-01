@@ -60,7 +60,10 @@ plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filte
 
       cols <- sample(c(viridis::viridis_pal(option = "A")(50), viridis::viridis_pal(option = "D")(50)), 50)
 
-      p1 <-  ggplot(all.coloc.sel, aes(x=Position, y=SNP.PP, col=Tissue,label=Lead.name))+
+      #Label
+      all.coloc.sel$Label <- sprintf("SNP:%s<br>Lead SNP:%s", all.coloc.sel$snp, all.coloc.sel$Lead.name)
+
+      p1 <-  ggplot(all.coloc.sel, aes(x=Position, y=SNP.PP, col=Tissue,label=Label))+
         geom_point()+
         geom_line(lwd=.5, alpha=.5)+
         theme(legend.position = "none")+
