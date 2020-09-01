@@ -54,6 +54,8 @@ visualize <- function(directory = NULL, SNPs, tissues=NULL){
   if(!is.null(tissues))
   {
     SNPSummary <- SNPSummary[,tissues]
+  }else{
+    tissues <- colnames(SNPSummary)
   }
 
 
