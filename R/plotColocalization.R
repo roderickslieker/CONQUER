@@ -1,7 +1,7 @@
 #' @import ggplot2
 #' @importFrom plotly ggplotly
 #' @importFrom viridis viridis_pal
-plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filter=TRUE, interactive=TRUE,tissues=NULL)
+plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filter=FALSE, interactive=TRUE,tissues=NULL)
 {
   snp.data <- loadedSNPs[[rsID]]
   all.coloc.sel <- all.coloc[[rsID]]
@@ -17,6 +17,7 @@ plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filte
   {
     all.coloc.sel$Id <- paste0(all.coloc.sel$Tissue,"_", all.coloc.sel$genecodeId)
     maxx <- by(all.coloc.sel$SNP.PP, all.coloc.sel$Id, max) %>% as.list() %>% do.call(what=c)
+
     if(filter)
     {
       all.coloc.sel <- all.coloc.sel[all.coloc.sel$Id %in% names(maxx[maxx >= .10]),]
@@ -25,7 +26,6 @@ plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filte
     if(nrow(all.coloc.sel) >= 1)
     {
       all.coloc.sel$Lead.name <- rsID
-      #all.coloc.sel <- all.coloc.sel[all.coloc.sel$SNP.PP >= 0.1,]
       # Range
       start.coloc <- min(all.coloc.sel$Position)
       end.coloc <- max(all.coloc.sel$Position)
@@ -63,6 +63,22 @@ plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filte
       #Label
       all.coloc.sel$Label <- sprintf("SNP:%s<br>Lead SNP:%s", all.coloc.sel$snp, all.coloc.sel$Lead.name)
 
+      LD <- snp.data$LD
+      LD <- LD[LD$start >= start.coloc & LD$start <= end.coloc,]
+      Lead <- do.call(cbind, snp.data$SNP) %>% as.data.frame()
+
+      p0 <-  ggplot(LD, aes(x=start, y=r2, col=r2,SNP=variation, consequence_type=consequence_type))+
+        geom_point()+
+        theme(legend.position = "none")+
+        ylab("LD (r2)")+
+        xlab("Position")+
+        ylim(0,1)+
+        xlim(start.coloc, end.coloc)+
+        scale_colour_gradientn(colours = viridis::viridis_pal(option = "D")(10))+
+        theme(legend.position = "none")+
+        geom_point(data=Lead, aes(x=as.numeric(start), y=1), pch=8, col="black")
+
+
       p1 <-  ggplot(all.coloc.sel, aes(x=Position, y=SNP.PP, col=Tissue,label=Label))+
         geom_point()+
         geom_line(lwd=.5, alpha=.5)+
@@ -93,7 +109,7 @@ plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filte
                                                                    aes(y=start, x=gene,size = 3, label = '<', col=gene),position = position_dodge(.5))}
       }
 
-      out <- list(p1,p2)
+      out <- list(p1,p2,p0)
     }else{
 
       out <- ggplot2::ggplot(data.frame(x=1,y=1, label="Cannot test colocalization for this gene/SNP/tissue set"),
@@ -112,7 +128,7 @@ plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filte
   {
     if(class(out) == "list")
     {
-      out <- plotly::subplot(p1, p2, nrows = 2, shareX = T, heights = c(0.8,0.2))
+      out <- plotly::subplot(p1, p0,p2, nrows = 3, shareX = T, heights = c(0.6,0.25,0.15))
     }else{
       out <- plotly::ggplotly(out)
     }
@@ -121,8 +137,9 @@ plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filte
     {
       p1 <- out[[1]]
       p2 <- out[[2]]
+      p0 <- out[[3]]
       p1 <- p1 + theme(legend.position = "bottom")
-      out <- patchwork::wrap_plots(p1,p2, nrow=2, heights = c(0.8, 0.2))# guides = "collect")
+      out <- patchwork::wrap_plots(p1,p0, p2, nrow=3, heights =c(0.6,0.25,0.15))
     }else{
     }
   }
