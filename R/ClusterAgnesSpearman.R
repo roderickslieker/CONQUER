@@ -1,3 +1,4 @@
+#' Cluster Agnes /Spearman
 #' @import cluster
 #' @return [[data.frame]]
 ClusterAgnesSpearman <- function(expressionData){
