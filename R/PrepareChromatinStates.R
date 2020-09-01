@@ -1,11 +1,7 @@
 #' PrepareChromatinStates
-#'
-#' @param SNPData
-#' @param sampleSel
-#'
-#' @keywords internal
+#' @param SNPData SNPData
+#' @param sampleSel sampleSel
 #' @importFrom reshape2 melt
-#'
 #' @return [[list]]
 PrepareChromatinStates <- function(SNPData, sampleSel = NULL){
   chr <- SNPData$SNP$chr
