@@ -45,11 +45,14 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
       #ld.snpsx <- ld.snps[ld.snps$LDSNP == ld.snps$leadingSNP,]
       temp <- temp[temp$variant_id %in% ld.snps$id,]
       temp$LeadSNP <- ld.snps[match(temp$variant_id, ld.snps$id),"leadingSNP"]
-    }else{
-      temp <- temp[temp$rsID %in% ld.snps$LDSNP,]
-      temp$LeadSNP <- ld.snps[match(temp$rsID, ld.snps$LDSNP),"leadingSNP"]
+    }else if(length(grep("miQTL", qtl)) !=0){
+      temp <- temp[temp$SNP %in% ld.snps$LDSNP,]
+      temp$LeadSNP <- ld.snps[match(temp$SNP, ld.snps$LDSNP),"leadingSNP"]
+      }else{
+        temp <- temp[temp$rsID %in% ld.snps$LDSNP,]
+        temp$LeadSNP <- ld.snps[match(temp$rsID, ld.snps$LDSNP),"leadingSNP"]
 
-    }
+      }
     qtl <- paste0(qtl, "_internal")
     assign(qtl, temp, envir = baseenv())
     rm(temp)
@@ -209,6 +212,8 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
                                                                                    )),
                                                                    shiny::tabPanel("DNAm QTL", value = "meqtl",
                                                                                    shiny::br(),
+                                                                                   customDownloadbutton("downloadallmeqtls", "", icon="file-excel", style = buttonStyle,
+                                                                                                        class="btn btn-default shiny-download-link"),
                                                                                    DT::DTOutput("meQTLOverview"),
                                                                                    shiny::br(),
                                                                                    shiny::br(),
@@ -217,13 +222,18 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
                                                                                    shiny::tabsetPanel(
                                                                                      shiny::tabPanel("Experimental",
                                                                                                      shiny::br(),
-                                                                                                     shiny::br(),
+				                                                                                     customDownloadbutton("downloadallmiqtlsexp", "", icon="file-excel", style = buttonStyle,
+				                                                                                                        class="btn btn-default shiny-download-link"),
+				                                                                                                     shiny::br(),
                                                                                                      DT::DTOutput("mi_overview_exp"),
                                                                                                      shiny::br(),
                                                                                                      shiny::br(),
                                                                                                      DT::DTOutput("mi_overview_exp_LD")),
                                                                                      shiny::tabPanel("Predicted",
                                                                                                      shiny::br(),
+                                                                                                     customDownloadbutton("downloadallmiqtlspred", "", icon="file-excel", style = buttonStyle,
+				                                                                                                        class="btn btn-default shiny-download-link"),
+
                                                                                                      shiny::br(),
                                                                                                      DT::DTOutput("mi_overview_pred"),
                                                                                                      shiny::br(),
@@ -233,16 +243,22 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
                                                                    ),
                                                                    shiny::tabPanel("Protein QTL",value = "pqtl",
                                                                                    shiny::br(),
+                                                                                   customDownloadbutton("downloadallpqtls", "", icon="file-excel", style = buttonStyle,
+                                        				                                                        class="btn btn-default shiny-download-link"),
+                                                                                   shiny::br(),
                                                                                    DT::DTOutput("pQTLOverview"),
                                                                                    shiny::br(),
                                                                                    shiny::br(),
                                                                                    DT::DTOutput("pQTLOverview_LD")),
                                                                    shiny::tabPanel("Splicing QTL",value = "sqtl",
                                                                                    shiny::br(),
+																				   customDownloadbutton("downloadallsqtls", "", icon="file-excel", style = buttonStyle,
+																											class="btn btn-default shiny-download-link"),
+                                                                                   shiny::br(),
                                                                                    DT::DTOutput("sQTLOverview")),
                                                                    shiny::tabPanel("Lipid QTL",value = "lqtl",
                                                                                    shiny::br(),
-                                                                                   customDownloadbutton("downloadlqtlsdownloadalllqtls", "", icon="file-excel", style = buttonStyle,
+                                                                                   customDownloadbutton("downloadalllqtls", "", icon="file-excel", style = buttonStyle,
                                                                                                         class="btn btn-default shiny-download-link"),
                                                                                    shiny::br(),
                                                                                    DT::DTOutput("lQTLOverview")),
@@ -250,8 +266,14 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
                                                                                    shiny::tabsetPanel(
                                                                                      shiny::tabPanel("Nightingale",
                                                                                                      shiny::br(),
+                                                                                                     customDownloadbutton("downloadallmqtlsnigh", "", icon="file-excel", style = buttonStyle,
+                                                                                                        class="btn btn-default shiny-download-link"),
+                                                                                                     shiny::br(),
                                                                                                      DT::DTOutput("mqtls_overview_ng")),
                                                                                      shiny::tabPanel("Multiplatform",
+                                                                                                     shiny::br(),
+                                                                                                     customDownloadbutton("downloadallmqtlsmulti", "", icon="file-excel", style = buttonStyle,
+                                                                                                        class="btn btn-default shiny-download-link"),
                                                                                                      shiny::br(),
                                                                                                      DT::DTOutput("mqtls_overview_lc"))
                                                                                    )
@@ -622,7 +644,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
       {
         if(is.null(tissues))
         {
-          plotColoc(shiny::req(input$snpSel), all.coloc=ColocSummary, loadedSNPs=loadedSNPs)
+          plotColoc(shiny::req(input$snpSel), all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filter=TRUE)
         }else{
           plotColoc(shiny::req(input$snpSel), all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filter=FALSE, tissues=tissues)
         }
@@ -750,13 +772,81 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
       return(output)
     })
 
-    #Download
+
+###########################################################
+#Download all QTLs
+###########################################################
+
+	#MeQTls
+    output$downloadallmeqtls <- shiny::downloadHandler(
+      filename = function() {
+        paste("Methylation QTLs", ".xlsx", sep = "")
+      },
+      content = function(file) {
+        rio::export(meQTLs_internal, file)
+      }
+    )
+    #miQTLs exp
+    output$downloadallmiqtlsexp <- shiny::downloadHandler(
+      filename = function() {
+        paste("MiRNA_Experimentally_QTLs", ".xlsx", sep = "")
+      },
+      content = function(file) {
+        rio::export(miQTLexperiment_internal, file)
+      }
+    )
+    #miQTls pred
+    output$downloadallmiqtlspred <- shiny::downloadHandler(
+      filename = function() {
+        paste("MiRNA_Predicted_QTLs", ".xlsx", sep = "")
+      },
+      content = function(file) {
+        rio::export(miQTLpredict_internal, file)
+      }
+    )
+    #pQTls
+    output$downloadallpqtls <- shiny::downloadHandler(
+      filename = function() {
+        paste("Protein_QTLs", ".xlsx", sep = "")
+      },
+      content = function(file) {
+        rio::export(pQTLs_internal, file)
+      }
+    )
+    #lipidQTls
     output$downloadalllqtls <- shiny::downloadHandler(
       filename = function() {
         paste("Lipid_QTLs", ".xlsx", sep = "")
       },
       content = function(file) {
         rio::export(lqtls_internal, file)
+      }
+    )
+    #sQTLs
+    output$downloadallsqtls <- shiny::downloadHandler(
+      filename = function() {
+        paste("Splicing_QTLs", ".xlsx", sep = "")
+      },
+      content = function(file) {
+        rio::export(sqtls_internal, file)
+      }
+    )
+    #mQTLs nightingale
+    output$downloadallmqtlsnigh <- shiny::downloadHandler(
+      filename = function() {
+        paste("Metabolite_QTLs_Nightingale", ".xlsx", sep = "")
+      },
+      content = function(file) {
+        rio::export(mqtls_NG_internal, file)
+      }
+    )
+    #mQTLs multiplatform
+    output$downloadallmqtlsmulti <- shiny::downloadHandler(
+      filename = function() {
+        paste("Metabolite_QTLs_MultiPlatform", ".xlsx", sep = "")
+      },
+      content = function(file) {
+        rio::export(mqtls_LC_internal, file)
       }
     )
 
@@ -797,7 +887,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
     ###miQTLS
     #Experimental
     AllTissuesMiQTLexperiment <-  shiny::reactive({
-      output <- miQTLexperiment
+      output <- miQTLexperiment_internal
       return(output)
     })
 
@@ -820,11 +910,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
 
     #Predicted
     AllTissuesMiQTLpredict <- shiny::reactive({
-      #LDSNPs <- LDSNPs()
-      #all <- unique(c(LDSNPs$LDSNP, LDSNPs$leadingSNP))
-      #miQTLs <- conquer.db::miQTLpredict
-      #miQTLs <- miQTLpredict[miQTLs$SNP %in% all,]
-      return(miQTLpredict)
+      return(miQTLpredict_internal)
     })
 
     output$mi_overview_pred <- DT::renderDT({
@@ -1061,7 +1147,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
     output$mQTLsNGExp_table <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewmngQTLsExp <- mqtls_NG_internal[mqtls_NG_internal$SNP %in% LDSNPs,]
+      ViewmngQTLsExp <- mqtls_NG_internal[mqtls_NG_internal$rsID %in% LDSNPs,]
       return(ViewmngQTLsExp)
     },options=list(scrollX=T),selection = "single")
     ########################END########################
@@ -1070,7 +1156,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
     output$mQTLsLCExp_table <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewmlcQTLsExp <- mqtls_LC_internal[mqtls_LC_internal$SNP %in% LDSNPs,]
+      ViewmlcQTLsExp <- mqtls_LC_internal[mqtls_LC_internal$rsID %in% LDSNPs,]
       return(ViewmlcQTLsExp)
     },options=list(scrollX=T),selection = "single")
     ########################END########################
