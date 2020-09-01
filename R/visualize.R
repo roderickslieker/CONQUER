@@ -6,7 +6,12 @@
 #' @importFrom shiny runApp
 #' @examples
 #' \dontrun{summarize("somedirectory","rs1558902")}
-visualize <- function(directory, SNPs, tissues=NULL){
+visualize <- function(directory = NULL, SNPs, tissues=NULL){
+  if(is.null(directory))
+  {
+    directory <- getwd()
+  }
+
   #List all files in directory
   allFiles <- list.files(directory)
   if(identical(allFiles, character(0))){
