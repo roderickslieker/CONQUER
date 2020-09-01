@@ -63,6 +63,5 @@ abstractAnalyze <- function(variants, directory, tissues, clustering = "PAM"){
   allOR <- updateallOR(allOR.in = allOR, eQTLs.in = eQTLs)
 
   SNP_summary <- rbind(SNP_summary, canOR, allOR)
-  SNPSummary["allOR",] <- allOR
   return(SNP_summary)
 }
