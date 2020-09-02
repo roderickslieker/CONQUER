@@ -12,8 +12,8 @@ extract.LD <- function(directory, SNPs)
   #Extract QTLs from abstractData
   message("Loading LD...")
   LD <- lapply(1:length(abstractData),function(i){
-    if(nrow(abstractData[[i]]$LD) != 0) return(abstractData[[i]]$LD[c("variation","chr","start","consequence_type")])
+    if(nrow(abstractData[[i]]$LD) != 0) return(abstractData[[i]]$LD[c("variation","chr","start","r2","consequence_type")])
   }) %>% do.call(what=rbind)
-
+  LD <- LD[LD$r2 >= 0.8,]
   return(LD)
 }
