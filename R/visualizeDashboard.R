@@ -17,7 +17,27 @@
 #' @import shinycssloaders
 #' @return [[NULL]]
 visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NULL){
+  currversion.db <- rio::import("https://raw.githubusercontent.com/roderickslieker/CONQUER.db/master/DESCRIPTION", nrow=1, skip=3, format='\t', header=F)[1,2]
+  currversion.d3 <- rio::import("https://raw.githubusercontent.com/roderickslieker/CONQUER.d3/master/DESCRIPTION", nrow=1, skip=3, format='\t', header=F)[1,2]
+  currversion <- rio::import("https://raw.githubusercontent.com/roderickslieker/CONQUER/master/DESCRIPTION", nrow=1, skip=3, format='\t', header=F)[1,2]
 
+  if(packageVersion("conquer.db") == currversion.db)
+  {
+  }else{
+    stop("You are not using the latest version of CONQUER.db, please update from GitHub to prevent broken links (devtools::install.github('roderickslieker/conquer.db')")
+  }
+
+  if(packageVersion("CONQUER") == currversion)
+  {
+  }else{
+    stop("You are not using the latest version of CONQUER, please update from GitHub to prevent broken links (devtools::install.github('roderickslieker/CONQUER')")
+  }
+
+  if(packageVersion("conquer.d3js") == currversion.d3)
+  {
+  }else{
+    stop("You are not using the latest version of CONQUER.d3js, please update from GitHub to prevent broken links (devtools::install.github('roderickslieker/conquer.d3')")
+  }
   #KEGG_DATA <- CONQUER:::prepare_KEGG(species = "hsa",
   #                                KEGG_Type = "KEGG",
   #                                keyType = "kegg")
@@ -32,7 +52,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
   ld.snps <- getAllSNPLD(SNPs = loadedSNPs)
 
   cat("Loading data.....","\n")
-  qtls <- c("pQTLs","meQTLs","miQTLexperiment","miQTLpredict","mqtls_LC",
+  qtls <- c("pqtls","meQTLs","miQTLexperiment","miQTLpredict","mqtls_LC",
             "mqtls_NG","sqtls1","sqtls2","sqtls3","sqtls4","lqtls")
 
 
@@ -42,26 +62,21 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
     temp <- get(qtl)
     if(length(grep("sqtl", qtl)) != 0)
     {
-      #ld.snpsx <- ld.snps[ld.snps$LDSNP == ld.snps$leadingSNP,]
       temp <- temp[temp$variant_id %in% ld.snps$id,]
       temp$LeadSNP <- ld.snps[match(temp$variant_id, ld.snps$id),"leadingSNP"]
     }else if(length(grep("miQTL", qtl)) !=0){
       temp <- temp[temp$SNP %in% ld.snps$LDSNP,]
       temp$LeadSNP <- ld.snps[match(temp$SNP, ld.snps$LDSNP),"leadingSNP"]
-      }else{
-        temp <- temp[temp$rsID %in% ld.snps$LDSNP,]
-        temp$LeadSNP <- ld.snps[match(temp$rsID, ld.snps$LDSNP),"leadingSNP"]
-
-      }
+    }else{
+      temp <- temp[temp$rsID %in% ld.snps$LDSNP,]
+      temp$LeadSNP <- ld.snps[match(temp$rsID, ld.snps$LDSNP),"leadingSNP"]
+    }
     qtl <- paste0(qtl, "_internal")
     assign(qtl, temp, envir = baseenv())
     rm(temp)
   }
 
   sqtls_internal <- rbind(sqtls1_internal,sqtls2_internal,sqtls3_internal,sqtls4_internal)
-
-  rm(list = c("sqtls1_internal","sqtls2_internal","sqtls3_internal","sqtls4_internal"))
-
 
   cat(sprintf("Starting dashboard.....",qtl))
 
@@ -295,6 +310,8 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
                                                                    choices = names(loadedSNPs)),
                                                 shiny::uiOutput("responsiveUI_A"),
                                                 shiny::uiOutput("responsiveUI_B"),
+                                                shiny::uiOutput("responsiveUI_D"),
+                                                shiny::uiOutput("responsiveUI_E"),
                                                 shiny::actionButton("button3", "", icon=shiny::icon("info-circle"), style = "background-color: #ECF0F1",),
                                                 shinyjs::hidden(
                                                   shiny::div(id='text_div3',
@@ -385,7 +402,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
                                                                                                                       shiny::br(),
                                                                                                                       shiny::br(),
                                                                                                                       shiny::fluidRow(shiny::column(width = 12,
-                                                                                                                                                    withSpinner(plotly::plotlyOutput("moduleColoc", width = "800", height="900"), type=7))
+                                                                                                                                                    withSpinner(plotly::plotlyOutput("moduleColoc", width = "650px", height="1000px"), type=7))
                                                                                                                       )),
                                                                                                       shiny::tabPanel(title="sQTLs", value = 'sQTLs_sub',
                                                                                                                       shiny::column(12,
@@ -405,10 +422,10 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
                                                                                                                       shiny::column(12,
                                                                                                                                     shiny::br(),
                                                                                                                                     DT::DTOutput("meQTLsTable"))),
-                                                                                                      shiny::tabPanel(title="pQTLs", value = "pqtls_sub",
+                                                                                                      shiny::tabPanel(title="pqtls", value = "pqtls_sub",
                                                                                                                       shiny::column(12,
                                                                                                                                     shiny::br(),
-                                                                                                                                    DT::DTOutput("pQTLsTable"))),
+                                                                                                                                    DT::DTOutput("pqtlsTable"))),
                                                                                                       shiny::tabPanel(title="lQTLs", value = 'lqtl_sub',
                                                                                                                       shiny::column(12,
                                                                                                                                     shiny::br(),
@@ -728,7 +745,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
 
 
     AllTissuespQTLsData <- shiny::reactive({
-      output <- pQTLs_internal
+      output <- pqtls_internal
       return(output)
     })
 
@@ -768,8 +785,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
     },options=list(scrollX=T),selection = "single")
 
     AllTissueslQTLsData <- shiny::reactive({
-      output <- lqtls_internal
-      return(output)
+      return(lqtls_internal)
     })
 
 
@@ -804,13 +820,13 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
         rio::export(miQTLpredict_internal, file)
       }
     )
-    #pQTls
+    #pqtls
     output$downloadallpqtls <- shiny::downloadHandler(
       filename = function() {
         paste("Protein_QTLs", ".xlsx", sep = "")
       },
       content = function(file) {
-        rio::export(pQTLs_internal, file)
+        rio::export(pqtls_internal, file)
       }
     )
     #lipidQTls
@@ -936,7 +952,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
     ####SINGLE SNP####
     output$responsiveUI_A <- shiny::renderUI({
 
-      if(input$single == "QTLs"){
+      if(input$single == "QTLs" & input$QTLs_tab == "eqtls_sub"){
         checkboxGroupInput("check_eQTL", label = "Type of eQTLs: ",
                            choices = list("cis-eQTLs" = 1, "trans-eQTLs" = 2),
                            selected = c(1,2))
@@ -960,6 +976,21 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
         shiny::selectInput(inputId = "chromTissue",
                            label = "Select Tissue:",
                            choices = c("All", sort(groups)))
+      }
+    })
+
+    output$responsiveUI_D <- shiny::renderUI({
+      if(input$single == "QTLs" & input$QTLs_tab == "coloc_sub"){
+
+        shiny::sliderInput(inputId = "Colocwidth", label = "Export width", min = 5, max = 15, value = 10, step = 1)
+      }
+    })
+
+
+    output$responsiveUI_E <- shiny::renderUI({
+      if(input$single == "QTLs" & input$QTLs_tab == "coloc_sub"){
+
+        shiny::sliderInput(inputId = "Colocheight", label = "Export height", min = 10, max = 25, value = 12, step = 1)
       }
     })
 
@@ -1087,7 +1118,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
     output$pQTLsTable <- DT::renderDT({
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
-      ViewpQTLs <- pQTLs_internal[pQTLs_internal$rsID %in% LDSNPs,]
+      ViewpQTLs <- pqtls_internal[pqtls_internal$rsID %in% LDSNPs,]
       return(ViewpQTLs)
     },options=list(scrollX=T),selection = "single")
     ########################END########################
@@ -1255,7 +1286,10 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
         paste(input$snpSel,"_colocalization", ".pdf", sep = "")
       },
       content = function(file) {
-        pdf(file, width=6,height=8)
+        out.width.coloc <- req(input$Colocwidth) %>% as.numeric()
+        out.height.coloc <- req(input$Colocheight) %>% as.numeric()
+
+        pdf(file, width = out.width.coloc, height = out.height.coloc)
         plotColoc(shiny::req(input$snpSel), all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filter=FALSE, tissues=tissues, interactive=F) %>% print()
         dev.off()
       }
