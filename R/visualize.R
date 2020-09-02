@@ -58,7 +58,6 @@ visualize <- function(directory = NULL, SNPs, tissues=NULL){
     tissues <- colnames(SNPSummary)
   }
 
-
   app <- visualizeDashboard(loadedSNPs = loadedSNPs,SNPSummary = SNPSummary, ColocSummary = all.coloc, tissues=tissues)
   shiny::runApp(app,launch.browser = T)
 }
