@@ -14,10 +14,12 @@ extract.eQTLs <- function(directory, SNPs)
   CiseQTL <- lapply(1:length(abstractData),function(i){
     if(nrow(abstractData[[i]]$eQTLs) != 0) return(abstractData[[i]]$eQTLs)
   }) %>% do.call(what=rbind)
+  CiseQTL$Type <- "Cis"
 
   TranseQTL <- lapply(1:length(abstractData),function(i){
     if(nrow(abstractData[[i]]$eQTLsTrans) != 0) return(abstractData[[i]]$eQTLsTrans)
   }) %>% do.call(what=rbind)
+  TranseQTL$Type <- "Trans"
 
   eQTLs <- dplyr::bind_rows(CiseQTL,TranseQTL); rm(CiseQTL,TranseQTL)
   eQTLs <- eQTLs[eQTLs$pValue <= 0.05,]
