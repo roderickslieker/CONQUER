@@ -1355,10 +1355,13 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
     #Download button
     output$DownloadViolinButton <- shiny::renderUI({
       shiny::req(input$eQTLsTable_rows_selected)
-      shiny::downloadButton("downloadVioloinPlot", "Download Violin")
-    })
+      customDownloadbutton("downloadViolinPlot", "", icon="cloud-download",
+                             style = buttonStyle,
+                             class="btn btn-default shiny-download-link")
+      })
+
     #Actual download
-    output$downloadVioloinPlot <- shiny::downloadHandler(
+    output$downloadViolinPlot <- shiny::downloadHandler(
       filename = function() {
         paste(input$snpSel,"_",violinPlotData()[["gene"]],"_",violinPlotData()[["tissue"]],"_violin", ".html", sep = "")
       },
