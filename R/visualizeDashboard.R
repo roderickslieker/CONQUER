@@ -228,7 +228,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
                                                                    shiny::tabPanel("DNAm QTL", value = "meqtl",
                                                                                    shiny::br(),
                                                                                    customDownloadbutton("downloadallmeqtls", "", icon="file-excel", style = buttonStyle,
-                                                                                                        class="btn btn-default shiny-download-link"),
+                                                                                                        class="btn btn-default htmlwidgets-download-link"),
                                                                                    DT::DTOutput("meQTLOverview"),
                                                                                    shiny::br(),
                                                                                    shiny::br(),
@@ -355,6 +355,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
                                                                    shiny::tabPanel(title="Chromosomal interactions",value = "CI",
                                                                                    shiny::br(),
                                                                                    shiny::uiOutput("CIMessage"),
+                                                                                   shiny::uiOutput("downloadCPlot"),
                                                                                    BioCircos::BioCircosOutput(outputId = "Circos",width = 1000,height = 1000)),
                                                                    shiny::tabPanel(title = "Chromatin States", value = "CS",
                                                                                    shiny::br(),
@@ -422,7 +423,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
                                                                                                                       shiny::column(12,
                                                                                                                                     shiny::br(),
                                                                                                                                     DT::DTOutput("meQTLsTable"))),
-                                                                                                      shiny::tabPanel(title="pqtls", value = "pqtls_sub",
+                                                                                                      shiny::tabPanel(title="pQTLs", value = "pqtls_sub",
                                                                                                                       shiny::column(12,
                                                                                                                                     shiny::br(),
                                                                                                                                     DT::DTOutput("pqtlsTable"))),
@@ -473,7 +474,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
                                                 shiny::selectInput(inputId = "tissueSelc",
                                                                    label = "Select Tissue:",
                                                                    choices = gtexTissuesV8 %>% sort()),
-                                                actionButton("run", "Go"),
+                                                shiny::actionButton("run", "Go"),
                                                 shiny::actionButton("button", "", icon=shiny::icon("info-circle"), style = "background-color: #ECF0F1"),
                                                 shinyjs::hidden(
                                                   shiny::div(id='text_div',
@@ -1112,7 +1113,12 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
         rio::export(eQTLsData(), file)
       }
     )
+
+
+
     ########################END########################
+
+
 
     ########################pQTL Table########################
     output$pQTLsTable <- DT::renderDT({
@@ -1192,6 +1198,39 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
     },options=list(scrollX=T),selection = "single")
     ########################END########################
 
+
+    ########################Circos########################
+
+
+    #Download button
+    output$downloadCPlot <- shiny::renderUI({
+      #shiny::downloadButton(outputId = "circosdown", "Download CC")
+
+      customDownloadbutton("circosdown", "", icon="cloud-download",
+                           style = buttonStyle,
+                           class="btn btn-default shiny-download-link")
+
+    })
+
+
+
+    #Actual download
+    output$circosdown <- shiny::downloadHandler(
+      filename = function() {
+        paste(shiny::req(input$snpSel),"_",shiny::req(input$chromTissue),"_CircosPlot", ".html", sep = "")
+        #return("Test.html")
+      },
+      content = function(file) {
+        htmlwidgets::saveWidget(widget =ConquerCircos(SNPData = loadedSNPs[[shiny::req(input$snpSel)]], tissue = shiny::req(input$chromTissue)), file=file)
+      })
+    ########################END########################
+
+
+
+
+
+
+    ########################    ########################
     output$CIMessage <- shiny::renderUI({
       SNP <- shiny::req(input$snpSel)
       tissue <- shiny::req(input$chromTissue)
