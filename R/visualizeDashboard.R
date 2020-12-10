@@ -411,11 +411,11 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
                                                                                                                                     DT::DTOutput("sQTLsExp_table"))),
                                                                                                       shiny::tabPanel(title="miQTLs", value = "miqtl_sub",
                                                                                                                       shiny::fluidRow(
-                                                                                                                        shiny::column(6,
+                                                                                                                        shiny::column(12,
                                                                                                                                       shiny::h4("Predicted miQTLs"),
                                                                                                                                       shiny::br(),
                                                                                                                                       DT::DTOutput("miQTLsPred_table")),
-                                                                                                                        shiny::column(6,
+                                                                                                                        shiny::column(12,
                                                                                                                                       shiny::h4("Experimental determined miQTLs"),
                                                                                                                                       shiny::br(),
                                                                                                                                       DT::DTOutput("miQTLsExp_table")))),
@@ -1146,6 +1146,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
       LDtable <- loadedSNPs[[input$snpSel]]$LD
       LDSNPs <- LDtable[LDtable$r2 >= 0.8,"variation"]
       ViewmiQTLsPred <- miQTLpredict_internal[, c("SNP","Gene","miRNA","Celltype","Change","Effect")]
+      ViewmiQTLsPred <- ViewmiQTLsPred[ViewmiQTLsPred$SNP %in% LDSNPs,]
       return(ViewmiQTLsPred)
     })
     ########################END########################
