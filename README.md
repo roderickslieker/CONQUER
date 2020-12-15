@@ -12,7 +12,7 @@ Install the the development version from GitLab:
 `install.packages("devtools")`
 
 ``` r
-devtools::install_github("roderickslieker/CONQUER.DB")
+devtools::install_github("roderickslieker/CONQUER.db")
 devtools::install_github("roderickslieker/CONQUER.d3")
 devtools::install_github("roderickslieker/CONQUER")
 ```
@@ -120,26 +120,3 @@ visualize(directory = "somedirectory", SNPs = snps)
 ## Gene expression
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Expression.png" align="center" width="500" />
- 
-
-     
-
-## Data resources
-
-| Source              | Variable                           | Details                                                                                                                                                                                                                                                                                       | Genome build      |
-| :------------------ | :--------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------- |
-| ENSEMBL REST API    | Linkage disequilibrium             | 1000 genomes phase 3, default setting CEU                                                                                                                                                                                                                                                     | \-                |
-|                     | Variant location                   |                                                                                                                                                                                                                                                                                               | hg38              |
-|                     | Recombination                      | 1000 genomes phase 3, default setting CEU                                                                                                                                                                                                                                                     | \-                |
-|                     | Genes                              | Ensembl HAVANA                                                                                                                                                                                                                                                                                | hg38              |
-| 4D genomes          | 3d interactions                    | IM-PET of A549, Brain hippocampus middle, CD34+, CD4+ Memory, CD4+ Naive, CD4+ T, CD8+ Naive, Foreskin fibroblast, Foreskin keratinocyte, Foreskin melanocyte, GM12878, H1 derived mesenchymal stem cell, H1 derived mesendoderm cell, H1 derived neural progenitors, H1 derived trophoblast, | Lift-over to hg38 |
-|                     |                                    | H1ESC, HCC1954, HCT116, HELA, HEP,                                                                                                                                                                                                                                                            |                   |
-|                     |                                    | HMEC, HSMM, HUVEC, IMR90, IPS19.11,                                                                                                                                                                                                                                                           |                   |
-|                     |                                    | IPS6.9, K562, MCF7, NHEK, NHLF, PANC                                                                                                                                                                                                                                                          |                   |
-| Epigenomics roadmap | Chromatin state segmentations      | 127 cell types                                                                                                                                                                                                                                                                                | Lift-over hg38    |
-| ENCODE              | Transcription factor binding sites |                                                                                                                                                                                                                                                                                               | Lift-over hg38    |
-| Multiple sources    | Experimental miQTLs                |                                                                                                                                                                                                                                                                                               |                   |
-|                     | Predicted miQTLs                   |                                                                                                                                                                                                                                                                                               |                   |
-|                     | meQTLs                             | Blood                                                                                                                                                                                                                                                                                         |                   |
-|                     | pQTLs                              |                                                                                                                                                                                                                                                                                               |                   |
-| GWAS catalogue      | GWAS catalogue                     | Latest version available                                                                                                                                                                                                                                                                      |                   |

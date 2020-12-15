@@ -18,7 +18,7 @@ Install the the development version from GitLab:
 `install.packages("devtools")`
 
 ```{r, eval = FALSE}
-devtools::install_github("roderickslieker/CONQUER.DB")
+devtools::install_github("roderickslieker/CONQUER.db")
 devtools::install_github("roderickslieker/CONQUER.d3")
 devtools::install_github("roderickslieker/CONQUER")
 ```
