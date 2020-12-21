@@ -8,6 +8,34 @@ Zaldumbide, Leen ’t Hart and Roderick Slieker*
 
 ## Installation
 
+### Install the depencies
+
+``` r
+depp <- c("BioCircos","cluster","ggplot2","enrichR","htmlwidgets",
+          "rio","shiny","shinycssloaders","stringr","viridis",
+          "DT","coloc","curl","dplyr","grDevices","jsonlite","plotly",
+          "shinyjs","reshape2","shinythemes","stats","purrr","readr")
+
+BioDepp <- c("IRanges","BiocGenerics","clusterProfiler")
+
+
+# Check present packages
+depp.new<-depp[!(depp%in%installed.packages())]
+if (length(depp.new)) {
+  install.packages(depp.new)
+}
+# Bioconductor
+BioDepp.new<-BioDepp[!(BioDepp%in%installed.packages())]
+if (length(BioDepp.new)) {
+  if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+  BiocManager::install(BioDepp, type="source")
+}
+# load packages
+sapply(depp, library, character.only = TRUE)
+sapply(BioDepp, library, character.only = TRUE)
+```
+
 Install the the development version from GitLab:  
 `install.packages("devtools")`
 
