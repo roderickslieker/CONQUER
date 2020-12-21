@@ -14,7 +14,7 @@ Zaldumbide, Leen ’t Hart and Roderick Slieker*
 depp <- c("BioCircos","cluster","ggplot2","enrichR","htmlwidgets",
           "rio","shiny","shinycssloaders","stringr","viridis",
           "DT","coloc","curl","dplyr","grDevices","jsonlite","plotly",
-          "shinyjs","reshape2","shinythemes","stats","purrr","readr")
+          "shinyjs","reshape2","shinythemes","stats","purrr","readr","UpSetR")
 
 BioDepp <- c("IRanges","BiocGenerics","clusterProfiler")
 

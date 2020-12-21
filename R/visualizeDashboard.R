@@ -15,6 +15,8 @@
 #' @importFrom BiocGenerics toTable
 #' @importFrom shinyjs useShinyjs toggle
 #' @import shinycssloaders
+#' @importFrom UpSetR fromList
+#' @importFRom UpSetR upset
 #' @return [[NULL]]
 visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NULL){
   currversion.db <- rio::import("https://raw.githubusercontent.com/roderickslieker/CONQUER.db/master/DESCRIPTION", nrow=1, skip=3, format='\t', header=F)[1,2]
@@ -77,6 +79,8 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
   }
 
   sqtls_internal <- rbind(sqtls1_internal,sqtls2_internal,sqtls3_internal,sqtls4_internal)
+  eqtls_internal <- extract.eQTLs.noLoad(extractedData = loadedSNPs)
+  eqtls_internal <- eqtls_internal[eqtls_internal$pValue <= 0.001 & eqtls_internal$Pval.ratio <= 2,]
 
   cat(sprintf("Starting dashboard.....",qtl))
 
@@ -224,6 +228,10 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
                                                                                      }else{
                                                                                        shiny::h3("No summary file provided")
                                                                                      }
+                                                                                   )),
+                                                                   shiny::tabPanel("Overlap QTLs", value = "qtloverlap",
+                                                                                   shiny::fluidRow(
+                                                                                     shiny::plotOutput("SNPoverlap")
                                                                                    )),
                                                                    shiny::tabPanel("DNAm QTL", value = "meqtl",
                                                                                    shiny::br(),
@@ -595,6 +603,18 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
 
 
 
+
+    ###
+    output$SNPoverlap <- shiny::renderPlot({
+      listInput <- list(eQTLs  = unique(eqtls_internal$SNP),
+                        pQTLs = unique(pqtls_internal$LeadSNP),
+                        mQTls = unique(c(mqtls_LC_internal$LeadSNP,mqtls_NG_internal$LeadSNP)),
+                        lQTLs = unique(unique(lqtls_internal$LeadSNP)),
+                        sQTLs = unique(unique(sqtls_internal$LeadSNP)))
+
+      list.in <- UpSetR::fromList(listInput)
+      UpSetR::upset(list.in, order.by = "freq")
+    })
 
 
     ####Tissue Specific####
