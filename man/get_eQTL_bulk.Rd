@@ -4,7 +4,7 @@
 \alias{get_eQTL_bulk}
 \title{get_eQTL_bulk}
 \usage{
-get_eQTL_bulk(genesx, lead, tissues)
+get_eQTL_bulk(gene.in, lead, tissues)
 }
 \value{
 [[data.frame]]

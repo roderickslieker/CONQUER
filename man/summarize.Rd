@@ -6,6 +6,7 @@
 \usage{
 summarize(
   variants,
+  precalculated = TRUE,
   multiAnalyze = FALSE,
   tissues = NULL,
   directory = NULL,
@@ -15,6 +16,11 @@ summarize(
 }
 \arguments{
 \item{variants}{vector Vector with one or more SNP names (rs*)}
+
+\item{precalculated}{Default is TRUE. GTEx by default only takes along SNPs 1MB from the
+start site. If TRUE, only the precalculated SNPs by GTEx are used. When FALSE, CONQUER will
+calculate all pairwise comparisons which may take substantially longer (up to days for large number of SNPs).
+Note that this may yield more interesting results as GTEx may miss interesting QTLs.}
 
 \item{multiAnalyze}{Default is FALSE. If TRUE, an integrated analysis will be performed across the SNPs.}
 

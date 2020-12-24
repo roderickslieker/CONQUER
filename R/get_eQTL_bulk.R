@@ -1,12 +1,12 @@
 #' get_eQTL_bulk
-#' @param genesx
+#' @param gene.in
 #' @param lead
 #' @param tissues
 #' @keywords internal
 #' @importFrom purrr cross_df
 #' @return [[data.frame]]
-get_eQTL_bulk <- function(genesx, lead, tissues){
-  tmp_list <- list("gencodeId" = genesx, "tissueSiteDetailId" = tissues, "variantId" = lead, "datasetId" = "gtex_v8")
+get_eQTL_bulk <- function(gene.in, lead, tissues){
+  tmp_list <- list("gencodeId" = gene.in, "tissueSiteDetailId" = tissues, "variantId" = lead, "datasetId" = "gtex_v8")
   all_combinations_df <- purrr::cross_df(tmp_list)
   all_combinations_list <- split(all_combinations_df, seq(nrow(all_combinations_df)))
   all.comb <- lapply(all_combinations_list, jsonlite::toJSON)

@@ -1,5 +1,5 @@
 #' @importFrom BiocGenerics start end
-getDataforSingleSNP <- function(variant, directory=NULL, token=NULL, population="CEU",Chromatin, allTissues){
+getDataforSingleSNP <- function(variant, precalculated, directory=NULL, token=NULL, population="CEU",Chromatin, allTissues){
   message(sprintf("Retrieving data for: %s",variant))
 
   tryCatch({
@@ -57,17 +57,23 @@ getDataforSingleSNP <- function(variant, directory=NULL, token=NULL, population=
 
     cisGenes <- IRanges::subsetByOverlaps(Genes,cisQuery)
     message("geteQTLdata")
-    eQTLdata <- CONQUER:::geteQTLdata(lead = mainSNP$variation,
+    lead.pos <- paste0(mainSNP$chr, "_", mainSNP$start, "_")
+    eQTLdata <- geteQTLdata(lead = mainSNP$variation,
+                            lead.pos = lead.pos,
                             Genes = cisGenes,
-                            allTissues=allTissues)
+                            allTissues=allTissues,
+                            precalculated=precalculated)
 
     #trans eQTLs
     transGenes <- Genes[!Genes$name %in% cisGenes$name,]
     if(length(transGenes) != 0) {
+      lead.pos <- paste0(mainSNP$chr,"_",mainSNP$start,"_")
       transeQTLdata <- geteQTLdata(lead = mainSNP$variation,
+                                   lead.pos = lead.pos,
                                    Genes = transGenes,
                                    parallel = parallel,
-                                   allTissues=allTissues)
+                                   allTissues=allTissues,
+                                   precalculated = precalculated)
     }else {
       transeQTLdata <- data.frame()
     }
