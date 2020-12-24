@@ -35,15 +35,17 @@ abstractAnalyze <- function(variants, directory, tissues, clustering = "PAM"){
                               stringr::str_split(ID, "[.]", simplify = TRUE) %>% dplyr::first()
                             }
   )
+
   #Rename tissues for eQTL data
   eQTLTissue <- gsub("[.]+", "_", tissues, perl=T)
-  eQTLTissue <- ifelse(str_sub(eQTLTissue,-1) == "_", substr(eQTLTissue,start = 1, stop = str_length(eQTLTissue)-1),eQTLTissue)
+  eQTLTissue <- ifelse(stringr::str_sub(eQTLTissue,-1) == "_", substr(eQTLTissue,start = 1, stop = str_length(eQTLTissue)-1),eQTLTissue)
 
   eQTLs <- eQTLs[eQTLs$tissue %in% eQTLTissue,]
   eQTLs <- eQTLs[eQTLs$pValue < 0.05,]
   eQTLs_list <- split(x = eQTLs, f = eQTLs$tissue)
   #tissues <- sort(tissues)
   eQTLs_list <- eQTLs_list[eQTLTissue]
+  eQTLs_list <- eQTLs_list[!is.na(names(eQTLs_list))]
   SNP_summary <- mapply(AnalyseSNPs, eQTLs_list, tissues, clustering)
 
   message("Calculating OR for modules with canonical kegg pathways")
