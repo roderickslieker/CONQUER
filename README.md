@@ -6,6 +6,12 @@
 *Gerard Bouland, Joline Beulens, Joey Nap, Arno van der Slik, Arnaud
 Zaldumbide, Leen ’t Hart and Roderick Slieker*
 
+## Change log
+
+*v.1.1.2* - Allow users to use precalculated SNPs in GTEx instead of
+calculating them all. - Added overlap tab of QTL to show overlap between
+types of QTLs
+
 ## Installation
 
 ### Install the depencies
@@ -62,6 +68,21 @@ on the site to obtain a token. Please see:
 
 The token is send by email and can be provided as character string.
 
+## Note on `precalculated` argument
+
+To also allow faster pre-process of SNPs, we also allow users to only
+take the precalculated eQTLs from GTEx. Pros: much faster to summarize.
+Cons: you will miss interesting QTLs from your results because GTEx only
+includes genes with TSSs 1Mb from the SNP. So, when precalculated is
+`FALSE` the GTEx API will be used to test the lead SNP against genes in
+cis and trans.
+
+## Note on multianalyze
+
+Multianalyze works best if the number of SNPs is large (for example \>50
+SNPs). Lower numbers may result in spurious results. Instead one should
+focus on the single SNPs.
+
 ## Example without multianalyze
 
 ``` r
@@ -71,6 +92,7 @@ library(CONQUER)
 
 summarize(variants = c("rs878521","rs10830963"),
           directory=DIR,
+          precalculated = TRUE, 
           multiAnalyze=FALSE,
           token="sometoken",
           tissues=NULL)
@@ -97,6 +119,7 @@ snps <- c("rs11642430","rs11820019","rs11842871","rs13426680","rs1377807","rs178
 CONQUER::summarize(variants = snps,
           directory=DIR,
           multiAnalyze=TRUE,
+          precalculated = TRUE, 
           token=NULL,
           tissues=c("Pancreas","Muscle_Skeletal","Liver"))
 
