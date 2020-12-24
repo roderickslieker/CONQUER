@@ -1,5 +1,9 @@
 #' Collect data for one or more SNPs and perform an optional integrative analysis on multiple tissues.
 #' @param variants vector Vector with one or more SNP names (rs*)
+#' @param precalculated Default is TRUE. GTEx by default only takes along SNPs 1MB from the
+#' start site. If TRUE, only the precalculated SNPs by GTEx are used. When FALSE, CONQUER will
+#' calculate all pairwise comparisons which may take substantially longer (up to days for large number of SNPs).
+#' Note that this may yield more interesting results as GTEx may miss interesting QTLs.
 #' @param multiAnalyze Default is FALSE. If TRUE, an integrated analysis will be performed across the SNPs.
 #' @param tissues Tissues of interest. Should be a vector of names based on teh
 #' @param directory String of the directory where the files should be stored for the SNPs investigated
@@ -14,7 +18,8 @@
 #' token="sometoken",
 #' tissues=NULL)}
 
-summarize <- function(variants, multiAnalyze=FALSE, tissues = NULL ,directory=NULL, token=NULL, population="CEU") {
+summarize <- function(variants, precalculated=TRUE, multiAnalyze=FALSE, tissues = NULL ,directory=NULL, token=NULL, population="CEU") {
+  if(is.null(tissues)) tissues <- conquer.db::gtexTissuesV8
   # Skip if existent
   if(is.null(token)) stop("Please provide a LDlink token!")
 
@@ -32,7 +37,8 @@ summarize <- function(variants, multiAnalyze=FALSE, tissues = NULL ,directory=NU
                     token = token,
                     population = population,
                     Chromatin=Chromatin,
-                    allTissues = tissues)
+                    allTissues = tissues,
+                    precalculated = precalculated)
   }
 
 
