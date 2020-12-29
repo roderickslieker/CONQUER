@@ -22,7 +22,7 @@ depp <- c("BioCircos","cluster","ggplot2","enrichR","htmlwidgets",
           "DT","coloc","curl","dplyr","grDevices","jsonlite","plotly",
           "shinyjs","reshape2","shinythemes","stats","purrr","readr","UpSetR")
 
-BioDepp <- c("IRanges","BiocGenerics","clusterProfiler")
+BioDepp <- c("IRanges","BiocGenerics","clusterProfiler","GenomicRanges")
 
 
 # Check present packages
