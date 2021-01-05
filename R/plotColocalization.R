@@ -89,9 +89,13 @@ plotColoc <- function(rsID, all.coloc=ColocSummary, loadedSNPs=loadedSNPs, filte
         ylim(0,1)+
         xlim(start.coloc, end.coloc)+
         scale_colour_manual(values = cols)+
-        theme(legend.position = "none")+
-        geom_point(aes(x=Position, y=Lead), pch=8, col="black")
+        theme(legend.position = "none")
 
+
+      if(sum(!is.na(all.coloc.sel$Lead)) != 0)
+      {
+        p1 <- p1 + geom_point(aes(x=Position, y=Lead), pch=8, col="black")
+      }
 
       p2 <- ggplot(genes, aes(label=gene)) +
         geom_linerange(aes(ymin = start, ymax = end, x = gene, col=gene), position = position_dodge(.5), lwd=2) +
