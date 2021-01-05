@@ -7,17 +7,18 @@ calculateColocalization <- function(genecode.id, data.qtls=data.qtls, LD=LD)
   if(nrow(data.in) != 0){
     vid <- data.in[,"variantId"]
     vid <- reshape2::colsplit(vid, "_", names=c("Chromsome","Position","REF","ALT","Build"))
+    vid <- data.frame(vid, rsID = data.in[,"SNP"])
     max.in <- grep("datasetId", colnames(data.in)) - 1
     tissue.eqtls <- data.in[,1:max.in]
 
     newData <- lapply(colnames(tissue.eqtls), function(tissue)
     {
       #cat(tissue)
-      td <- tissue.eqtls[,tissue]
-      td$Tissue <- tissue
-      td <- data.frame(td, vid)
-      td.sub <- td[td$Position %in% LD$start,]
-      td.sub$rsID <-LD[match(td.sub$Position, LD$start),"variation"]
+      td.sub <- tissue.eqtls[,tissue]
+      td.sub$Tissue <- tissue
+      td.sub <- data.frame(td.sub, vid)
+      #td.sub <- td[td$Position %in% LD$start,]
+      #td.sub$rsID <-LD[match(td.sub$Position, LD$start),"variation"]
       td.sub <- na.omit(td.sub)
 
       if(nrow(td.sub) !=0)

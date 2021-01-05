@@ -35,14 +35,18 @@ getColocalization <- function(rsID)
       chars_with_Nan <- rawToChar(query$content)
       chars_with_NA <- gsub("NaN",'"NA"',chars_with_Nan)
       data.qtls.temp <- jsonlite::fromJSON(chars_with_NA)[[1]]
+
       data.qtls.temp <- data.qtls.temp[which(data.qtls.temp$variantId %in% LD$variantID),]
+      data.qtls.temp$SNP <- LD[match(data.qtls.temp$variantId, LD$variantID),1]
       rownames(data.qtls.temp) <- NULL
       return(data.qtls.temp)
     })
     names(data.qtls) <- all.gencode
 
-    allColoc <- lapply(names(data.qtls), CONQUER:::calculateColocalization, data.qtls=data.qtls, LD=LD) %>% do.call(what=rbind)
+    allColoc <- lapply(names(data.qtls), calculateColocalization, data.qtls=data.qtls, LD=LD) %>% do.call(what=rbind)
     allColoc$Symbol <- eQTLs[match(allColoc$genecodeId, eQTLs$gencodeId),"gene"]
+
+
     allColoc$Lead <- ifelse(allColoc$snp == tempdata$SNP$variation, 1,NA)
     return(allColoc)
 
