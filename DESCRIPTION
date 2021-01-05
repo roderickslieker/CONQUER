@@ -10,7 +10,7 @@ Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
 Depends: 
-  R (>= 3.6.0),
+  R (>= 4.0.0),
   conquer.db,
   GenomicRanges,
   magrittr,
