@@ -18,7 +18,8 @@
 #' token="sometoken",
 #' tissues=NULL)}
 
-summarize <- function(variants, precalculated=TRUE, multiAnalyze=FALSE, tissues = NULL ,directory=NULL, token=NULL, population="CEU") {
+summarize <- function(variants, precalculated=TRUE, multiAnalyze=FALSE,
+                      tissues = NULL ,directory=NULL, token=NULL, population="CEU") {
   if(is.null(tissues)) tissues <- conquer.db::gtexTissuesV8
   # Skip if existent
   if(is.null(token)) stop("Please provide a LDlink token!")
