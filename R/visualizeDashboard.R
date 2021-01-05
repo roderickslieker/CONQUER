@@ -16,7 +16,7 @@
 #' @importFrom shinyjs useShinyjs toggle
 #' @import shinycssloaders
 #' @importFrom UpSetR fromList
-#' @importFRom UpSetR upset
+#' @importFrom UpSetR upset
 #' @return [[NULL]]
 visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NULL){
   currversion.db <- rio::import("https://raw.githubusercontent.com/roderickslieker/CONQUER.db/master/DESCRIPTION", nrow=1, skip=3, format='\t', header=F)[1,2]
@@ -1121,7 +1121,12 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
     #Table
     output$eQTLsTable <- DT::renderDT({
       data <- eQTLsData()
-      data <- cbind(data[,c("SNP","gene","tissue")],signif(data[,c("pValue","Pval.ratio")],2))
+      if(nrow(data) != 0){
+        data <- cbind(data[,c("SNP","gene","tissue")],signif(data[,c("pValue","Pval.ratio")],2))
+      }else{
+        shiny::h3("There are no eQTLs identified")
+      }
+
     },options=list(scrollX=T),selection = "single")
 
     #Download
