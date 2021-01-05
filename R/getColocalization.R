@@ -1,6 +1,7 @@
 #' @importFrom curl curl_fetch_memory
 #' @importFrom jsonlite fromJSON
 #' @importFrom reshape2 colsplit
+#' @import magrittr
 getColocalization <- function(rsID)
 {
   cat(rsID,"\n")
@@ -9,11 +10,19 @@ getColocalization <- function(rsID)
   rm(list = lead)
 
   LD <- tempdata$topHits
-  eQTLs <- tempdata$eQTLs
-  eQTLs <- eQTLs[eQTLs$pValue <= eQTLs$pValueThreshold,]
-  eQTLs <- eQTLs[!is.na(eQTLs$nes),]
+  #Covert names
 
+  converted <- lapply(LD$variation, function(i){
+    fromJSON(sprintf("https://gtexportal.org/rest/v1/dataset/variant?format=json&snpId=%s&datasetId=gtex_v8", i))[[1]]
+  }) %>% do.call(what=rbind)
+
+  LD$variantID <- converted[match(LD$variation, converted$snpId),"variantId"]
+
+  eQTLs <- tempdata$eQTLs
+  eQTLs <- eQTLs[eQTLs$pValue <= 0.001,]
+  eQTLs <- eQTLs[!is.na(eQTLs$nes),]
   all.gencode <- unique(eQTLs$gencodeId)
+
   lg <- length(all.gencode)
 
   if(lg >= 1){
@@ -23,15 +32,13 @@ getColocalization <- function(rsID)
       chars_with_Nan <- rawToChar(query$content)
       chars_with_NA <- gsub("NaN",'"NA"',chars_with_Nan)
       data.qtls.temp <- jsonlite::fromJSON(chars_with_NA)[[1]]
-      Position <- reshape2::colsplit(data.qtls.temp[,"variantId"], "_", LETTERS[1:5])[,2]
-      data.qtls.temp <- data.qtls.temp[which(Position %in% LD$start),]
-      rm(Position)
+      data.qtls.temp <- data.qtls.temp[which(data.qtls.temp$variantId %in% LD$variantID),]
       rownames(data.qtls.temp) <- NULL
       return(data.qtls.temp)
     })
     names(data.qtls) <- all.gencode
 
-    allColoc <- lapply(names(data.qtls), calculateColocalization, data.qtls=data.qtls, LD=LD) %>% do.call(what=rbind)
+    allColoc <- lapply(names(data.qtls), CONQUER:::calculateColocalization, data.qtls=data.qtls, LD=LD) %>% do.call(what=rbind)
     allColoc$Symbol <- eQTLs[match(allColoc$genecodeId, eQTLs$gencodeId),"gene"]
     allColoc$Lead <- ifelse(allColoc$snp == tempdata$SNP$variation, 1,NA)
     return(allColoc)
