@@ -1,6 +1,5 @@
 #' @importFrom BiocGenerics start end
-getDataforSingleSNP <- function(variant, precalculated, directory=NULL, token=NULL, population="CEU",Chromatin, allTissues){
-  message(sprintf("Retrieving data for: %s",variant))
+getDataforSingleSNP <- function(variant, precalculated, directory=NULL, token=NULL, population="CEU",Chromatin, allTissues){  message(sprintf("Retrieving data for: %s",variant))
 
   tryCatch({
     #Retrieve Ensembl information
@@ -66,7 +65,7 @@ getDataforSingleSNP <- function(variant, precalculated, directory=NULL, token=NU
 
     #trans eQTLs
     transGenes <- Genes[!Genes$name %in% cisGenes$name,]
-    if(length(transGenes) != 0) {
+    if(length(transGenes) != 0 & !precalculated) {
       lead.pos <- paste0(mainSNP$chr,"_",mainSNP$start,"_")
       transeQTLdata <- geteQTLdata(lead = mainSNP$variation,
                                    lead.pos = lead.pos,
