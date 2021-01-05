@@ -13,7 +13,10 @@ getColocalization <- function(rsID)
   #Covert names
 
   converted <- lapply(LD$variation, function(i){
-    fromJSON(sprintf("https://gtexportal.org/rest/v1/dataset/variant?format=json&snpId=%s&datasetId=gtex_v8", i))[[1]]
+    url <- sprintf("https://gtexportal.org/rest/v1/dataset/variant?format=json&snpId=%s&datasetId=gtex_v8", i)
+    temp <- readLines(url)
+    temp <- gsub("NaN",'"NA"',temp)
+    fromJSON(temp)[[1]]
   }) %>% do.call(what=rbind)
 
   LD$variantID <- converted[match(LD$variation, converted$snpId),"variantId"]
