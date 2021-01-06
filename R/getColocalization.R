@@ -32,6 +32,7 @@ getColocalization <- function(rsID)
 
     if(lg >= 1){
       data.qtls <- lapply(all.gencode, function(g){
+        cat(g)
         # Get QTL data
         query <- curl::curl_fetch_memory(sprintf("https://gtexportal.org/rest/v1/association/metasoft?gencodeId=%s&datasetId=gtex_v8", g))
         chars_with_Nan <- rawToChar(query$content)

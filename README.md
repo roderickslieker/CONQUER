@@ -1,20 +1,52 @@
+CONQUER
+================
+06 januari, 2021
+
+  - [1 COmprehend fuNctional conseQUencEs R
+    <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/CONQUER.png" align="right" width="120" />](#comprehend-functional-consequences-r)
+      - [1.1 Change log](#change-log)
+      - [1.2 Installation](#installation)
+          - [1.2.1 Install the depencies](#install-the-depencies)
+          - [1.2.2 Install CONQUER](#install-conquer)
+      - [1.3 Overview](#overview)
+      - [1.4 Note on `precalculated`
+        argument](#note-on-precalculated-argument)
+      - [1.5 Note on `pcutoff` argument](#note-on-pcutoff-argument)
+      - [1.6 Note on multianalyze](#note-on-multianalyze)
+      - [1.7 Citation](#citation)
+      - [1.8 Example without
+        multianalyze](#example-without-multianalyze)
+      - [1.9 Example with multianalyze](#example-with-multianalyze)
+      - [1.10 Figure examples](#figure-examples)
+          - [1.10.1 Modules](#modules)
+          - [1.10.2 Enrichment](#enrichment)
+          - [1.10.3 Pathways shared by
+            tissues](#pathways-shared-by-tissues)
+          - [1.10.4 LD](#ld)
+          - [1.10.5 Chromosomal interactions](#chromosomal-interactions)
+          - [1.10.6 Chromatin states](#chromatin-states)
+          - [1.10.7 eQTLs](#eqtls)
+          - [1.10.8 Gene expression](#gene-expression)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# COmprehend fuNctional conseQUencEs R <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/CONQUER.png" align="right" width="120" />
+# 1 COmprehend fuNctional conseQUencEs R <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/CONQUER.png" align="right" width="120" />
 
 *Gerard Bouland, Joline Beulens, Joey Nap, Arno van der Slik, Arnaud
 Zaldumbide, Leen ’t Hart and Roderick Slieker*
 
-## Change log
+## 1.1 Change log
 
-*v.1.1.2* - Allow users to use precalculated SNPs in GTEx instead of
-calculating them all. - Added overlap tab of QTL to show overlap between
-types of QTLs
+*v.1.1.2*
 
-## Installation
+  - Allow users to use precalculated SNPs in GTEx instead of calculating
+    them all.
 
-### Install the depencies
+  - Added overlap tab of QTL to show overlap between types of QTLs
+
+## 1.2 Installation
+
+### 1.2.1 Install the depencies
 
 ``` r
 depp <- c("BioCircos","cluster","ggplot2","enrichR","htmlwidgets",
@@ -42,7 +74,10 @@ sapply(depp, library, character.only = TRUE)
 sapply(BioDepp, library, character.only = TRUE)
 ```
 
-Install the the development version from GitLab:  
+### 1.2.2 Install CONQUER
+
+Install the the development version from GitLab:
+
 `install.packages("devtools")`
 
 ``` r
@@ -54,7 +89,7 @@ devtools::install_github("roderickslieker/CONQUER.d3")
 devtools::install_github("roderickslieker/CONQUER")
 ```
 
-## Overview
+## 1.3 Overview
 
 With the use of two functions, SNPs are summarised and visualised,
 namely: `summarise()` and `visualise()`.
@@ -71,7 +106,7 @@ on the site to obtain a token. Please see:
 
 The token is send by email and can be provided as character string.
 
-## Note on `precalculated` argument
+## 1.4 Note on `precalculated` argument
 
 To also allow faster pre-process of SNPs, we also allow users to only
 take the precalculated eQTLs from GTEx. Pros: much faster to summarize.
@@ -80,13 +115,40 @@ includes genes with TSSs 1Mb from the SNP. So, when precalculated is
 `FALSE` the GTEx API will be used to test the lead SNP against genes in
 cis and trans.
 
-## Note on multianalyze
+## 1.5 Note on `pcutoff` argument
+
+Given that the numbers of individuals per tissue vary in GTEx one may be
+interested to analyse the data with a more liberal P-value to adjust for
+the strong correlation between the number of eQTLs and the number of
+individuals in that dataset. As such the package allows to analyze with
+three different settings:
+
+  - `stringent` : only allow eQTLs that match the pValue threshold as
+    defined by GTEx for SNP
+
+  - `liberal` : P\<0.001 and P-value at max 2x higher than GTEx’s
+    threshold.
+
+  - `veryliberal` : All eQTLs that are nominally significant P\<0.05.
+
+## 1.6 Note on multianalyze
 
 Multianalyze works best if the number of SNPs is large (for example \>50
 SNPs). Lower numbers may result in spurious results. Instead one should
 focus on the single SNPs.
 
-## Example without multianalyze
+## 1.7 Citation
+
+**CONQUER: an interactive toolbox to understand functional consequences
+of GWAS hits.**
+
+Gerard A Bouland, Joline W J Beulens, Joey Nap, Arno R van der Slik,
+Arnaud Zaldumbide, Leen M ’t Hart, Roderick C Slieker
+
+*NAR Genomics and Bioinformatics, Volume 2, Issue 4, December 2020,
+lqaa085, <https://doi.org/10.1093/nargab/lqaa085>*
+
+## 1.8 Example without multianalyze
 
 ``` r
 DIR <- "somedirectory"
@@ -101,7 +163,7 @@ summarize(variants = c("rs878521","rs10830963"),
           tissues=NULL)
 ```
 
-## Example with multianalyze
+## 1.9 Example with multianalyze
 
 The available tissues can be viewed with the following command:
 
@@ -130,47 +192,49 @@ CONQUER::summarize(variants = snps,
 visualize(directory = "somedirectory", SNPs = snps)
 ```
 
-## Modules
+## 1.10 Figure examples
+
+### 1.10.1 Modules
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/SunBurst_pathways.png" align="center" width="500" />
 
  
 
-## Enrichment
+### 1.10.2 Enrichment
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Modules_pathways.png" align="center" width="500" />
 
  
 
-## Pathways shared by tissues
+### 1.10.3 Pathways shared by tissues
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Pathways_acrossTissue.png" align="center" width="500" />
 
  
 
-## LD
+### 1.10.4 LD
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/LD_rs11642430.png" align="center" width="500" />
 
  
 
-## Chromosomal interactions
+### 1.10.5 Chromosomal interactions
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Chromosomal_interactions.png" align="center" width="500" />
 
  
 
-## Chromatin states
+### 1.10.6 Chromatin states
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Chromatin_states.png" align="center" width="500" />
 
  
 
-## eQTLs
+### 1.10.7 eQTLs
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/eQTLs.png" align="center" width="500" />
  
 
-## Gene expression
+### 1.10.8 Gene expression
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Expression.png" align="center" width="500" />

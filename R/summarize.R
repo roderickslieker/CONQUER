@@ -9,6 +9,8 @@
 #' @param directory String of the directory where the files should be stored for the SNPs investigated
 #' @param token Token required for LDlink, which can be obtained from the LDlink website
 #' @param population Letter code of population of interest for example " CEU"
+#' @param pcutoff String, either stringent, liberal, veryliberal. Stringent: only when GTEX's threshold is reached.
+#' Liberal: P<0.001 and at max 2x higher than GTEx's threshold. Very liberal: P<0.05.
 #' @export
 #' @examples \dontrun{
 #' library(CONQUER)
@@ -18,7 +20,7 @@
 #' token="sometoken",
 #' tissues=NULL)}
 
-summarize <- function(variants, precalculated=TRUE, multiAnalyze=FALSE,
+summarize <- function(variants, precalculated=TRUE, multiAnalyze=FALSE, pcutoff = 'stringent',
                       tissues = NULL ,directory=NULL, token=NULL, population="CEU") {
   if(is.null(tissues)) tissues <- conquer.db::gtexTissuesV8
   # Skip if existent
@@ -63,7 +65,7 @@ summarize <- function(variants, precalculated=TRUE, multiAnalyze=FALSE,
     if(length(summFiles) == 0 & multiAnalyze){
       message("MultiAnalyze is true. The SNPs will be analyzed for the following tissues:")
       lapply(tissues,message)
-      SNPSummary <- abstractAnalyze(variants = variants, directory = directory, tissues = tissues, clustering = "agnes")
+      SNPSummary <- abstractAnalyze(variants = variants, directory = directory, tissues = tissues, clustering = "agnes", pcutoff=pcutoff)
       filename <- sprintf("CONQUER_Summary%s.RData", gsub("[.]","", make.names(Sys.time())))
       save(SNPSummary, file = paste0(directory, "/", filename))
       message(sprintf("CONQUER SNP summary saved in %s, with the following name %s", directory, filename))

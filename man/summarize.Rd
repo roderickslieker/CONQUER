@@ -8,6 +8,7 @@ summarize(
   variants,
   precalculated = TRUE,
   multiAnalyze = FALSE,
+  pcutoff = "stringent",
   tissues = NULL,
   directory = NULL,
   token = NULL,
@@ -23,6 +24,9 @@ calculate all pairwise comparisons which may take substantially longer (up to da
 Note that this may yield more interesting results as GTEx may miss interesting QTLs.}
 
 \item{multiAnalyze}{Default is FALSE. If TRUE, an integrated analysis will be performed across the SNPs.}
+
+\item{pcutoff}{String, either stringent, liberal, veryliberal. Stringent: only when GTEX's threshold is reached.
+Liberal: P<0.001 and at max 2x higher than GTEx's threshold. Very liberal: P<0.05.}
 
 \item{tissues}{Tissues of interest. Should be a vector of names based on teh}
 

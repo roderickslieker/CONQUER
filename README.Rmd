@@ -1,6 +1,16 @@
 ---
-output: github_document
+title: "CONQUER"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  github_document:
+    toc: true 
+    toc_depth: 4
+    number_sections: true
+    #theme: united 
+editor_options: 
+  chunk_output_type: console
 ---
+
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -15,7 +25,9 @@ knitr::opts_knit$set(root.dir = "D:/001_Projects/010_CONQUER_TEST/Test/")
 ## Change log
 
 *v.1.1.2*
+
 - Allow users to use precalculated SNPs in GTEx instead of calculating them all. 
+
 - Added overlap tab of QTL to show overlap between types of QTLs
 
 ## Installation
@@ -48,7 +60,10 @@ sapply(depp, library, character.only = TRUE)
 sapply(BioDepp, library, character.only = TRUE)
 ```
 
+### Install CONQUER
+
 Install the the development version from GitLab:  
+
 `install.packages("devtools")`
 
 ```{r, eval = FALSE}
@@ -78,9 +93,29 @@ The token is send by email and can be provided as character string.
 
 To also allow faster pre-process of SNPs, we also allow users to only take the precalculated eQTLs from GTEx. Pros: much faster to summarize. Cons: you will miss interesting QTLs from your results because GTEx only includes genes with TSSs 1Mb from the SNP. So, when precalculated is `FALSE` the GTEx API will be used to test the lead SNP against genes in cis and trans.  
 
+## Note on `pcutoff` argument
+
+Given that the numbers of individuals per tissue vary in GTEx one may be interested to analyse the data with a more liberal P-value to adjust for the strong correlation between the number of eQTLs and the number of individuals in that dataset. As such the package allows to analyze with three different settings:
+
+- `stringent` : only allow eQTLs that match the pValue threshold as defined by GTEx for SNP
+
+- `liberal` : P<0.001 and P-value at max 2x higher than GTEx's threshold. 
+
+- `veryliberal` : All eQTLs that are nominally significant P<0.05.
+
+
 ## Note on multianalyze
 
 Multianalyze works best if the number of SNPs is large (for example >50 SNPs). Lower numbers may result in spurious results. Instead one should focus on the single SNPs. 
+
+
+## Citation
+
+**CONQUER: an interactive toolbox to understand functional consequences of GWAS hits.**
+
+Gerard A Bouland, Joline W J Beulens, Joey Nap, Arno R van der Slik, Arnaud Zaldumbide, Leen M ’t Hart, Roderick C Slieker
+
+*NAR Genomics and Bioinformatics, Volume 2, Issue 4, December 2020, lqaa085, https://doi.org/10.1093/nargab/lqaa085*
 
 ## Example without multianalyze
 
@@ -125,44 +160,46 @@ CONQUER::summarize(variants = snps,
 visualize(directory = "somedirectory", SNPs = snps)
 ```
 
-## Modules
+## Figure examples
+
+### Modules
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/SunBurst_pathways.png" align="center" width="500" />
 
 &nbsp;
 
-## Enrichment 
+### Enrichment 
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Modules_pathways.png" align="center" width="500" />
 
 &nbsp;
 
-## Pathways shared by tissues
+### Pathways shared by tissues
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Pathways_acrossTissue.png" align="center" width="500" />
 
 &nbsp;
 
-## LD
+### LD
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/LD_rs11642430.png" align="center" width="500" />
 
 &nbsp;
 
-## Chromosomal interactions 
+### Chromosomal interactions 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Chromosomal_interactions.png" align="center" width="500" />
 
 &nbsp;
 
-## Chromatin states 
+### Chromatin states 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Chromatin_states.png" align="center" width="500" />
 
 &nbsp;
 
-## eQTLs 
+### eQTLs 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/eQTLs.png" align="center" width="500" />
 &nbsp;
 
-## Gene expression 
+### Gene expression 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Expression.png" align="center" width="500" />
 &nbsp;
 

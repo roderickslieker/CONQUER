@@ -1,7 +1,7 @@
 #' @import stringr
 #' @import enrichR
 #' @importFrom dplyr bind_rows first
-abstractAnalyze <- function(variants, directory, tissues, clustering = "PAM"){
+abstractAnalyze <- function(variants, directory, tissues, clustering = "PAM", pcutoff){
   abstractData <- lapply(variants,function(x){
     load(paste0(directory,"/",x,".RData"))
     get(x)
@@ -41,7 +41,19 @@ abstractAnalyze <- function(variants, directory, tissues, clustering = "PAM"){
   eQTLTissue <- ifelse(stringr::str_sub(eQTLTissue,-1) == "_", substr(eQTLTissue,start = 1, stop = str_length(eQTLTissue)-1),eQTLTissue)
 
   eQTLs <- eQTLs[eQTLs$tissue %in% eQTLTissue,]
-  eQTLs <- eQTLs[eQTLs$pValue < 0.05,]
+
+  if(pcutoff == 'stringent')
+  {
+    eQTLs <- eQTLs[eQTLs$pValue <= eQTLs$pValueThreshold,]
+  }else if(pcutoff == 'liberal'){
+    eQTLs <- eQTLs[eQTLs$pValue <= 0.001 & eQTLs$Pval.ratio <= 2,]
+  }else if(pcutoff == 'veryliberal')
+  {
+    eQTLs <- eQTLs[eQTLs$pValue <= 0.05,]
+  }else{
+    stop("pcutoff should be one of the following: stringent, liberal, veryliberal")
+  }
+
   eQTLs_list <- split(x = eQTLs, f = eQTLs$tissue)
   #tissues <- sort(tissues)
   eQTLs_list <- eQTLs_list[eQTLTissue]
