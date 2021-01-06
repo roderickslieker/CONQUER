@@ -12,16 +12,11 @@ editor_options:
   chunk_output_type: console
 ---
 
-# COmprehend fuNctional conseQUencEs R <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/CONQUER.png" align="right" width="120" />
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<img src="https://github.com/roderickslieker/CONQUER.test/blob/master/CONQUER.png" align="right" width="120" />
 
 ```{r, echo = FALSE}
 knitr::opts_knit$set(root.dir = "D:/001_Projects/010_CONQUER_TEST/Test/")
 ```
-
-
-**
 
 ## Change log
 
