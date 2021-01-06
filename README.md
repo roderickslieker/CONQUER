@@ -1,5 +1,7 @@
 CONQUER
 ================
+Gerard Bouland, Joline Beulens, Joey Nap, Arno van der Slik, Arnaud
+Zaldumbide, Leen ’t Hart and Roderick Slieker
 06 januari, 2021
 
   - [1 COmprehend fuNctional conseQUencEs R
@@ -28,12 +30,11 @@ CONQUER
           - [1.10.7 eQTLs](#eqtls)
           - [1.10.8 Gene expression](#gene-expression)
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # 1 COmprehend fuNctional conseQUencEs R <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/CONQUER.png" align="right" width="120" />
 
-*Gerard Bouland, Joline Beulens, Joey Nap, Arno van der Slik, Arnaud
-Zaldumbide, Leen ’t Hart and Roderick Slieker*
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+\*\*
 
 ## 1.1 Change log
 
