@@ -26,13 +26,13 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
   if(packageVersion("conquer.db") == currversion.db)
   {
   }else{
-    stop("You are not using the latest version of CONQUER.db, please update from GitHub to prevent broken links (devtools::install.github('roderickslieker/conquer.db')")
+    warning("You are not using the latest version of CONQUER.db, please update from GitHub to prevent broken links (devtools::install.github('roderickslieker/conquer.db')")
   }
 
   if(packageVersion("CONQUER") == currversion)
   {
   }else{
-    stop("You are not using the latest version of CONQUER, please update from GitHub to prevent broken links (devtools::install.github('roderickslieker/CONQUER')")
+    warning("You are not using the latest version of CONQUER, please update from GitHub to prevent broken links (devtools::install.github('roderickslieker/CONQUER')")
   }
 
   if(packageVersion("conquer.d3js") == currversion.d3)

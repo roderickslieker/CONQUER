@@ -30,6 +30,11 @@ Zaldumbide, Leen ’t Hart and Roderick Slieker
 
 ## 0.1 Change log
 
+*v.1.1.3*
+
+  - Added support for different P-value cut-offs in multi-analyze (see
+    below)
+
 *v.1.1.2*
 
   - Allow users to use precalculated SNPs in GTEx instead of calculating
