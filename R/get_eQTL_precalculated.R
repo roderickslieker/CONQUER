@@ -10,9 +10,11 @@ get_eQTL_precalculated <- function(lead, tissues){
   chars_with_NA <- gsub("NaN",'"NA"',chars_with_Nan)
   data.qtls.temp <- jsonlite::fromJSON(chars_with_NA)[[1]]
 
+  data.qtls.temp <- data.qtls.temp[data.qtls.temp$tissueSiteDetailId %in% tissues,]
+
   if(length(data.qtls.temp) != 0)
   {
-    data.qtls.temp <- data.qtls.temp[data.qtls.temp$tissueSiteDetailId %in% tissues,]
+
 
     outdata <- data.frame(datasetId = data.qtls.temp$datasetId[1],
                           error = NA,
