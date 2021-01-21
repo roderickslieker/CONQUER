@@ -2,7 +2,7 @@
 #'
 #' @param SNP
 #' @param token
-#' @param popilation
+#' @param population
 #'
 #' @keywords internal
 #' @usage NULL
