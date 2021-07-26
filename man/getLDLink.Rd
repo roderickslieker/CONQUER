@@ -4,7 +4,7 @@
 \alias{getLDLink}
 \title{getLDLink}
 \arguments{
-\item{popilation}{}
+\item{population}{}
 }
 \value{
 [[data.frame]]

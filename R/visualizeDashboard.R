@@ -19,27 +19,27 @@
 #' @importFrom UpSetR upset
 #' @return [[NULL]]
 visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NULL){
-  currversion.db <- rio::import("https://raw.githubusercontent.com/roderickslieker/CONQUER.db/master/DESCRIPTION", nrow=1, skip=3, format='\t', header=F)[1,2]
-  currversion.d3 <- rio::import("https://raw.githubusercontent.com/roderickslieker/CONQUER.d3/master/DESCRIPTION", nrow=1, skip=3, format='\t', header=F)[1,2]
-  currversion <- rio::import("https://raw.githubusercontent.com/roderickslieker/CONQUER/master/DESCRIPTION", nrow=1, skip=3, format='\t', header=F)[1,2]
+  #currversion.db <- rio::import("https://raw.githubusercontent.com/roderickslieker/CONQUER.db/master/DESCRIPTION", nrow=1, skip=3, format='\t', header=F)[1,2]
+  #currversion.d3 <- rio::import("https://raw.githubusercontent.com/roderickslieker/CONQUER.d3/master/DESCRIPTION", nrow=1, skip=3, format='\t', header=F)[1,2]
+  #currversion <- rio::import("https://raw.githubusercontent.com/roderickslieker/CONQUER/master/DESCRIPTION", nrow=1, skip=3, format='\t', header=F)[1,2]
 
-  if(packageVersion("conquer.db") == currversion.db)
-  {
-  }else{
-    warning("You are not using the latest version of CONQUER.db, please update from GitHub to prevent broken links (devtools::install.github('roderickslieker/conquer.db')")
-  }
+  #if(packageVersion("conquer.db") == currversion.db)
+  #{
+  #}else{
+  #  warning("You are not using the latest version of CONQUER.db, please update from GitHub to prevent broken links (devtools::install.github('roderickslieker/conquer.db')")
+  #}
 
-  if(packageVersion("CONQUER") == currversion)
-  {
-  }else{
-    warning("You are not using the latest version of CONQUER, please update from GitHub to prevent broken links (devtools::install.github('roderickslieker/CONQUER')")
-  }
+  #if(packageVersion("CONQUER") == currversion)
+  #{
+  #}else{
+  #  warning("You are not using the latest version of CONQUER, please update from GitHub to prevent broken links (devtools::install.github('roderickslieker/CONQUER')")
+  #}
 
-  if(packageVersion("conquer.d3js") == currversion.d3)
-  {
-  }else{
-    stop("You are not using the latest version of CONQUER.d3js, please update from GitHub to prevent broken links (devtools::install.github('roderickslieker/conquer.d3')")
-  }
+  #if(packageVersion("conquer.d3js") == currversion.d3)
+  #{
+  #}else{
+  #  stop("You are not using the latest version of CONQUER.d3js, please update from GitHub to prevent broken links (devtools::install.github('roderickslieker/conquer.d3')")
+  #}
   #KEGG_DATA <- CONQUER:::prepare_KEGG(species = "hsa",
   #                                KEGG_Type = "KEGG",
   #                                keyType = "kegg")

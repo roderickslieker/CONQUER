@@ -2,6 +2,7 @@
 
 export(extract.LD)
 export(extract.eQTLs)
+export(extract.pathways)
 export(summarize)
 export(visualize)
 import(BioCircos)

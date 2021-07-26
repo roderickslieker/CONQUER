@@ -32,7 +32,7 @@ visualize <- function(directory = NULL, SNPs, tissues=NULL){
     }else{
       tmp <- load(filedir)
       out <- get(tmp)
-      rm(list=tmp, envir = .GlobalEnv)
+      #rm(list=tmp, envir = .GlobalEnv)
       return(out)
     }
   })
