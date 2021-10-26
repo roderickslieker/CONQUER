@@ -2,29 +2,29 @@ CONQUER
 ================
 Gerard Bouland, Joline Beulens, Joey Nap, Arno van der Slik, Arnaud
 Zaldumbide, Leen ’t Hart and Roderick Slieker
-06 januari, 2021
+26 oktober, 2021
 
-  - [0.1 Change log](#change-log)
-  - [0.2 Installation](#installation)
-      - [0.2.1 Install the depencies](#install-the-depencies)
-      - [0.2.2 Install CONQUER](#install-conquer)
-  - [0.3 Overview](#overview)
-  - [0.4 Note on `precalculated`
+-   [0.1 Change log](#change-log)
+-   [0.2 Installation](#installation)
+    -   [0.2.1 Install the depencies](#install-the-depencies)
+    -   [0.2.2 Install CONQUER](#install-conquer)
+-   [0.3 Overview](#overview)
+-   [0.4 Note on `precalculated`
     argument](#note-on-precalculated-argument)
-  - [0.5 Note on `pcutoff` argument](#note-on-pcutoff-argument)
-  - [0.6 Note on multianalyze](#note-on-multianalyze)
-  - [0.7 Citation](#citation)
-  - [0.8 Example without multianalyze](#example-without-multianalyze)
-  - [0.9 Example with multianalyze](#example-with-multianalyze)
-  - [0.10 Figure examples](#figure-examples)
-      - [0.10.1 Modules](#modules)
-      - [0.10.2 Enrichment](#enrichment)
-      - [0.10.3 Pathways shared by tissues](#pathways-shared-by-tissues)
-      - [0.10.4 LD](#ld)
-      - [0.10.5 Chromosomal interactions](#chromosomal-interactions)
-      - [0.10.6 Chromatin states](#chromatin-states)
-      - [0.10.7 eQTLs](#eqtls)
-      - [0.10.8 Gene expression](#gene-expression)
+-   [0.5 Note on `pcutoff` argument](#note-on-pcutoff-argument)
+-   [0.6 Note on multianalyze](#note-on-multianalyze)
+-   [0.7 Citation](#citation)
+-   [0.8 Example without multianalyze](#example-without-multianalyze)
+-   [0.9 Example with multianalyze](#example-with-multianalyze)
+-   [0.10 Figure examples](#figure-examples)
+    -   [0.10.1 Modules](#modules)
+    -   [0.10.2 Enrichment](#enrichment)
+    -   [0.10.3 Pathways shared by tissues](#pathways-shared-by-tissues)
+    -   [0.10.4 LD](#ld)
+    -   [0.10.5 Chromosomal interactions](#chromosomal-interactions)
+    -   [0.10.6 Chromatin states](#chromatin-states)
+    -   [0.10.7 eQTLs](#eqtls)
+    -   [0.10.8 Gene expression](#gene-expression)
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/CONQUER.png" align="right" width="120" />
 
@@ -32,15 +32,15 @@ Zaldumbide, Leen ’t Hart and Roderick Slieker
 
 *v.1.1.3*
 
-  - Added support for different P-value cut-offs in multi-analyze (see
+-   Added support for different P-value cut-offs in multi-analyze (see
     below)
 
 *v.1.1.2*
 
-  - Allow users to use precalculated SNPs in GTEx instead of calculating
+-   Allow users to use precalculated SNPs in GTEx instead of calculating
     them all.
 
-  - Added overlap tab of QTL to show overlap between types of QTLs
+-   Added overlap tab of QTL to show overlap between types of QTLs
 
 ## 0.2 Installation
 
@@ -81,6 +81,7 @@ Install the the development version from GitLab:
 ``` r
 # Install CoNQUER.db
 install.packages("https://github.com/roderickslieker/CONQUER.db/releases/download/v0.1.2/conquer.db_0.1.2.tar.gz", type="source", repos=NULL)
+devtools::install_github("roderickslieker/GTEx.Data")
 
 #Install other two dependencies
 devtools::install_github("roderickslieker/CONQUER.d3")
@@ -92,9 +93,9 @@ devtools::install_github("roderickslieker/CONQUER")
 With the use of two functions, SNPs are summarised and visualised,
 namely: `summarise()` and `visualise()`.
 
-  - The `summarise()` function is used to collect all data related to
+-   The `summarise()` function is used to collect all data related to
     SNPs.
-  - The `visualise()` function initiates a RStudio Shiny-based dashboard
+-   The `visualise()` function initiates a RStudio Shiny-based dashboard
     that visualises all relevant plots.
 
 Note: We use the LD data from the API of NIH. You will need to register
@@ -121,13 +122,13 @@ the strong correlation between the number of eQTLs and the number of
 individuals in that dataset. As such the package allows to analyze with
 three different settings:
 
-  - `stringent` : only allow eQTLs that match the pValue threshold as
+-   `stringent` : only allow eQTLs that match the pValue threshold as
     defined by GTEx for SNP
 
-  - `liberal` : P\<0.001 and P-value at max 2x higher than GTEx’s
+-   `liberal` : P\<0.001 and P-value at max 2x higher than GTEx’s
     threshold.
 
-  - `veryliberal` : All eQTLs that are nominally significant P\<0.05.
+-   `veryliberal` : All eQTLs that are nominally significant P\<0.05.
 
 ## 0.6 Note on multianalyze
 
@@ -236,3 +237,6 @@ visualize(directory = "somedirectory", SNPs = snps)
 ### 0.10.8 Gene expression
 
 <img src="https://github.com/roderickslieker/CONQUER.test/blob/master/Expression.png" align="center" width="500" />
+ 
+
+     

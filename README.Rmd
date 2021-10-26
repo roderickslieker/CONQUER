@@ -69,6 +69,7 @@ Install the the development version from GitLab:
 ```{r, eval = FALSE}
 # Install CoNQUER.db
 install.packages("https://github.com/roderickslieker/CONQUER.db/releases/download/v0.1.2/conquer.db_0.1.2.tar.gz", type="source", repos=NULL)
+devtools::install_github("roderickslieker/GTEx.Data")
 
 #Install other two dependencies
 devtools::install_github("roderickslieker/CONQUER.d3")
