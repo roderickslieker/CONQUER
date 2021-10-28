@@ -55,7 +55,7 @@ summarize <- function(variants, precalculated=TRUE, multiAnalyze=FALSE, pcutoff 
 
     if(length(colocFiles) == 0){
       message("Colocalization has not yet been performed. Note that this may take time some time depending on the number of SNPs. Running..")
-      all.coloc <- lapply(variants, getColocalization)
+      all.coloc <- lapply(variants, getColocalization, DIR=directory)
       names(all.coloc) <- variants
       save(all.coloc, file=paste0(directory, "/", "Colocalization_Summary.RData"))
     }

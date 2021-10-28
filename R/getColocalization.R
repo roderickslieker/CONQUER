@@ -2,10 +2,10 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom reshape2 colsplit
 #' @import magrittr
-getColocalization <- function(rsID)
+getColocalization <- function(rsID, DIR=NULL)
 {
   cat(rsID,"\n")
-  lead <- load(sprintf("./%s.RData", rsID))
+  lead <- load(sprintf("%s/%s.RData", DIR, rsID))
   tempdata <- get(lead)
   rm(list = lead)
 

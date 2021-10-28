@@ -61,6 +61,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
   for(qtl in qtls)
   {
     cat(sprintf("..Loading %s.....",qtl),"\n")
+    data(list = qtl, package="conquer.db")
     temp <- get(qtl)
     if(length(grep("sqtl", qtl)) != 0)
     {
@@ -74,7 +75,7 @@ visualizeDashboard <- function(loadedSNPs, SNPSummary, ColocSummary, tissues=NUL
       temp$LeadSNP <- ld.snps[match(temp$rsID, ld.snps$LDSNP),"leadingSNP"]
     }
     qtl <- paste0(qtl, "_internal")
-    assign(qtl, temp, envir = baseenv())
+    assign(x = qtl, value = temp, envir = .GlobalEnv)
     rm(temp)
   }
 

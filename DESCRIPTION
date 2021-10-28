@@ -39,4 +39,4 @@ Imports:
   DT,
   conquer.d3js,
   htmlwidgets
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
