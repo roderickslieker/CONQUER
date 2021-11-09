@@ -1,5 +1,5 @@
 #' @importFrom reshape2 colsplit
-geteQTLdata <- function(lead, lead.pos, Genes, parallel, allTissues, precalculated) {
+geteQTLdata <- function(lead, lead.pos, Genes, parallel, allTissues=NULL, precalculated) {
 
   if(length(Genes) == 0) {
     return(data.frame())

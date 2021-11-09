@@ -1,5 +1,5 @@
 #' @importFrom BiocGenerics start end
-getDataforSingleSNP <- function(variant, precalculated, directory=NULL, token=NULL, population="CEU",Chromatin, allTissues){  message(sprintf("Retrieving data for: %s",variant))
+getDataforSingleSNP <- function(variant, precalculated, directory=NULL, token=NULL, population="CEU",Chromatin, allTissues=NULL){  message(sprintf("Retrieving data for: %s",variant))
 
   tryCatch({
     #Retrieve Ensembl information

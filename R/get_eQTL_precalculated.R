@@ -11,7 +11,7 @@ get_eQTL_precalculated <- function(lead, tissues){
   data.qtls.temp <- jsonlite::fromJSON(chars_with_NA)[[1]]
 
   data.qtls.temp <- data.qtls.temp[data.qtls.temp$tissueSiteDetailId %in% tissues,]
-  check <- sum(length(data.qtls.temp) != 0 |  nrow(data.qtls.temp) >= 1)
+  check <- sum(c(length(data.qtls.temp) != 0,   nrow(data.qtls.temp) >= 1))
   if(check == 2)
   {
 
